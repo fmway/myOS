@@ -18,7 +18,11 @@ in {
   settings = dconfFamiliar {
     org.gnome.shell = {
       disable-user-extensions = false;
-      enabled-extensions = map (x: x.extensionUuid) (with pkgs.gnomeExtensions; [
+      enabled-extensions = map (x:
+        if builtins.isString x then
+          x
+        else x.extensionUuid)
+      (with pkgs.gnomeExtensions; [
         blur-my-shell
         gsconnect
         paperwm
@@ -31,6 +35,11 @@ in {
         cloudflare-warp-toggle
         system-monitor
         weather-oclock
+        bing-wallpaper-changer
+        places-status-indicator
+        applications-menu
+        "emoji-copy@felipeftn"
+        "lilypad@shendrew.github.io"
       ]);
 
       # extensions settings
