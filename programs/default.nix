@@ -45,6 +45,8 @@ in {
   environment.gnome.excludePackages = with pkgs; [
     epiphany
     gnome-tour
+    gnome-software
+    gnome-contacts
   ];
 
 
@@ -76,9 +78,6 @@ in {
     script.enable = true;
     script.cwd = ./scripts;
     
-    # enable fish
-    fish.enable = true;
-    fish.useBabelfish = true;
   }
   {
     folder = [ ./cli ./gui ];
