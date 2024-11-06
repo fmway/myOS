@@ -5,6 +5,8 @@
   libraries = with pkgs; [
     glibc
     openssl
-    gcc.cc.lib
+    stdenv.cc.cc
+    # gcc.cc.lib
+    clang.cc.lib
   ];
 }

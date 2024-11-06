@@ -1,5 +1,8 @@
-{ config, ... }:
+{ config, pkgs, lib, ... }:
 with config.boot; {
+  kernelPackages = lib.mkDefault pkgs.linuxPackages_cachyos;
+  zfs.package = lib.mkDefault pkgs.zfs_cachyos;
+
   loader = with loader; {
     efi.canTouchEfiVariables = systemd-boot.enable;
 
@@ -36,7 +39,7 @@ with config.boot; {
   kernelParams = [
     "zfs.zfs_arc_max=536870912" # max zfs cache (512MB)
   ];
-
+  kernel.sysctl."kernel.sysrq" = 1;
 
   # Enable v4l2loopback kernel module for using Virtual Camera.
   extraModulePackages = with kernelPackages; [
