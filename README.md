@@ -9,4 +9,4 @@ System Info :
 - Desktop Environment : [GNOME](https://www.gnome.org/), (and [swayfx](https://github.com/WillPower3309/swayfx))
 - Flakes : Yes
 - Home Manager : Yes, as NixOS Module
-- Version : 24.11
+- Version : 25.05
