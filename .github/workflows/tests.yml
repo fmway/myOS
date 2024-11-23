@@ -30,7 +30,7 @@ jobs:
         # sed -i '/keypunch/d;/xdman/d;/appimagekit/d;/vscode/d;/xdman/d;/firefoxpwa/d;/zed-editor/d;/keepassxc/d;/wezterm/d;/qutebrowser/d;/youtube-music/d;/popsicle/d;/protonmail/d;' ./programs/gui/default.nix
         # sed -i '/popsql/d;/bootstrap-studio/d;/google-chrome/d;/zig/d;/deno/d;/rustup/d;/dbeaver/d;/zoom-us/d;/kdenlive/d;/bun/d;/rustup/d;/zotero-beta/d;/telegram-desktop/d;/youtube-music/d;/libreoffice/d;/anytype/d;/obs-studio/d;/discord/d;/ytui-music/d;/nixpacks/d;/nil/d;/wrangler/d;/nixd/d;/ttyper/d;' ./users/fmway.nix
         rm ./programs/gui/default.nix ./programs/cli/default.nix
-        sed -i '4,35d' ./home-managers/default/packages.nix
+        sed -i '4,35d' ./home-manager/default/packages.nix
         rm -f ./programs/gui/firefox.nix
     - name: Build
       run: nix build .#nixosConfigurations.Namaku1801.config.system.build.toplevel --verbose
