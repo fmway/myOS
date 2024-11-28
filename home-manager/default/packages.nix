@@ -1,5 +1,5 @@
-pkgs:
-with pkgs; [
+{ pkgs, config, ... }:
+with pkgs; lib.mkIf (! config.data ? isMinimal || ! config.data.isMinimal) [
   # cli
   element # periodic table
   # matui

@@ -1,4 +1,5 @@
 # { pkgs, inputs, ... }:
+# TEST
 { 
   # Fix for nixpkgs without flakes
   # nix.registry.nixos.flake = inputs.self;

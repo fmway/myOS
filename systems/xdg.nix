@@ -2,6 +2,6 @@
 {
   portal = {
     enable = true;
-    wlr.enable = true; # enable xdg-desktop-portal-wlr
+    # wlr.enable = true; # enable xdg-desktop-portal-wlr
   };
 }

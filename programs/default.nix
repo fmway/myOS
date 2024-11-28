@@ -33,7 +33,6 @@ in {
   environment.systemPackages = (with pkgs; [
     # cloudflare-warp
     scrcpy
-    evolution
     wl-clipboard
   ]);
 
