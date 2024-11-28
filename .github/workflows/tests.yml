@@ -3,7 +3,8 @@ on:
   pull_request:
   push:
 permissions:
-  contents: write
+  contents: read
+  id-token: write
 jobs:
   nixos:
     runs-on: ubuntu-latest
