@@ -9,31 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: cachix/install-nix-action@v25
+    - uses: DeterminateSystems/nix-installer-action@v16
       with:
-        nix_path: nixpkgs=channel:nixos-unstable
-        extra_nix_config: |
-          extra-experimental-features = nix-command flakes repl-flake auto-allocate-uids configurable-impure-env
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        extra-conf: |
+          experimental-features = nix-command flakes pipe-operators repl-flake auto-allocate-uids configurable-impure-env
           substituters = https://cache.nixos.org https://cache.nixos.org/ https://devenv.cachix.org https://fmcachix.cachix.org https://nix-community.cachix.org
           trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= fmcachix.cachix.org-1:Z5j9jk83ctoCK22EWrbQL6AAP3CTYnZ/PHljlYSakrw= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
-    # - uses: cachix/cachix-action@v14
-    #   with:
-    #     name: fmcachix
-    #     # If you chose API tokens for write access OR if you have a private cache
-    #     authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - name: remove steam
-      run: rm -rf ./programs/gui/steam.nix
-    - name: remove container
-      run: rm -f ./programs/container.nix
-    - name: remove some gui and cli
-      run: |
-        # sed -i '/keypunch/d;/xdman/d;/appimagekit/d;/vscode/d;/xdman/d;/firefoxpwa/d;/zed-editor/d;/keepassxc/d;/wezterm/d;/qutebrowser/d;/youtube-music/d;/popsicle/d;/protonmail/d;' ./programs/gui/default.nix
-        # sed -i '/popsql/d;/bootstrap-studio/d;/google-chrome/d;/zig/d;/deno/d;/rustup/d;/dbeaver/d;/zoom-us/d;/kdenlive/d;/bun/d;/rustup/d;/zotero-beta/d;/telegram-desktop/d;/youtube-music/d;/libreoffice/d;/anytype/d;/obs-studio/d;/discord/d;/ytui-music/d;/nixpacks/d;/nil/d;/wrangler/d;/nixd/d;/ttyper/d;' ./users/fmway.nix
-        rm ./programs/gui/default.nix # ./programs/cli/default.nix
-        sed -i '4,35d' ./home-manager/default/packages.nix
-        rm -f ./programs/gui/firefox.nix
+    - uses: DeterminateSystems/magic-nix-cache-action@main
     - name: Build
-      run: nix build .#nixosConfigurations.Namaku1801.config.system.build.toplevel --verbose
+      run: nix build .#nixosConfigurations.minimal.config.system.build.toplevel --verbose
     - name: Info
       run: nix path-info -Sh ./result
     - run: nix-collect-garbage -d
