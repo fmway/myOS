@@ -5,12 +5,15 @@ on:
   push:
 jobs:
   megasync:
+    if: "${{ github.event.head_commit.message == 'chore(lockfile): update flake.lock' || github.event.head_commit.message == 'chore(deps): update flake.lock' || github.event.head_commit.message == '(lock:update) flake.lock' }}"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: cachix/install-nix-action@v25
+    - uses: DeterminateSystems/nix-installer-action@v16
       with:
-        nix_path: nixpkgs=channel:nixos-unstable
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        extra-conf: "experimental-features = nix-command flakes pipe-operators"
+    - uses: DeterminateSystems/magic-nix-cache-action@main
     - uses: cachix/cachix-action@v14
       with:
         name: fmcachix
@@ -19,12 +22,15 @@ jobs:
     - run: nix build .#megasync --verbose
     - run: nix-collect-garbage -d
   cli:
+    if: "${{ github.event.head_commit.message == 'chore(lockfile): update flake.lock' || github.event.head_commit.message == 'chore(deps): update flake.lock' || github.event.head_commit.message == '(lock:update) flake.lock' }}"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: cachix/install-nix-action@v25
+    - uses: DeterminateSystems/nix-installer-action@v16
       with:
-        nix_path: nixpkgs=channel:nixos-unstable
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        extra-conf: "experimental-features = nix-command flakes pipe-operators"
+    - uses: DeterminateSystems/magic-nix-cache-action@main
     - uses: cachix/cachix-action@v14
       with:
         name: fmcachix
@@ -33,12 +39,15 @@ jobs:
     - run: nix build .#trunk .#ytui-music .#extra.encore --verbose
     - run: nix-collect-garbage -d
   wasmer:
+    if: "${{ github.event.head_commit.message == 'chore(lockfile): update flake.lock' || github.event.head_commit.message == 'chore(deps): update flake.lock' || github.event.head_commit.message == '(lock:update) flake.lock' }}"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: cachix/install-nix-action@v25
+    - uses: DeterminateSystems/nix-installer-action@v16
       with:
-        nix_path: nixpkgs=channel:nixos-unstable
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        extra-conf: "experimental-features = nix-command flakes pipe-operators"
+    - uses: DeterminateSystems/magic-nix-cache-action@main
     - uses: cachix/cachix-action@v14
       with:
         name: fmcachix
@@ -47,12 +56,15 @@ jobs:
     - run: nix build .#wasmer --verbose
     - run: nix-collect-garbage -d
   cli2:
+    if: "${{ github.event.head_commit.message == 'chore(lockfile): update flake.lock' || github.event.head_commit.message == 'chore(deps): update flake.lock' || github.event.head_commit.message == '(lock:update) flake.lock' }}"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: cachix/install-nix-action@v25
+    - uses: DeterminateSystems/nix-installer-action@v16
       with:
-        nix_path: nixpkgs=channel:nixos-unstable
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        extra-conf: "experimental-features = nix-command flakes pipe-operators"
+    - uses: DeterminateSystems/magic-nix-cache-action@main
     - uses: cachix/cachix-action@v14
       with:
         name: fmcachix
@@ -61,14 +73,16 @@ jobs:
     - run: nix build .#nix-init --verbose
     - run: nix-collect-garbage -d
   git:
+    if: "${{ github.event.head_commit.message == 'chore(lockfile): update flake.lock' || github.event.head_commit.message == 'chore(deps): update flake.lock' || github.event.head_commit.message == '(lock:update) flake.lock' }}"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: cachix/install-nix-action@v25
+    - uses: DeterminateSystems/nix-installer-action@v16
       with:
-        nix_path: nixpkgs=channel:nixos-unstable
-        extra_nix_config: |
-          extra-experimental-features = nix-command flakes repl-flake auto-allocate-uids configurable-impure-env
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        extra-conf: |
+          experimental-features = nix-command flakes pipe-operators repl-flake auto-allocate-uids configurable-impure-env
+    - uses: DeterminateSystems/magic-nix-cache-action@main
     - uses: cachix/cachix-action@v14
       with:
         name: fmcachix
