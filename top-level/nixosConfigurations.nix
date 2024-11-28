@@ -31,7 +31,7 @@ in {
       modules = defaultModules ++ [
         { data.isMinimal = true; }
       ];
-      users.fmway = pkgs: { shell = pkgs.fish; };
+      users.fmway = { pkgs, ... }: { shell = pkgs.fish; };
       withHM = [ "fmway" ];
       sharedHM = true;
     };
