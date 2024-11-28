@@ -1,5 +1,6 @@
 { pkgs
 , lib
+, options
 , config
 , ...
 } @ variables
@@ -9,18 +10,30 @@
     genPaths
   ;
   inherit (config.home) homeDirectory username;
-in {
+in
+{
   imports = [
     ./desktop
+    {
+      options.home.dconf = options.dconf;
+      config.dconf = config.home.dconf;
+    }
+    (let
+      nixs = lib.fmway.getNixs ./.;
+      result = map (file: {
+        name = lib.removeSuffix ".nix" file;   
+        value = let
+          imported = import (./. + "/${file}");
+        in if builtins.isFunction imported then imported variables else imported;
+      }) nixs;
+    in {
+      home = lib.listToAttrs result;
+    })
   ];
 
   programs.home-manager.enable = true;
 
-  dconf = import ./dconf.nix variables;
-
   home = {
-    packages = import ./packages.nix pkgs;
-
     # Home Manager version
     stateVersion = "25.05";
 
