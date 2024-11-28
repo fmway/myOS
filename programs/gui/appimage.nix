@@ -1,10 +1,10 @@
-# { pkgs, ... }:
+{ pkgs, lib, config, ... }:
 let
   # inherit (pkgs)
   #   fetchurl
   # ;
 in {
-  enable = true;
+  enable = lib.mkForce (! config.data ? isMinimal || ! config.data.isMinimal);
   packages = {
     # zen-browser = rec {
     #   version = "1.0.0-a.28";

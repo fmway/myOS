@@ -1,8 +1,11 @@
 { pkgs, ... }:
 {
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; lib.mkIf (
+      ! config.data ? isMinimal || ! config.data.isMinimal
+  ) [
     dconf-editor
     gnome-tweaks
+    evolution
     # gdm-settings
     # session-desktop
     gnome-extension-manager

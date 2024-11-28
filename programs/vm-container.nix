@@ -1,5 +1,5 @@
-{ pkgs, config, ... }:
-{
+{ pkgs, config, lib, ... }:
+{ config = lib.mkIf (! config.data ? isMinimal || ! config.data.isMinimal) {
   environment.systemPackages = with pkgs; [
     # qemu_full
     # qemu with efi 
@@ -46,4 +46,4 @@
 
     waydroid.enable = true;
   };
-}
+}; }

@@ -2,19 +2,21 @@
   system = "x86_64-linux";
   # inherit (self) outputs;
 in {
-  flake.nixosConfigurations = {
+  flake.nixosConfigurations = let
+    defaultModules = with inputs; [
+      ../configuration.nix
+      ../hardware-configuration.nix
+      ../disk.nix
+      ../secrets
+      agenix.nixosModules.default
+      disko.nixosModules.default
+      nixos-hardware.nixosModules.lenovo-thinkpad-t480
+      self.nixosModules.default
+    ];
+  in  {
     Namaku1801 = self.lib.mkNixos {
       inherit system inputs;
-      modules = with inputs; [
-        ../configuration.nix
-        ../hardware-configuration.nix
-        ../disk.nix
-        ../secrets
-        agenix.nixosModules.default
-        disko.nixosModules.default
-        nixos-hardware.nixosModules.lenovo-thinkpad-t480
-        self.nixosModules.default
-      ];
+      modules = defaultModules;
       users = {
         fmway = { user, pkgs, ... }:
         {
@@ -23,6 +25,15 @@ in {
         };
       };
       withHM = true;
+    };
+    minimal = self.lib.mkNixos {
+      inherit system inputs;
+      modules = defaultModules ++ [
+        { data.isMinimal = true; }
+      ];
+      users.fmway = pkgs: { shell = pkgs.fish; };
+      withHM = [ "fmway" ];
+      sharedHM = true;
     };
     # Namaku1801 = inputs.nixpkgs.lib.nixosSystem {
     #   inherit system;

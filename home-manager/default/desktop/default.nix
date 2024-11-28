@@ -1,5 +1,6 @@
 { pkgs
 , lib
+, config
 , ... }
 @ variables
 :
@@ -9,6 +10,7 @@ let
     treeImport
   ;
 in {
+  config = lib.mkIf (! config.data ? isMinimal || ! config.data.isMinimal) {
   # import all in folder ./wayland to wayland.windowManager
   wayland.windowManager = treeImport {
     folder = ./wayland;
@@ -24,4 +26,4 @@ in {
     folder = ./x;
     inherit variables;
   };
-}
+}; }

@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 {
-  enable = true;
+  enable = lib.mkForce (! config.data ? isMinimal || ! config.data.isMinimal);
   package = pkgs.firefox;
   nativeMessagingHosts.packages = with pkgs; [
     firefoxpwa
