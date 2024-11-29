@@ -1,0 +1,26 @@
+name: "test"
+on:
+  pull_request:
+  # push:
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  nixos:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: DeterminateSystems/nix-installer-action@main
+      with:
+        github-token: ${{ secrets.GH_TOKEN }}
+        extra-conf: |
+          experimental-features = nix-command flakes pipe-operators auto-allocate-uids configurable-impure-env
+          substituters = https://cache.nixos.org/ https://chaotic-nyx.cachix.org https://devenv.cachix.org https://fmcachix.cachix.org https://microvm.cachix.org https://nix-community.cachix.org https://nocargo.cachix.org https://om.cachix.org https://snowflakeos.cachix.org https://tweag-jupyter.cachix.org https://nix-community.cachix.org/ https://chaotic-nyx.cachix.org/ https://cache.nixos.org/
+          trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8= devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= fmcachix.cachix.org-1:Z5j9jk83ctoCK22EWrbQL6AAP3CTYnZ/PHljlYSakrw= microvm.cachix.org-1:oXnBc6hRE3eX5rSYdRyMYXnfzcCxC7yKPTbZXALsqys= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= nocargo.cachix.org-1:W6jkp5htZBA1tUdU8XHLaD7zBrIFnor0MsLhHgrJeHk= om.cachix.org-1:ifal/RLZJKN4sbpScyPGqJ2+appCslzu7ZZF/C01f2Q= snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70= tweag-jupyter.cachix.org-1:UtNH4Zs6hVUFpFBTLaA4ejYavPo5EFFqgd7G7FxGW9g= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8=
+
+    - uses: DeterminateSystems/magic-nix-cache-action@main
+    - name: Build
+      run: nix build .#nixosConfigurations.minimal.config.system.build.toplevel --verbose
+    - name: Info
+      run: nix path-info -Sh ./result
+    - run: nix-collect-garbage -d
