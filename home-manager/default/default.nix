@@ -2,6 +2,7 @@
 , lib
 , options
 , config
+, nixosConfig
 , ...
 } @ variables
 : let
@@ -35,7 +36,7 @@ in
 
   home = {
     # Home Manager version
-    stateVersion = "25.05";
+    stateVersion = lib.mkDefault (nixosConfig.system.stateVersion);
 
     sessionPath = genPaths homeDirectory [
       ".local" # must be ${home}/.local/bin
