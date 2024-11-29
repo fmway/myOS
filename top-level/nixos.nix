@@ -17,7 +17,6 @@ in {
       fmway-nix.nixosModules.default
       chaotic.nixosModules.default
       catppuccin.nixosModules.catppuccin
-      determinate.nixosModules.default
     ]);
   } selfNames;
 }
