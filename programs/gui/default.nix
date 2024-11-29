@@ -1,8 +1,6 @@
-{ pkgs, ... }:
-{
-  environment.systemPackages = with pkgs; lib.mkIf (
-      ! config.data ? isMinimal || ! config.data.isMinimal
-  ) [
+{ pkgs, lib, config, ... }:
+{ config = lib.mkIf (! config.data ? isMinimal || ! config.data.isMinimal) {
+  environment.systemPackages = with pkgs; [
     dconf-editor
     gnome-tweaks
     evolution
@@ -49,4 +47,4 @@
     enable = true;
     openFirewall = true;
   };
-}
+}; }
