@@ -3,6 +3,8 @@
 
   # Inputs
   inputs = {
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
+    determinate.inputs.nixpkgs.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixos-24.05";
