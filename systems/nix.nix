@@ -21,15 +21,20 @@
     auto-optimise-store = true;
   };
 
-  registry =
-    builtins.listToAttrs (map (x: {
+  registry = builtins.attrNames inputs
+    |> map (x: {
       name =
         if x == "self" then
           "nixos"
         else
           x;
       value.flake = inputs.${x};
-    }) (builtins.attrNames inputs));
+    })
+    |> builtins.listToAttrs;
+
+  nixPath = builtins.attrNames inputs
+    |> builtins.filter (x: x != "nixpkgs")
+    |> map (name: "${name}=${inputs.${name}.outPath}");
 
   gc = {
     automatic = true;
