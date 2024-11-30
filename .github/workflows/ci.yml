@@ -61,23 +61,6 @@ jobs:
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#megasync --verbose
     - run: nix-collect-garbage -d
-  cli:
-    if: "${{ github.event_name == 'pull_request' }}"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: DeterminateSystems/nix-installer-action@v16
-      with:
-        github-token: ${{ secrets.GH_TOKEN }}
-        extra-conf: "experimental-features = nix-command flakes pipe-operators"
-    - uses: DeterminateSystems/magic-nix-cache-action@main
-    - uses: cachix/cachix-action@master
-      with:
-        name: fmcachix
-        # If you chose API tokens for write access OR if you have a private cache
-        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: nix build .#trunk .#ytui-music .#extra.encore --verbose
-    - run: nix-collect-garbage -d
   wasmer:
     if: "${{ github.event_name == 'pull_request'  }}"
     runs-on: ubuntu-latest
@@ -97,7 +80,7 @@ jobs:
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#wasmer --verbose
     - run: nix-collect-garbage -d
-  cli2:
+  cli:
     if: "${{ github.event_name == 'pull_request' }}"
     runs-on: ubuntu-latest
     steps:
@@ -139,6 +122,11 @@ jobs:
   nixos:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
+    needs:
+    - cli
+    - wasmer
+    - git
+    - megasync
     steps:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
@@ -160,7 +148,6 @@ jobs:
   auto-merge:
     needs:
     - cli
-    - cli2
     - wasmer
     - git
     - megasync
