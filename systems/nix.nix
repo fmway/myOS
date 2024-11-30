@@ -33,7 +33,6 @@
     |> builtins.listToAttrs;
 
   nixPath = builtins.attrNames inputs
-    |> builtins.filter (x: x != "nixpkgs")
     |> map (name: "${name}=${inputs.${name}.outPath}");
 
   gc = {
