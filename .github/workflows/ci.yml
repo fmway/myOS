@@ -60,7 +60,7 @@ jobs:
         # If you chose API tokens for write access OR if you have a private cache
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#megasync --verbose
-    
+    - run: nix-collect-garbage -d
   cli:
     if: "${{ github.event_name == 'pull_request' }}"
     runs-on: ubuntu-latest
@@ -77,7 +77,7 @@ jobs:
         # If you chose API tokens for write access OR if you have a private cache
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#trunk .#ytui-music .#extra.encore --verbose
-    
+    - run: nix-collect-garbage -d
   wasmer:
     if: "${{ github.event_name == 'pull_request'  }}"
     runs-on: ubuntu-latest
@@ -96,7 +96,7 @@ jobs:
         # If you chose API tokens for write access OR if you have a private cache
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#wasmer --verbose
-    
+    - run: nix-collect-garbage -d
   cli2:
     if: "${{ github.event_name == 'pull_request' }}"
     runs-on: ubuntu-latest
@@ -135,7 +135,7 @@ jobs:
         # If you chose API tokens for write access OR if you have a private cache
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#custom.git --verbose
-    
+    - run: nix-collect-garbage -d
   nixos:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
@@ -156,7 +156,7 @@ jobs:
       run: nix build .#nixosConfigurations.minimal.config.system.build.toplevel --verbose
     - name: Info
       run: nix path-info -Sh ./result
-    
+    - run: nix-collect-garbage -d
   auto-merge:
     needs:
     - cli
