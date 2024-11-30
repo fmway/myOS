@@ -22,11 +22,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     fmpkgs.url = "github:fmway/fmpkgs/master";
-    nixpkgs-extra = {
-      url = "github:luisnquin/nixpkgs-extra";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    encore.url = "github:encoredev/encore-flake";
+    encore.inputs.nixpkgs.follows = "nixpkgs";
     # TODO
     # nix-colors.url = "github:misterio77/nix-colors";
     home-manager.url = "github:nix-community/home-manager/master";

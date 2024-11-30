@@ -12,7 +12,6 @@
   ;
   inherit (builtins) 
     foldl'
-    getAttr
     ;
   nixpkgs-overlay = self: super: let
     overlayNixpkgs = arr: obj: foldl' (acc: curr: let
@@ -31,7 +30,6 @@
     fmpkgs = import inputs.fmpkgs {
       inherit system pkgs lib;
     };
-    extra = inputs.nixpkgs-extra.packages.${system};
   };
 
   package-overlay = self: super: treeImport {

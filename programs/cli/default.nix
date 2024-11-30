@@ -41,7 +41,7 @@
     # aerc # neomutt alternative
     # frogmouth # tui markdown viewer. awesome but, very lag
     # manix # nix options search
-    extra.encore # awesome tools for developing go and typescript
+    encore # awesome tools for developing go and typescript
     nix-init # automate builder nix derivation
     # nurl # ?
     rclone
