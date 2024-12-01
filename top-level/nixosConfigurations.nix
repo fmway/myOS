@@ -1,6 +1,5 @@
 { inputs, lib, self, ... }: let
   system = "x86_64-linux";
-  # inherit (self) outputs;
 in {
   flake.nixosConfigurations = let
     defaultModules = with inputs; [
@@ -35,28 +34,6 @@ in {
       withHM = [ "fmway" ];
       sharedHM = true;
     };
-    # Namaku1801 = inputs.nixpkgs.lib.nixosSystem {
-    #   inherit system;
-    #   specialArgs = self.lib.genSpecialArgs {
-    #     inherit inputs outputs system;
-    #   };
-    #   modules = with inputs; [
-    #     ../configuration.nix
-    #     ../hardware-configuration.nix
-    #     ../disk.nix
-    #     ../secrets
-    #     ({ pkgs, ... }: {
-    #       users.users = self.lib.genUsers [ "fmway" ] (user: {
-    #         home = "/home/${user}";
-    #         shell = pkgs.fish;
-    #       });
-    #     })
-    #     agenix.nixosModules.default
-    #     disko.nixosModules.default
-    #     nixos-hardware.nixosModules.lenovo-thinkpad-t480
-    #     self.nixosModules.default
-    #   ];
-    # };
   };
   flake.legacyPackages.${system} = self.nixosConfigurations.Namaku1801.pkgs;
 }
