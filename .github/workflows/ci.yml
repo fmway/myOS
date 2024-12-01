@@ -20,12 +20,14 @@ jobs:
     if: "${{ github.event_name == 'schedule' }}"
     runs-on: [ ubuntu-latest ]
     steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - name: Check if PR exists
       id: check
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        [ ! -d .git ] && gh repo clone "$GITHUB_REPOSITORY" my_repo && cd my_repo
         prs=$(gh pr list \
             --repo "$GITHUB_REPOSITORY" \
             --head 'nixos-unstable' \
