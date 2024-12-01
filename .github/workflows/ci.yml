@@ -25,6 +25,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        [ ! -d .git ] && gh repo clone "$GITHUB_REPOSITORY" my_repo && cd my_repo
         prs=$(gh pr list \
             --repo "$GITHUB_REPOSITORY" \
             --head 'nixos-unstable' \
