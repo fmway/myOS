@@ -2,7 +2,9 @@
 with pkgs; lib.mkIf (! config.data ? isMinimal || ! config.data.isMinimal) [
   # cli
   element # periodic table
+  encore # awesome tools for developing go and typescript
   # matui
+  ttyper # monkeytype in terminal
   # mastodon
   # ytui-music
   

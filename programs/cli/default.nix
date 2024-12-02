@@ -15,8 +15,8 @@
     # comma # also this, very suck
     # fmpkgs.scribd-downloader # scribd downloader 😱, tai
     # nh # wrapper nixos-rebuild & home-manager with nvd + nix-output-monitor
-    nvd # nix diff
-    nix-output-monitor # nix beautiful output
+    # nvd # nix diff
+    # nix-output-monitor # nix beautiful output
     # nix-du
     # ctop # top for container
     # kdash # dashboard kubernetes
@@ -41,14 +41,12 @@
     # aerc # neomutt alternative
     # frogmouth # tui markdown viewer. awesome but, very lag
     # manix # nix options search
-    encore # awesome tools for developing go and typescript
     nix-init # automate builder nix derivation
     # nurl # ?
     rclone
     cachix # unofficial binary cache server (another binary cache in cache.nixos.org)
     nixfmt-rfc-style # fmt for nix
     nmap # hem...
-    ttyper # monkeytype in terminal
     # wayvnc # vnc for wayland / especially wlroots
     flyctl # fly.io management in terminal
     wrangler # cloudflare worker management in terminal
