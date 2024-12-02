@@ -25,6 +25,7 @@ jobs:
       id: check
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         tree -a
         git fetch origin
