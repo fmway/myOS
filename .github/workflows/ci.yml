@@ -126,7 +126,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
     needs:
-    - cli
+    - others
     - wasmer
     - git
     - megasync
@@ -149,12 +149,7 @@ jobs:
       run: nix path-info -Sh ./result
     - run: nix-collect-garbage -d
   auto-merge:
-    needs:
-    - others
-    - wasmer
-    - git
-    - megasync
-    - nixos
+    needs: [ nixos ]
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request'}}
     steps:
