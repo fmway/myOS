@@ -83,7 +83,7 @@ jobs:
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     - run: nix build .#wasmer --verbose
     - run: nix-collect-garbage -d
-  cli:
+  others:
     if: "${{ github.event_name == 'pull_request' }}"
     runs-on: ubuntu-latest
     steps:
@@ -100,7 +100,7 @@ jobs:
         name: fmcachix
         # If you chose API tokens for write access OR if you have a private cache
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: nix build .#nix-init --verbose
+    - run: nix build .#nix-init .#evolution --verbose
     
   git:
     if: "${{ github.event_name == 'pull_request' }}"
@@ -150,7 +150,7 @@ jobs:
     - run: nix-collect-garbage -d
   auto-merge:
     needs:
-    - cli
+    - others
     - wasmer
     - git
     - megasync
