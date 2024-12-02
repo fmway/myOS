@@ -22,6 +22,7 @@ in treeImport {
     "services/phpfpm"
     "networking/wg-quick"
     "networking/wireguard"
+    "systemd/services"
     # "services/stubby"
   ];
 

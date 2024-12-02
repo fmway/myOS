@@ -10,9 +10,12 @@
     };
     aggregatedIcons = pkgs.buildEnv {
       name = "system-icons";
-      paths = with pkgs; [
-        # libsForQt5.breeze-qt5  # for plasma
+      paths = with pkgs;
+      lib.optionals (config.services.xserver.desktopManager.gnome.enable) [
         gnome-themes-extra
+      ]
+      ++ lib.optionals (config.services.desktopManager.plasma6.enable) [
+        libsForQt5.breeze-qt5
       ];
       pathsToLink = [ "/share/icons" ];
     };

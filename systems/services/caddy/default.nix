@@ -1,11 +1,11 @@
-{ domains, lib, ... }: let
+{ config, domains, lib, ... }: let
   inherit (builtins) attrNames map;
   inherit (lib) listToAttrs;
   inherit (lib.fmway)
     excludeItems
   ;
 in {
-  enable = true;
+  enable = ! (config.data.isMinimal or false);
   virtualHosts = listToAttrs (map (x: let
     v = domains.${x};
     enable =

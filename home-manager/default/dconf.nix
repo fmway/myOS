@@ -63,7 +63,13 @@ in {
     };
 
     org.gnome.desktop = {
-      interface.color-scheme = "prefer-dark"; # dark mode
+      interface = {
+        color-scheme = "prefer-dark"; # dark mode
+        cursor-theme = "Adwaita";
+        cursor-size = 50;
+        icon-theme = "Adwaita";
+        gtk-theme = "adw-gtk3";
+      };
 
       # Change background
       # background = {

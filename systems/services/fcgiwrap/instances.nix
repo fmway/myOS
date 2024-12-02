@@ -1,6 +1,6 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
-  "${config.data.defaultUser}" = {
+  "${config.data.defaultUser}" = lib.mkIf (! (config.data.isMinimal or false)) {
     socket = {
       group = config.services.caddy.group;
       user = config.users.users.${config.data.defaultUser}.name;
