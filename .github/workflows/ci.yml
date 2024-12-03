@@ -24,7 +24,7 @@ jobs:
     - name: Check if PR exists
       id: check
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         tree -a
         git fetch origin
