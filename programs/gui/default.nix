@@ -1,12 +1,8 @@
-{ pkgs, lib, config, ... }:
-{ config = lib.mkIf (! config.data ? isMinimal || ! config.data.isMinimal) {
+{ pkgs, lib, config, ... }: let
+  isGnomeEnabled = config.services.xserver.desktopManager.gnome.enable;
+in { config = lib.mkIf (! (config.data.isMinimal or false)) {
   environment.systemPackages = with pkgs; [
-    dconf-editor
-    gnome-tweaks
-    evolution
-    # gdm-settings
     # session-desktop
-    gnome-extension-manager
     # protonmail-desktop
     appimagekit # ..
     # popsicle # bootable creator
@@ -26,7 +22,13 @@
     # terminal
     # contour
     # wezterm
-  ] ++ (with gnomeExtensions; [
+  ] ++ lib.optionals isGnomeEnabled [
+    dconf-editor
+    gnome-tweaks
+    evolution
+    # gdm-settings
+    gnome-extension-manager
+  ] ++ lib.optionals isGnomeEnabled (with gnomeExtensions; [
     paperwm
     appindicator
     clipboard-indicator

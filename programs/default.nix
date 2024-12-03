@@ -25,10 +25,6 @@ in {
     # allow insecure packages
     permittedInsecurePackages = [
       "python3.12-youtube-dl-2021.12.17"
-      "dotnet-runtime-wrapped-6.0.36"
-      "dotnet-runtime-6.0.36"
-      "dotnet-sdk-wrapped-6.0.428"
-      "dotnet-sdk-6.0.428"
     ];
   };
 
