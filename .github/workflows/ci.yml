@@ -15,6 +15,7 @@ concurrency:
 permissions:
   contents: write
   id-token: write
+  pull-requests: write
 jobs:
   auto-pull-request:
     if: "${{ github.event_name == 'schedule' }}"
@@ -40,11 +41,12 @@ jobs:
         fi
     - name: Create pull request
       if: '!steps.check.outputs.skip'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        git checkout nixos-unstable
-        gh pr create --title "Merge from nixos-unstable" --body ""
+      uses: peter-evans/create-pull-request@v7
+      with:
+        commit-message: ""
+        title: "Merge from nixos-unstable"
+        labels: |
+          automated
   megasync:
     if: "${{ github.event_name == 'pull_request'  }}"
     runs-on: ubuntu-latest
