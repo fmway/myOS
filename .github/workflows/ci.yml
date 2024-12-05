@@ -22,6 +22,13 @@ jobs:
     runs-on: [ ubuntu-latest ]
     steps:
     - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+    - name: Setup git
+      run: |
+        git config --global user.name 'little fmway'
+        git config --global user.email 'fm18lv@gmail.com'
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
     - name: Check if PR exists
       id: check
       env:
@@ -41,12 +48,10 @@ jobs:
         fi
     - name: Create pull request
       if: '!steps.check.outputs.skip'
-      uses: peter-evans/create-pull-request@v7
-      with:
-        commit-message: ""
-        title: "Merge from nixos-unstable"
-        labels: |
-          automated
+      env:
+        GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
+      run: |
+        gh pr create --title "Merge from nixos-unstable" --body "" -l "automated"
   megasync:
     if: "${{ github.event_name == 'pull_request'  }}"
     runs-on: ubuntu-latest
