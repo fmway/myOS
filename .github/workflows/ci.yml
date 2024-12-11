@@ -32,7 +32,8 @@ jobs:
     - name: Check if PR exists
       id: check
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{  secrets.GITHUB_TOKEN }}
       run: |
         tree -a
         git fetch origin
@@ -49,7 +50,7 @@ jobs:
     - name: Create pull request
       if: '!steps.check.outputs.skip'
       env:
-        GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
+        GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       run: |
         gh pr create --title "Merge from nixos-unstable" --body "" -l "automated"
   megasync:
