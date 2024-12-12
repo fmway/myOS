@@ -4,7 +4,7 @@ let
   #   fetchurl
   # ;
 in {
-  enable = lib.mkForce (! config.data ? isMinimal || ! config.data.isMinimal);
+  enable = ! (config.data.isMinimal or false);
   packages = {
     # zen-browser = rec {
     #   version = "1.0.0-a.28";

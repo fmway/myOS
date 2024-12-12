@@ -16,7 +16,8 @@ with pkgs; lib.mkIf (! config.data ? isMinimal || ! config.data.isMinimal) [
   discord
   upscayl # image upscaler
   gthumb
-  element-desktop-wayland # matrix client
+  # element-desktop-wayland # matrix client
+  element-desktop
   foliate # reader for desktop
   # youtube-music
   # dbeaver-bin # sql client

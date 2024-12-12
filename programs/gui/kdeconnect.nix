@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 {
   # Add GSConnect connection configuration.
   enable = true;
-  package = pkgs.gnomeExtensions.gsconnect;
+  package = lib.mkIf config.services.xserver.desktopManager.gnome.enable pkgs.gnomeExtensions.gsconnect;
 }
