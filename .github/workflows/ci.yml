@@ -164,3 +164,4 @@ jobs:
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
