@@ -157,7 +157,7 @@ jobs:
   auto-merge:
     needs: [ nixos ]
     runs-on: ubuntu-latest
-    if: always()
+    if: ${{ github.event_name == 'pull_request' && always() }}
     steps:
     - name: Enable auto-merge
       env:
