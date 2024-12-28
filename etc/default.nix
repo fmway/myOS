@@ -8,4 +8,7 @@
   '' + (lib.fileContents ./nanorc);
 };
   environment.motd = lib.fileContents ./motd;
+  imports = [
+    ./nix.nix
+  ];
 }

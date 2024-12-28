@@ -7,7 +7,24 @@
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
+
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "unstable";
+    };
+
+    nvchad.url = "github:fmway/nvchad.nix";
+    nvchad.inputs = {
+      nixpkgs.follows = "unstable";
+      nixvim.follows = "nixvim";
+    };
+
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "unstable";
+    
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
   outputs = { self, nixpkgs, nix-on-droid, ... } @ inputs: {
@@ -15,11 +32,19 @@
       path = ./.;
       description = "My configuration nix on android";
     };
-    nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-      pkgs = import nixpkgs {
-        system = "x86_64-linux"; # change to your system
+    nixOnDroidConfigurations.default = let
+      system = "aarch64-linux"; # change to your system
+      pkgs = import inputs.unstable {
         allowUnfree = true;
+        inherit system;
+        config.packageOverrides = _: rec {
+          unstable = pkgs;
+          nvchad = inputs.nvchad.packages.${system};
+          neovim = nvchad.simple;
+        };
       };
+    in nix-on-droid.lib.nixOnDroidConfiguration {
+      inherit pkgs;
       extraSpecialArgs = {
         inherit inputs;
         inherit (self) outputs;

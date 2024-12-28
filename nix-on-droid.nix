@@ -10,7 +10,7 @@
     termux-setup-storage.enable = true;
     termux-wake-lock.enable = true;
     termux-wake-unlock.enable = true;
-    # unsuported.enable = true;
+    unsupported.enable = true;
     xdg-open.enable = true;
   };
 
@@ -25,29 +25,7 @@
 
   # Simply install just the packages
   environment.packages = with pkgs; [
-    # User-facing stuff that you really really want to have
-    # vim # or some other editor, e.g. nano or neovim
-    neovim
-    nano
-    # Some common stuff that people expect to have
-    procps
-    killall
-    diffutils
-    findutils
-    fd # findutils alternative
-    utillinux
-    #tzdata
-    hostname
-    man
-    gnugrep
-    #gnupg
-    gnused
-    gnutar
-    #bzip2
-    #gzip
-    #xz
-    zip
-    unzip
+    
   ];
 
   # Read the changelog before changing this value
@@ -55,12 +33,12 @@
 
   # Set up nix for flakes
   nix.extraOptions = ''
-    experimental-features = nix-command flakes
+    experimental-features = nix-command flakes pipe-operators
   '';
 
   # Set your time zone
   time.timeZone = "Asia/Jakarta";
 
   # TODO set terminal font
-  terminal.font = "${pkgs.terminus_font_ttf}/share/fonts/truetype/TerminusTTF.ttf";
+  # terminal.font = "${pkgs.terminus_font_ttf}/share/fonts/truetype/TerminusTTF.ttf";
 }
