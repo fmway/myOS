@@ -45,7 +45,7 @@ in {
     inputs.agenix.overlays.default
     nixpkgs-overlay
     package-overlay
-    inputs.nur.overlay
+    inputs.nur.overlays.default
     inputs.nixgl.overlay
   ];
 }

@@ -18,6 +18,8 @@
 
   jq.enable = true;
 
+  lazygit.enable = true;
+
   zoxide.enable = true; # cd alternative
 
   direnv.nix-direnv.enable = true; # add nix feature in direnv

@@ -9,9 +9,6 @@
     # theme = "Catppuccin Mocha";
   };
 
-  catppuccin.enable = true;
-  catppuccin.flavor = "mocha";
-
   # plugins
   extraPackages = with pkgs.bat-extras; [
     # batdiff

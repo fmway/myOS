@@ -19,6 +19,10 @@ in
       options.home.dconf = options.dconf;
       config.dconf = config.home.dconf;
     }
+    {
+      options.home.catppuccin = options.catppuccin;
+      config.catppuccin = config.home.catppuccin;
+    }
     (let
       nixs = lib.fmway.getNixs ./.;
       result = map (file: {
