@@ -6,9 +6,6 @@
   #   "fg+" = "#d4d4d4";
   # };
 
-  catppuccin.enable = true;
-  catppuccin.flavor = "macchiato";
-
   tmux.enableShellIntegration = true; # enable tmux integration
 
   fileWidgetCommand = "fd --type f"; # CTRL+T
