@@ -23,6 +23,13 @@
     };
     fmpkgs.url = "github:fmway/fmpkgs/master";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixvim.url = "github:nix-community/nixvim";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    nvchad = {
+      url = "github:fmway/NvChad.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixvim.follows = "nixvim";
+    };
     encore.url = "github:encoredev/encore-flake";
     encore.inputs.nixpkgs.follows = "nixpkgs";
     # TODO

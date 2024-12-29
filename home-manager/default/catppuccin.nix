@@ -34,4 +34,5 @@ in toCatppuccinFriendly [
   { gh-dash = "teal"; }
   "btop"
   { bat.mocha = ""; }
+  { swaylock.mocha = ""; }
 ]
