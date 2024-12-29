@@ -1,5 +1,5 @@
-{ pkgs, nixvimLib, lib, config, ... }: let
-  inherit (nixvimLib) helpers;
+{ pkgs, inputs, lib, config, ... }: let
+  helpers = inputs.nvchad.lib.nixvim;
   toKeymaps = key: action: { ... } @ options:
     listToUnkeyedAttrs [ key action ] // options
     |> toLuaObject
