@@ -1,5 +1,8 @@
 { config, pkgs, lib, ... }:
-with config.boot; {
+let
+  # limit boot entry
+  configurationLimit = 10;
+in with config.boot; {
   kernelPackages = lib.mkDefault pkgs.linuxPackages_cachyos;
   zfs.package = lib.mkDefault pkgs.zfs_cachyos;
 
@@ -9,9 +12,11 @@ with config.boot; {
     systemd-boot = {
       enable = true;
       memtest86.enable = true;
+      inherit configurationLimit;
     };
 
     grub = {
+      inherit configurationLimit;
       enable = ! systemd-boot.enable;
       copyKernels = true;
       efiInstallAsRemovable = ! efi.canTouchEfiVariables;
@@ -33,13 +38,20 @@ with config.boot; {
 
   tmp = {
     cleanOnBoot = true;
-    useTmpfs = true;
+    useTmpfs = false;
   };
 
   kernelParams = [
     "zfs.zfs_arc_max=536870912" # max zfs cache (512MB)
   ];
-  kernel.sysctl."kernel.sysrq" = 1;
+  kernel.sysctl  = {
+    "kernel.sysrq" = 1;
+    "kernel.printk" = "3 3 3 3";
+    "vm.swappiness" = 180;
+    "vm.watermark_boost_factor" = 0;
+    "vm.watermark_scale_factor" = 125;
+    "vm.page-cluster" = 0;
+  };
 
   # Enable v4l2loopback kernel module for using Virtual Camera.
   extraModulePackages = with kernelPackages; [

@@ -36,7 +36,21 @@
   zfs.autoScrub.enable = true;
   zfs.trim.enable = true;
 
+  # disable caps lock
+  xserver.xkb.options = lib.mkAfter "grp:shifts_toggle,caps:none";
+
   # Enale throttled.service for fix Intel CPU throttling
-  # throttled.enable = false;
+  throttled.enable = true;
+
+  # Enable thermald for CPU temperature auto handling
+  thermald.enable = true;
+
+  # Enable earlyoom for handling OOM conditions
+  earlyoom = {
+    enable = true;
+    enableNotifications = true;
+    freeMemThreshold = 2;
+    freeSwapThreshold = 3;
+  };
 
 }

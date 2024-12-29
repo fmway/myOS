@@ -11,6 +11,8 @@ with pkgs; lib.mkIf (! config.data ? isMinimal || ! config.data.isMinimal) [
   # bui (browser user interface)
   filebrowser
 
+  dconf
+
   # gui
   telegram-desktop
   discord

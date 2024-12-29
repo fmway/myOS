@@ -75,4 +75,10 @@
   programs.fish.enable = true;
   programs.fish.useBabelfish = true;
   programs.git.enable = true;
+
+  programs.fish.shellAbbrs."non" = ''
+    cd /etc/nixos
+    doas /run/current-system/sw/bin/nvim
+    cd -
+  '';
 }

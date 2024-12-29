@@ -27,8 +27,9 @@ in {
     swaylock = {};
     # login.fprintAuth = true;
     # sudo.fprintAuth = true;
+    sshd.googleAuthenticator.enable = true;
   };
-
+  
   # doas
   doas = {
     enable = true;
