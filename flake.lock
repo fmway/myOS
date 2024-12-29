@@ -1056,11 +1056,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1735444858,
-        "narHash": "sha256-p7LkE0c6NdWOcHh7+SFtYWLUVZFw77UV4NeBb5a+Xgg=",
+        "lastModified": 1735446567,
+        "narHash": "sha256-j9eaZdQjNupjOI7pEfnZwypcONC10zdcIbDKl4E2JN4=",
         "owner": "fmway",
         "repo": "NvChad.nix",
-        "rev": "3bb3137e8595932e98eafca9143b986bc40fa071",
+        "rev": "05fbca19aabfc2defb9cc7cd2e69c73295b47d11",
         "type": "github"
       },
       "original": {
