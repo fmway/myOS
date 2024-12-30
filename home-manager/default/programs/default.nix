@@ -32,8 +32,6 @@
 
   swaylock = {
     enable = true;
-    catppuccin.enable = true;
-    catppuccin.flavor = "mocha";
     package = pkgs.swaylock-effects;
   };
 }

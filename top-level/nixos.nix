@@ -15,6 +15,7 @@ in {
     default.imports = lib.flatten (map (x: self.${x}) selfNames) ++
     (with inputs; [
       fmway-nix.nixosModules.default
+      nvchad.nixosModules.default
       chaotic.nixosModules.default
       catppuccin.nixosModules.catppuccin
     ]);

@@ -1,6 +1,6 @@
 {
   # require public key authentication for better security
-  # settings.PasswordAuthentication = false;
-  # settings.KbdInteractiveAuthentication = false;
-  # settings.PermitRootLogin = "yes";
+  settings.PasswordAuthentication = true;
+  settings.KbdInteractiveAuthentication = true;
+  settings.PermitRootLogin = "no";
 }

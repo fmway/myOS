@@ -38,7 +38,7 @@
   gc = {
     automatic = true;
     dates = "Mon,Fri *-*-* 00:00:00";
-    options = "--delete-older-than 5d";
+    options = "--delete-older-than 3d";
   };
   extraOptions = ''
     !include ${config.age.secrets.nix.path}

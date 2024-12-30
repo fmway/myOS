@@ -35,7 +35,11 @@ in {
     # cloudflare-warp
     scrcpy
     wl-clipboard
+    google-authenticator
   ]);
+
+  environment.excludePackages = with pkgs; [
+  ];
 
   # Exclude packages from the X server.
   services.xserver.excludePackages = with pkgs; [

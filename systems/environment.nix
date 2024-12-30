@@ -18,5 +18,7 @@
         value.source = inputs.${x}.outPath;
       }) (attrNames inputs)
     );
-  in nix-inputs;
+  in nix-inputs // {
+    "current-background".source = ./background.jpg;
+  };
 }

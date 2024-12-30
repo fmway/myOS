@@ -13,6 +13,8 @@ let
   ;
 in treeImport {
   imports = genTreeImports ./extra;
+
+  zramSwap.enable = true;
 }
 {
   excludes = [

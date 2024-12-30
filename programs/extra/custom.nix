@@ -1,6 +1,6 @@
 { super, lib, self, ... }:
 {
-  git = super.git.override { withLibsecret = true; };
+  git = super.git;
   obs-studio = self.wrapOBS {
     plugins = with self.obs-studio-plugins; [
       wlrobs

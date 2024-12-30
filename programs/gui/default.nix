@@ -49,4 +49,6 @@ in { config = lib.mkIf (! (config.data.isMinimal or false)) {
     enable = true;
     openFirewall = true;
   };
+
+  programs.noisetorch.enable = true;
 }; }
