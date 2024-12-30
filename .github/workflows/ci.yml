@@ -19,10 +19,8 @@ on:
 #   # Use github.ref on other branches, so it's unique per branch
 #   group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && github.run_id || github.event.pull_request.number || github.ref }}
 #   cancel-in-progress: true
-permissions:
-  contents: write
-  id-token: write
-  pull-requests: write
+permissions: write-all
+
 jobs:
   auto-pull-request:
     if: "${{ github.event_name == 'schedule' }}"
@@ -60,7 +58,7 @@ jobs:
         GH_TOKEN: ${{secrets.GH_TOKEN}}
       run: |
         gh pr create --title "Merge from nixos-unstable" --body "" -l "automated"
-  megasync:
+  suck_llvm:
     if: "${{ github.event_name == 'pull_request'  }}"
     runs-on: ubuntu-latest
     steps:
@@ -77,7 +75,7 @@ jobs:
         name: fmcachix
         # If you chose API tokens for write access OR if you have a private cache
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: nix build .#megasync --verbose
+    - run: nix build .#llvm --verbose
     - run: nix-collect-garbage -d
   wasmer:
     if: "${{ github.event_name == 'pull_request'  }}"
@@ -144,7 +142,7 @@ jobs:
     - others
     - wasmer
     - git
-    - megasync
+    - suck_llvm
     steps:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
@@ -170,5 +168,5 @@ jobs:
     - name: Enable auto-merge
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: gh pr merge --auto --merge "$PR_URL"
