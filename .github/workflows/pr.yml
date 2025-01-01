@@ -17,14 +17,18 @@ jobs:
         git config --global user.name 'little fmway'
         git config --global user.email 'fm18lv@gmail.com'
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+    - name: Refresh Git Remote
+      run: git fetch origin
+    - name: Refresh Your Head
+      run: |
+        git rebase origin/master nixos-unstable
+        git push origin nixos-unstable --force
     - name: Check if PR exists
       id: check
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        tree -a
-        git fetch origin
         prs=$(gh pr list \
             --repo "$GITHUB_REPOSITORY" \
             --head 'nixos-unstable' \
@@ -35,10 +39,10 @@ jobs:
         if (( prs > 0 )) || (( count_commit < 1 )); then
             echo "skip=true" >> "$GITHUB_OUTPUT"
         fi
-    - name: Create pull request
+    - name: Create Pull Request
       if: '!steps.check.outputs.skip'
       env:
         GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       run: |
-        gh pr create --title "Merge from nixos-unstable" --body "" -l "automated" 
+        gh pr create --title "Merge From nixos-unstable" --body "" -l "automated" 

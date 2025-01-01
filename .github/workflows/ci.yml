@@ -11,80 +11,18 @@ on:
     secrets:
       personal_access_token:
         required: true
-# concurrency:
-#   # Use github.run_id on main branch
-#   # Use github.event.pull_request.number on pull requests, so it's unique per pull request
-#   # Use github.ref on other branches, so it's unique per branch
-#   group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && github.run_id || github.event.pull_request.number || github.ref }}
-#   cancel-in-progress: true
+concurrency:
+  # Use github.run_id on main branch
+  # Use github.event.pull_request.number on pull requests, so it's unique per pull request
+  # Use github.ref on other branches, so it's unique per branch
+  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && github.run_id || github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 permissions: write-all
 
 jobs:
-  wasmer:
-    if: "${{ github.event_name == 'pull_request'  }}"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: DeterminateSystems/nix-installer-action@main
-      with:
-        github-token: ${{ secrets.GH_TOKEN }}
-        extra-conf: "experimental-features = nix-command flakes pipe-operators"
-    - uses: DeterminateSystems/magic-nix-cache-action@main
-      with:
-        use-flakehub: false
-    - uses: cachix/cachix-action@master
-      with:
-        name: fmcachix
-        # If you chose API tokens for write access OR if you have a private cache
-        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: nix build .#wasmer --verbose
-    - run: nix-collect-garbage -d
-  others:
-    if: "${{ github.event_name == 'pull_request' }}"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: DeterminateSystems/nix-installer-action@main
-      with:
-        github-token: ${{ secrets.GH_TOKEN }}
-        extra-conf: "experimental-features = nix-command flakes pipe-operators"
-    - uses: DeterminateSystems/magic-nix-cache-action@main
-      with:
-        use-flakehub: false
-    - uses: cachix/cachix-action@master
-      with:
-        name: fmcachix
-        # If you chose API tokens for write access OR if you have a private cache
-        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: nix build .#nix-init .#evolution --verbose
-    - run: nix-collect-garbage -d
-  git:
-    if: "${{ github.event_name == 'pull_request' }}"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: DeterminateSystems/nix-installer-action@main
-      with:
-        github-token: ${{ secrets.GH_TOKEN }}
-        extra-conf: |
-          experimental-features = nix-command flakes pipe-operators repl-flake auto-allocate-uids configurable-impure-env
-    - uses: DeterminateSystems/magic-nix-cache-action@main
-      with:
-        use-flakehub: false
-    - uses: cachix/cachix-action@master
-      with:
-        name: fmcachix
-        # If you chose API tokens for write access OR if you have a private cache
-        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: nix build .#custom.git --verbose
-    - run: nix-collect-garbage -d
   nixos:
-    if: ${{ github.event_name == 'pull_request' && always() }}
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
-    needs:
-    - others
-    - wasmer
-    - git
     steps:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
@@ -102,6 +40,7 @@ jobs:
       run: nix build .#nixosConfigurations.minimal.config.system.build.toplevel --verbose
     - name: Info
       run: nix path-info -Sh ./result
+
   auto-merge:
     needs: [ nixos ]
     runs-on: ubuntu-latest
