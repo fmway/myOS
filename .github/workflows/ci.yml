@@ -46,4 +46,10 @@ jobs:
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: gh pr merge --auto --merge "$PR_URL"
+        BRANCH: ${{ github.head_ref }}
+      run: |
+        if [[ "${BRANCH}" != "nixos-unstable" ]]; then
+          gh pr merge --auto --merge "$PR_URL" -d
+        else
+          gh pr merge --auto --merge "$PR_URL"
+        fi
