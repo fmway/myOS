@@ -55,18 +55,10 @@ jobs:
     - name: Create pull request
       if: '!steps.check.outputs.skip'
       env:
-        GH_TOKEN: ${{secrets.GH_TOKEN}}
+        GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       run: |
         gh pr create --title "Merge from nixos-unstable" --body "" -l "automated"
-  suck_llvm:
-    if: "${{ github.event_name == 'pull_request'  }}"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: DeterminateSystems/nix-installer-action@main
-      with:
-        github-token: ${{ secrets.GH_TOKEN }}
-        extra-conf: "experimental-features = nix-command flakes pipe-operators"
     - uses: DeterminateSystems/magic-nix-cache-action@main
       with:
         use-flakehub: false
@@ -142,7 +134,6 @@ jobs:
     - others
     - wasmer
     - git
-    - suck_llvm
     steps:
     - uses: actions/checkout@v4
     - uses: DeterminateSystems/nix-installer-action@main
