@@ -1,0 +1,44 @@
+name: Auto Pull Request
+on:
+  schedule:
+  - cron: "0 */2 * * *"
+
+permissions: write-all
+
+jobs:
+  auto-pull-request:
+    runs-on: [ ubuntu-latest ]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: nixos-unstable
+    - name: Setup git
+      run: |
+        git config --global user.name 'little fmway'
+        git config --global user.email 'fm18lv@gmail.com'
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+    - name: Check if PR exists
+      id: check
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        tree -a
+        git fetch origin
+        prs=$(gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
+            --head 'nixos-unstable' \
+            --base 'master' \
+            --json title \
+            --jq 'length')
+        count_commit=$(git rev-list --left-right --count origin/nixos-unstable...origin/master | awk '{print $1}')
+        if (( prs > 0 )) || (( count_commit < 1 )); then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+        fi
+    - name: Create pull request
+      if: '!steps.check.outputs.skip'
+      env:
+        GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      run: |
+        gh pr create --title "Merge from nixos-unstable" --body "" -l "automated" 
