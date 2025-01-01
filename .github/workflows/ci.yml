@@ -59,16 +59,6 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       run: |
         gh pr create --title "Merge from nixos-unstable" --body "" -l "automated"
-    - uses: DeterminateSystems/magic-nix-cache-action@main
-      with:
-        use-flakehub: false
-    - uses: cachix/cachix-action@master
-      with:
-        name: fmcachix
-        # If you chose API tokens for write access OR if you have a private cache
-        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: nix build .#llvm --verbose
-    - run: nix-collect-garbage -d
   wasmer:
     if: "${{ github.event_name == 'pull_request'  }}"
     runs-on: ubuntu-latest
