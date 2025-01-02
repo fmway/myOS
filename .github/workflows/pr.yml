@@ -1,7 +1,9 @@
 name: Auto Pull Request
 on:
-  schedule:
-  - cron: "0 */2 * * *"
+  push:
+    branches-ignore:
+      - master
+      - nix-on-droid
 
 permissions: write-all
 
@@ -11,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        ref: nixos-unstable
+        ref: ${{ github.ref }}
     - name: Setup git
       run: |
         git config --global user.name 'little fmway'
@@ -20,22 +22,25 @@ jobs:
     - name: Refresh Git Remote
       run: git fetch origin
     - name: Refresh Your Head
+      env:
+        BRANCH: ${{ github.ref }}
       run: |
-        git rebase origin/master nixos-unstable
-        git push origin nixos-unstable --force
+        git rebase origin/master "$BRANCH"
+        git push origin "$BRANCH" --force
     - name: Check if PR exists
       id: check
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: ${{ github.ref }}
       run: |
         prs=$(gh pr list \
             --repo "$GITHUB_REPOSITORY" \
-            --head 'nixos-unstable' \
+            --head "$BRANCH" \
             --base 'master' \
             --json title \
             --jq 'length')
-        count_commit=$(git rev-list --left-right --count origin/nixos-unstable...origin/master | awk '{print $1}')
+        count_commit=$(git rev-list --left-right --count origin/"$BRANCH"...origin/master | awk '{print $1}')
         if (( prs > 0 )) || (( count_commit < 1 )); then
             echo "skip=true" >> "$GITHUB_OUTPUT"
         fi
@@ -44,5 +49,6 @@ jobs:
       env:
         GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        BRANCH: ${{ github.ref }}
       run: |
-        gh pr create --title "Merge From nixos-unstable" --body "" -l "automated" 
+        gh pr create --title "Merge From $BRANCH" --body "" -l "automated" 
