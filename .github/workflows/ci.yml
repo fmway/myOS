@@ -13,6 +13,8 @@ jobs:
     - uses: DeterminateSystems/nix-installer-action@main
       with:
         github-token: ${{ secrets.GH_TOKEN }}
+        extra-conf: |
+          experimental-features = nix-command flakes pipe-operators
     - uses: DeterminateSystems/magic-nix-cache-action@main
       with:
         use-flakehub: false
@@ -30,14 +32,18 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: nix-conf
-    - name: read nix.conf
+    - name: Read nix.conf
       id: nix
       run: |
-        cat nix.conf >> "$GITHUB_OUTPUT"
+        {
+          echo 'CONF<<EOF'
+          cat nix.conf
+          echo 'EOF'
+        } >> "$GITHUB_OUTPUT"
     - uses: DeterminateSystems/nix-installer-action@main
       with:
         github-token: ${{ secrets.GH_TOKEN }}
-        extra-conf: ${{ steps.nix.outputs.contents }}
+        extra-conf: ${{ steps.nix.outputs.CONF }}
     - uses: DeterminateSystems/magic-nix-cache-action@main
       with:
         use-flakehub: false
@@ -49,7 +55,7 @@ jobs:
   auto-merge:
     needs: [ nixos ]
     runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
+    if: ${{ !cancelled() && success() && !contains(needs.*.result, 'skipped') }}
     steps:
     - name: Enable auto-merge
       env:

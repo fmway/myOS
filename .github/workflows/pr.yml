@@ -19,10 +19,10 @@ jobs:
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
     - name: Refresh Git Remote
       run: git fetch origin
-    - name: Refresh Your Head
-      run: |
-        git rebase origin/master nixos-unstable
-        git push origin nixos-unstable --force
+    # - name: Refresh Your Head
+    #   run: |
+    #     git rebase origin/master nixos-unstable
+    #     git push origin nixos-unstable --force
     - name: Check if PR exists
       id: check
       env:
