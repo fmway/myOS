@@ -21,12 +21,6 @@ jobs:
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
     - name: Refresh Git Remote
       run: git fetch origin
-    - name: Refresh Your Head
-      env:
-        BRANCH: ${{ github.ref }}
-      run: |
-        git rebase origin/master "$BRANCH"
-        git push origin "$BRANCH" --force
     - name: Check if PR exists
       id: check
       env:
@@ -40,7 +34,7 @@ jobs:
             --base 'master' \
             --json title \
             --jq 'length')
-        count_commit=$(git rev-list --left-right --count origin/"$BRANCH"...origin/master | awk '{print $1}')
+        count_commit=$(git rev-list --left-right --count "$BRANCH"...origin/master | awk '{print $1}')
         if (( prs > 0 )) || (( count_commit < 1 )); then
             echo "skip=true" >> "$GITHUB_OUTPUT"
         fi
