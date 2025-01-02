@@ -13,6 +13,8 @@ jobs:
     - uses: DeterminateSystems/nix-installer-action@main
       with:
         github-token: ${{ secrets.GH_TOKEN }}
+        extra-conf: |
+          extra-experimental-features = nix-command flakes pipe-operators
     - uses: DeterminateSystems/magic-nix-cache-action@main
       with:
         use-flakehub: false
