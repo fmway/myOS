@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }: let
   isGnomeEnabled = config.services.xserver.desktopManager.gnome.enable;
-in { config = lib.mkIf (! (config.data.isMinimal or false)) {
+in { config = lib.mkIf (! config.data.isMinimal or false) {
   environment.systemPackages = with pkgs; [
     # session-desktop
     # protonmail-desktop

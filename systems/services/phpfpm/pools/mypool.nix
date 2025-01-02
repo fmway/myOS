@@ -1,5 +1,5 @@
 { config, lib, ... }:
-lib.mkIf (! (config.data.isMinimal or false)) {
+lib.mkIf (! config.data.isMinimal or false) {
   user = "nobody";
   settings = {
     "pm" = "dynamic";

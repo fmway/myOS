@@ -10,19 +10,22 @@
     genPaths
   ;
   inherit (config.home) homeDirectory username;
-in
-{
-  imports = [
-    ./desktop
-    (let
-      exclusive = [ "catppuccin" "dconf" ];
-    in lib.fmway.getNixs ./. |> lib.foldl' (acc: file: let
+
+  homeImports = let
+    exclusive = [ "catppuccin" "dconf" ];
+    result = lib.fmway.getNixs ./. |> map (file: let
       name = lib.removeSuffix ".nix" file;   
       path = lib.optionals (lib.all (x: x != name) exclusive) [ "home" ] ++ [ name ];
       res  = let
         imported = import (./. + "/${file}");
       in if builtins.isFunction imported then imported variables else imported;
-    in lib.recursiveUpdate acc (lib.setAttrByPath path res)) {})
+    in (lib.setAttrByPath path res));
+  in { config = lib.mkMerge result; };
+in
+{
+  imports = [
+    ./desktop
+    homeImports
   ];
 
   programs.home-manager.enable = true;
@@ -66,7 +69,7 @@ in
     programs.auto-import = {
       enable = true;
       cwd = ./programs;
-      auto-enable = true;
+      # auto-enable = false;
       includes = let
         inherit (lib.fmway.matchers) extension json;
       in [

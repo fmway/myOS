@@ -1,5 +1,5 @@
 { pkgs, config, lib, ... }:
-{ config = lib.mkIf (! config.data ? isMinimal || ! config.data.isMinimal) {
+{ config = lib.mkIf (! config.data.isMinimal or false) {
   environment.systemPackages = with pkgs; [
     # qemu_full
     # qemu with efi 

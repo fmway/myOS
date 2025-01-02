@@ -4,7 +4,7 @@ let
   #   fetchurl
   # ;
 in {
-  enable = ! (config.data.isMinimal or false);
+  enable = ! config.data.isMinimal or false;
   packages = {
     # zen-browser = rec {
     #   version = "1.0.0-a.28";

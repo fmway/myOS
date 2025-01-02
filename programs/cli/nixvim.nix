@@ -6,7 +6,7 @@
     |> (lua: { __raw = lua; });
   inherit (helpers) toLuaObject mkLuaFn listToUnkeyedAttrs;
 in {
-  enable = true;
+  enable = ! config.data.isMinimal or false;
   defaultEditor = true;
   nvchad.config = rec {
     base46.theme = "onedark";
