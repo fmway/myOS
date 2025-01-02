@@ -1,5 +1,7 @@
+{ config, ... }:
 # bar for wayland (wlroots family)
 {
+  enable = ! config.data.isMinimal or false;
   settings = {
     mainBar = {
       layer = "top";

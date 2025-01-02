@@ -5,7 +5,7 @@
     excludeItems
   ;
 in {
-  enable = ! (config.data.isMinimal or false);
+  enable = ! config.data.isMinimal or false;
   virtualHosts = listToAttrs (map (x: let
     v = domains.${x};
     enable =

@@ -1,9 +1,10 @@
 # i3status with toml configuration
-{ pkgs, ... }:let
+{ pkgs, config, ... }:let
   terminal = "${pkgs.foot}/bin/footclient";
   menu = "${pkgs.dmenu}/bin/dmenu";
 in 
 {
+  enable = ! config.data.isMinimal or false;
   bars = {
     top = {
       blocks = [

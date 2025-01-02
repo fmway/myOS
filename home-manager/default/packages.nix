@@ -1,5 +1,5 @@
 { pkgs, config, ... }:
-with pkgs; lib.mkIf (! config.data ? isMinimal || ! config.data.isMinimal) [
+with pkgs; lib.mkIf (! config.data.isMinimal or false) [
   # cli
   element # periodic table
   encore # awesome tools for developing go and typescript

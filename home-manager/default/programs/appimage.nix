@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   inherit (pkgs) fetchurl;
 in { packages = {
@@ -33,4 +33,6 @@ in { packages = {
   #     hash = "sha256-Gwd4tZ0q1fYxumElqbzScrt+NWJDjc0xZtMx6JMLUVo=";
   #   };
   # };
-}; }
+};
+  enable = ! config.data.isMinimal or true;
+}

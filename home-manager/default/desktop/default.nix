@@ -10,7 +10,7 @@ let
     treeImport
   ;
 in {
-  config = lib.mkIf (! config.data ? isMinimal || ! config.data.isMinimal) {
+  config = lib.mkIf (! config.data.isMinimal or false) {
   # import all in folder ./wayland to wayland.windowManager
   wayland.windowManager = treeImport {
     folder = ./wayland;
