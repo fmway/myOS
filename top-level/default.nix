@@ -7,10 +7,35 @@ in {
     ./nixos.nix
     ./nixosConfigurations.nix
   ];
-  # perSystem = { pkgs, ... }:
-  # {
-  #   legacyPackages = pkgs;
-  # };
+  perSystem = { pkgs, lib, ... }:
+  {
+    apps = {
+      # generate cachix on nix.conf
+      gcn = {
+        type = "app";
+        program = let
+          option = lib.mkOption { type = with lib.types; listOf str; default = []; };
+          inherit ((lib.evalModules {
+            modules = [
+              { options.nix.settings = lib.listToAttrs (
+                  map (name: { inherit name; value = option; }) [
+                    "trusted-public-keys" "experimental-features" "substituters"
+              ]); }
+              { nix.settings.experimental-features = [ "nix-command" "flakes" "pipe-operators" ]; }
+              ../cachix.nix
+            ];
+            specialArgs = { inherit pkgs lib; };
+          }).config.nix) settings;
+        in pkgs.writeScriptBin "gen-nix-conf.sh" /* sh */ ''
+          #!${lib.getExe pkgs.bash}
+
+          ${lib.attrNames settings |> map (x: /* sh */ "
+            echo ${x} = ${lib.concatStringsSep " " settings.${x}} 
+          ") |> lib.concatStringsSep "\n"}
+        '';
+      };
+    };
+  };
   flake.lib = {
     # Will be imported to configuration and home-manager
     genSpecialArgs = { ... } @ var: let
