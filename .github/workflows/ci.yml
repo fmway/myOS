@@ -13,8 +13,6 @@ jobs:
     - uses: DeterminateSystems/nix-installer-action@main
       with:
         github-token: ${{ secrets.GH_TOKEN }}
-        extra-conf: |
-          experimental-features = nix-command flakes pipe-operators
     - uses: DeterminateSystems/magic-nix-cache-action@main
       with:
         use-flakehub: false
@@ -51,7 +49,7 @@ jobs:
   auto-merge:
     needs: [ nixos ]
     runs-on: ubuntu-latest
-    if: ${{ !cancelled() && !contains(needs.*.result, 'skipped') }}
+    if: ${{ !cancelled() }}
     steps:
     - name: Enable auto-merge
       env:
