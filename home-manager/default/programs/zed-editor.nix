@@ -9,7 +9,6 @@
     ui_font_size = 16;
     buffer_font_size = 16;
     vim_mode = true;
-    theme = "Catppuccin Macchiato";
     auto_update = false;
     relative_line_numbers = true;
 
