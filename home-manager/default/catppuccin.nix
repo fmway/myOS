@@ -35,4 +35,5 @@ in toCatppuccinFriendly [
   "btop"
   { bat.mocha = ""; }
   { swaylock.mocha = ""; }
+  "zed"
 ]
