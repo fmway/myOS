@@ -351,11 +351,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1736166128,
-        "narHash": "sha256-sdwKJYsFfvpfzZqBUinePJAfRwnmcUYlIkKi1RfPtQ8=",
+        "lastModified": 1736425317,
+        "narHash": "sha256-0gY7nh6bl7l2cGOcawHfzk2GH2UFl5wwlEnEggedEzM=",
         "owner": "fmway",
         "repo": "fmpkgs",
-        "rev": "e375f7a9e90cc8239575afffe8a112c252d680ef",
+        "rev": "e999ab9467dfab91bb2413ddb9ae0f3852865d90",
         "type": "github"
       },
       "original": {

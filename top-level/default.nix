@@ -10,6 +10,33 @@ in {
   perSystem = { pkgs, lib, ... }:
   {
     apps = {
+      # generate stubby certs
+      updateStubbyCert = {
+        type = "app";
+        program = pkgs.writeScriptBin "update-stubby-cert.fish" /* fish */ ''
+          #!${lib.getExe pkgs.fish}
+          ${self.lib.mkFishPath (with pkgs; [
+            jq
+            knot-dns
+            gnugrep
+            gnused
+          ])}
+
+          set tmp_json "$(cat ./systems/services/stubby/__dns.json)"
+          #
+          for i in (echo "$tmp_json" | jq -r 'keys_unsorted[]')
+            set tls_host "$(echo "$tmp_json" | jq -r '."'$i'".tls_host')"
+            set oldCert "$(echo "$tmp_json" | jq -r '."'$i'".signedCert')"
+            
+            set newCert "$(kdig -d @$i +tls-ca +tls-host=$tls_host example.com 2>/dev/null | grep '#1,' -A 1 | tail -n1 | sed 's/.\+ PIN: \(.\+\)/\1/')"
+
+            if [ $oldCert != $newCert ]
+              echo "$tmp_json" | jq '."'$i'".signedCert = "'$newCert'"' > ./systems/services/stubby/__dns.json
+              set tmp_json "$(cat ./systems/services/stubby/__dns.json)"
+            end
+          end
+        '';
+      };
       # generate cachix on nix.conf
       gcn = {
         type = "app";
@@ -38,6 +65,8 @@ in {
     };
   };
   flake.lib = {
+    mkFishPath = pkgs:
+      lib.makeBinPath pkgs |> lib.splitString ":" |> map (x: /* sh */ "fish_add_path ${x}") |> lib.concatStringsSep "\n";
     # Will be imported to configuration and home-manager
     genSpecialArgs = { ... } @ var: let
       specialArgs = {
