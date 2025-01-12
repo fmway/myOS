@@ -2,13 +2,11 @@ name: Auto Pull Request
 on:
   schedule:
   - cron: "0 */2 * * *"
-  - cron: "0 */6 * * *"
 
 permissions: write-all
 
 jobs:
   auto-pull-request:
-    if: ${{ github.event.schedule == "0 */2 * * *" }}
     runs-on: [ ubuntu-latest ]
     steps:
     - uses: actions/checkout@v4
@@ -48,46 +46,3 @@ jobs:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       run: |
         gh pr create --title "Merge From nixos-unstable" --body "" -l "automated" 
-
-  update-stubby:
-    if: ${{ github.event.schedule == "0 */6 * * *" }}
-    runs-on: [ "ubuntu-latest" ]
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        ref: ${{ github.head_ref }}
-    - name: Setup git
-      run: |
-        git config --global user.name 'little fmway'
-        git config --global user.email 'fm18lv@gmail.com'
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-    - uses: DeterminateSystems/nix-installer-action@main
-      with:
-        github-token: ${{ secrets.GH_TOKEN }}
-        extra-conf: experimental-features = nix-command flakes auto-allocate-uids configurable-impure-env
-    - uses: DeterminateSystems/magic-nix-cache-action@main
-      with:
-        use-flakehub: false
-    - run: nix run .#updateStubbyCert
-    - name: Check Updates
-      id: check
-      env:
-        GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
-      run: |
-        if [ -n "$(git status --short)" ]; then
-          git add -A
-          git commit -m "chore(systems): update certs dns"
-          git checkout -B stubby-updater
-          git push origin stubby-updater
-          if [ -z "$(git diff origin/stubby-updater origin/master)" ]; then
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-          fi
-        else
-          echo "skip=true" >> "$GITHUB_OUTPUT"
-        fi
-    - name: Pull Request
-      if: '!steps.check.outputs.skip'
-      env:
-        GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
-      run: |
-        gh pr create --title "chore(system): update certs dns" --body "" -l "automated" -l "dependencies" --head stubby-updater --base master
