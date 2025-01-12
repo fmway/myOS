@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+    - name: "Check current branch"
+      run: git branch
     - uses: DeterminateSystems/nix-installer-action@main
       with:
         github-token: ${{ secrets.GH_TOKEN }}
