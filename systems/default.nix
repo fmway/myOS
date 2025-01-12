@@ -31,7 +31,6 @@ in treeImport {
   includes = with matchers; [
     (extension "conf")
     (extension "txt")
-    json
   ];
 
   # auto-enable = [
