@@ -6,21 +6,45 @@ concurrency:
   cancel-in-progress: true
 permissions: write-all
 jobs:
+  generate-nixconf:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: DeterminateSystems/nix-installer-action@main
+      with:
+        github-token: ${{ secrets.GH_TOKEN }}
+        extra-conf: |
+          experimental-features = nix-command flakes pipe-operators
+    - run: nix run .#gcn > nix.conf
+    - uses: actions/upload-artifact@v4
+      with:
+        name: nix-conf
+        path: nix.conf
   nixos:
     runs-on: ubuntu-latest
+    needs: [ generate-nixconf ]
     steps:
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.head_ref }}
     - name: "Check current branch"
       run: git branch
+    - uses: actions/download-artifact@v4
+      with:
+        name: nix-conf
+    - name: Read nix.conf
+      id: nix
+      run: |
+        {
+          echo 'CONF<<EOF'
+          cat nix.conf
+          echo 'EOF'
+        } >> "$GITHUB_OUTPUT"
     - uses: DeterminateSystems/nix-installer-action@main
       with:
         github-token: ${{ secrets.GH_TOKEN }}
         extra-conf: |
-          experimental-features = nix-command flakes pipe-operators
-          substituters = https://tweag-jupyter.cachix.org https://snowflakeos.cachix.org https://om.cachix.org https://nocargo.cachix.org https://nix-community.cachix.org https://niv.cachix.org https://microvm.cachix.org https://fmcachix.cachix.org https://devenv.cachix.org https://crane.cachix.org https://cosmic.cachix.org https://chaotic-nyx.cachix.org https://anyrun.cachix.org https://cache.nixos.org/
-          trusted-public-keys = tweag-jupyter.cachix.org-1:UtNH4Zs6hVUFpFBTLaA4ejYavPo5EFFqgd7G7FxGW9g= snowflakeos.cachix.org-1:gXb32BL86r9bw1kBiw9AJuIkqN49xBvPd1ZW8YlqO70= om.cachix.org-1:ifal/RLZJKN4sbpScyPGqJ2+appCslzu7ZZF/C01f2Q= nocargo.cachix.org-1:W6jkp5htZBA1tUdU8XHLaD7zBrIFnor0MsLhHgrJeHk= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= niv.cachix.org-1:X32PCg2e/zAm3/uD1ScqW2z/K0LtDyNV7RdaxIuLgQM= microvm.cachix.org-1:oXnBc6hRE3eX5rSYdRyMYXnfzcCxC7yKPTbZXALsqys= fmcachix.cachix.org-1:Z5j9jk83ctoCK22EWrbQL6AAP3CTYnZ/PHljlYSakrw= devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= crane.cachix.org-1:8Scfpmn9w+hGdXH/Q9tTLiYAE/2dnJYRJP7kl80GuRk= cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE= chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8= anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
+          ${{ steps.nix.outputs.CONF }}
     - uses: DeterminateSystems/magic-nix-cache-action@main
       with:
         use-flakehub: false
