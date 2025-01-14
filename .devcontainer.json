@@ -7,6 +7,9 @@
 		  "multiUser": true,
 		  "version": "latest"
 		},
+    "ghcr.io/devcontainers/features/sshd:1": {
+        "version": "latest"
+    },
     "ghcr.io/meaningful-ooo/devcontainer-features/fish:1": {}
 	}
 }
