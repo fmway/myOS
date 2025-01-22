@@ -78,7 +78,7 @@ jobs:
           git add -A
           git commit -m "chore(systems): update certs dns"
           git checkout -B stubby-updater
-          git push origin stubby-updater
+          git push origin stubby-updater --force
           if [ -z "$(git diff origin/stubby-updater origin/master)" ]; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
