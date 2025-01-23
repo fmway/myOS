@@ -26,22 +26,21 @@ if [ -z "$argv" ]
   set argv "$(string join \n -- $argv)"
 end
 
-if [ (count $_flag_h) != 0 ]
+if set -q _flag_h
   echo "Usage :" $cmd [options] [args]
   echo "Options :"
   for help in $helps_typing; echo -e  $help;end
   return
 end
-if [ (count $_flag_v) != 0 ]
+if set -q _flag_v
   echo $version_typing
   return
 end
-[ (count $_flag_n) != 0 ];and set newline (math $newline - (count $_flag_n))
-[ (count $_flag_N) != 0 ];and set newline (math $newline + (count $_flag_N))
-[ (count $_flag_c) != 0 ];and set capitalize (math $capitalize + (count $_flag_c))
-[ (count $_flag_C) != 0 ];and set capitalize (math $capitalize - (count $_flag_C))
-[ (count $_flag_s) != 0 ]
-and for i in $_flag_s
+set -q _flag_n && set newline (math $newline - (count $_flag_n))
+set -q _flag_N && set newline (math $newline + (count $_flag_N))
+set -q _flag_c && set capitalize (math $capitalize + (count $_flag_c))
+set -q _flag_C && set capitalize (math $capitalize - (count $_flag_C))
+set -q _flag_s && for i in $_flag_s
   if string match -rq '^(\-)?([0-9]+)|([0-9]+\.[0-9]+)|(\.[0-9]+)$' -- $i
     if [ $i = $_flag_s[1] ]
       set speed $i
@@ -76,13 +75,10 @@ set chars (string split '' -- $chars)
 for j in (seq (count $chars))
   set char $chars[$j]
   if [ $capitalize -gt 0 ]
-    if [ $j = 1 ]
-      and string upper -q -- (string lower -- $char)
+    if [ $j = 1 ] && string upper -q -- (string lower -- $char)
       set char (string upper -- (string lower -- $char))
-    else if [ $uppercase = 1 ]
-      and [ $char != \n ]
-      if [ $chars[(math $j - 1)] = ' ' ]
-        or [ $chars[(math $j - 1)] = \t ]
+    else if [ $uppercase = 1 ] && [ $char != \n ]
+      if [ $chars[(math $j - 1)] = ' ' ] || [ $chars[(math $j - 1)] = \t ]
         if string upper -q -- (string lower -- $char)
           set char (string upper -- (string lower -- $char))
           set uppercase 0
@@ -97,28 +93,21 @@ for j in (seq (count $chars))
   end
   printf "%s" $char
   if [ $char != ' ' ]
-    if [ $char = "-" ]
-      or [ $char = "=" ]
+    if [ $char = "-" ] || [ $char = "=" ]
         sleep (math 0.0075 / $speed)
-    else if [ $char = '.' ]
-      or [ $char = '!' ]
-      or [ $char = '?' ]
+    else if [ $char = '.' ] || [ $char = '!' ] || [ $char = '?' ]
       set uppercase 1
       sleep (math 0.25 / $speed)
     else if [ $char = \n ]
       if [ $j != 1 ]
-        if [ $chars[(math $j - 1)] = '.' ]
-          or [ $chars[(math $j - 1)] = '?' ]
-          or [ $chars[(math $j - 1)] = '!' ]
+        if [ $chars[(math $j - 1)] = '.' ] || [ $chars[(math $j - 1)] = '?' ] || [ $chars[(math $j - 1)] = '!' ]
           set uppercase newline
           sleep (math 0.25 / $speed)
         end
       else
         sleep (math 0.05 / $speed)
       end
-    else if [ $char = ',' ]
-      or [ $char = ':' ]
-      or [ $char = ';' ]
+    else if [ $char = ',' ] || [ $char = ':' ] || [ $char = ';' ]
       sleep (math 0.175 / $speed)
     else
       sleep (math 0.05 / $speed)
