@@ -1,10 +1,10 @@
 { lib, config, ... }: let
   cfg = config.home.file;
   home = config.home.homeDirectory;
-  filtered = lib.attrNames cfg |> lib.filter (x: !cfg.${x}.symlink);
+  filtered =  lib.filter (x: !cfg.${x}.symlink) (lib.attrNames cfg);
   isEnabled = lib.length filtered > 0;
 
-  script = map (x: let
+  script = lib.concatStringsSep "\n" (map (x: let
     self = cfg.${x};
   in  /* sh */ ''
     target=${home}/${self.target}
@@ -15,7 +15,7 @@
       cp -rf ${self.source} $target
     fi
     ${lib.optionalString (! isNull self.executable && self.executable) "chmod -R +x $target"}
-  '') filtered |> lib.concatStringsSep "\n";
+  '') filtered);
 in {
   options = let
     optionType = lib.mkOption {
