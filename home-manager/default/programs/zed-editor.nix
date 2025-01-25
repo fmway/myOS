@@ -1,5 +1,6 @@
 { pkgs, ... }:
 {
+  package = pkgs.zed-editor_git;
   extraPackages = with pkgs; [
     rust-analyzer
     gopls
@@ -11,7 +12,9 @@
     vim_mode = true;
     auto_update = false;
     relative_line_numbers = true;
-
+    calls = {
+      mute_on_join = false;
+    };
     lsp = {
       rust-analyzer.initialization_options = {
         snippets = {
