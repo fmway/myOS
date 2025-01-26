@@ -3,6 +3,7 @@
   inherit (config.services) fcgiwrap certs;
 in {
   type = "https";
+  enable = config.data.enableCGI or true;
   extraConfig = ''
     tls ${certs.cgi.cert} ${certs.cgi.key}
     log {
