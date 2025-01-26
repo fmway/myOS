@@ -20,9 +20,80 @@ jobs:
       with:
         name: nix-conf
         path: nix.conf
-  nixos:
+  swayfx:
     runs-on: ubuntu-latest
     needs: [ generate-nixconf ]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+    - uses: actions/download-artifact@v4
+      with:
+        name: nix-conf
+    - name: Read nix.conf
+      id: nix
+      run: |
+        {
+          echo 'CONF<<EOF'
+          cat nix.conf
+          echo 'EOF'
+        } >> "$GITHUB_OUTPUT"
+    - uses: DeterminateSystems/nix-installer-action@main
+      with:
+        github-token: ${{ secrets.GH_TOKEN }}
+        extra-conf: |
+          ${{ steps.nix.outputs.CONF }}
+    - uses: DeterminateSystems/magic-nix-cache-action@main
+      with:
+        use-flakehub: false
+    - uses: cachix/cachix-action@master
+      with:
+        name: fmcachix
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+        skipAddingSubstituter: true
+    - name: Build
+      run: nix build .#custom.swayfx --verbose
+    - run: nix-collect-garbage -d
+  gnome-session:
+    runs-on: ubuntu-latest
+    needs: [ generate-nixconf ]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+    - uses: actions/download-artifact@v4
+      with:
+        name: nix-conf
+    - name: Read nix.conf
+      id: nix
+      run: |
+        {
+          echo 'CONF<<EOF'
+          cat nix.conf
+          echo 'EOF'
+        } >> "$GITHUB_OUTPUT"
+    - uses: DeterminateSystems/nix-installer-action@main
+      with:
+        github-token: ${{ secrets.GH_TOKEN }}
+        extra-conf: |
+          ${{ steps.nix.outputs.CONF }}
+    - uses: DeterminateSystems/magic-nix-cache-action@main
+      with:
+        use-flakehub: false
+    - uses: cachix/cachix-action@master
+      with:
+        name: fmcachix
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+        skipAddingSubstituter: true
+    - name: Build
+      run: nix build .#gnome-session --verbose
+    - run: nix-collect-garbage -d
+  nixos:
+    runs-on: ubuntu-latest
+    needs:
+    - generate-nixconf
+    - swayfx
+    - gnome-session
     steps:
     - uses: actions/checkout@v4
       with:
