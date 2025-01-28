@@ -53,6 +53,8 @@ jobs:
         skipAddingSubstituter: true
     - name: Build
       run: nix build .#custom.swayfx --verbose
+    - name: Info
+      run: nix path-info -Sh ./result
     - run: nix-collect-garbage -d
   gnome-session:
     runs-on: ubuntu-latest
@@ -87,6 +89,8 @@ jobs:
         skipAddingSubstituter: true
     - name: Build
       run: nix build .#gnome-session --verbose
+    - name: Info
+      run: nix path-info -Sh ./result
     - run: nix-collect-garbage -d
   nixos:
     runs-on: ubuntu-latest
