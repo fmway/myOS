@@ -29,8 +29,21 @@ in {
     # sudo.fprintAuth = true;
     sshd.googleAuthenticator.enable = true;
   };
+
+  # please, sudo alternative with magic regex
+  please = {
+    enable = true;
+    settings = {
+      users_as_root = {
+        name = "users";
+        target = "root";
+        type = "run";
+        rule = ".*";
+      };
+    };
+  };
   
-  # doas
+  # opendoas, sudo alternative without bloated code (jarene)
   doas = {
     enable = true;
     extraRules = [
