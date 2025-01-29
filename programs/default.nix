@@ -10,7 +10,7 @@
     genImportsWithDefault'
   ;
 in {
-  imports = genImportsWithDefault' ./. [ "extra" ];
+  imports = genImportsWithDefault' ./.;
 
   nixpkgs.config = {
 

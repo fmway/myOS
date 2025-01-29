@@ -33,6 +33,8 @@
   };
 
   package-overlay = self: super: treeImport {
+    encore = inputs.encore.packages.${self.system}.encore;
+  } {
     folder = ./extra;
     variables = variables // { inherit self super; };
     depth = 0;
