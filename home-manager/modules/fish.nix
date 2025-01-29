@@ -45,6 +45,6 @@ in {
     default = {};
   };
   config = lib.mkIf cfg.enable {
-    programs.fish.interactiveShellInit = lib.mkAfter result;
+    programs.fish.functions.fish_user_key_bindings = lib.mkIf (lib.length filtered > 0) result;
   };
 } 
