@@ -7,10 +7,10 @@
 : let
   inherit (lib.fmway)
     customImport
-    genImportsWithDefault'
+    genImportsWithDefault
   ;
 in {
-  imports = genImportsWithDefault' ./. [ "extra" ];
+  imports = genImportsWithDefault ./.;
 
   nixpkgs.config = {
 

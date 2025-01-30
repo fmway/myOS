@@ -33,9 +33,10 @@
   };
 
   package-overlay = self: super: treeImport {
-    folder = ./extra;
+    encore = inputs.encore.packages.${self.system}.encore;
+  } {
+    folder = ./.;
     variables = variables // { inherit self super; };
-    depth = 0;
     excludes = [
       "qutebrowser"
     ];
