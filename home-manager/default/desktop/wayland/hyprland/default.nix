@@ -1,7 +1,7 @@
 { pkgs, uncommon, lib, config, ... }: let
   parseBind = prefix: obj:
     lib.attrNames obj |> map (x: let
-      key = lib.splitString "+" x
+      key = lib.splitString "+" x |> map (x: if x == "" then "+" else x)
       |> (y: let
         length = lib.length y;
         h = if length == 1 then "" else lib.take (length - 1) y |> lib.concatStringsSep " ";

@@ -1,5 +1,5 @@
 { config, lib, ... }:
-lib.mkIf (! config.data.isMinimal or false) {
+lib.mkIf (config.services.nginx.enable && ! config.data.isMinimal or false) {
   user = "nobody";
   settings = {
     "pm" = "dynamic";

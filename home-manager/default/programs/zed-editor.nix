@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   package = pkgs.zed-editor_git;
   extraPackages = with pkgs; [
@@ -12,9 +12,20 @@
     vim_mode = true;
     auto_update = false;
     relative_line_numbers = true;
-    calls = {
-      mute_on_join = false;
-    };
+    # calls.mute_on_join = false;
+
+    # Only deno for ts / typescript 😏
+    languages = [ "TypeScript" "TSX" ] |> map (name: {
+      inherit name;
+      value.language_servers = [
+        "deno"
+        "!typescript-language-server"
+        "!vtsls"
+        "!eslint"
+      ];
+      value.formatter = "language_server";
+    }) |> builtins.listToAttrs;
+
     lsp = {
       rust-analyzer.initialization_options = {
         snippets = {
@@ -41,5 +52,5 @@
     };
   };
 
-  extensions = [ "nix" ];
+  extensions = [ "nix" "deno" ];
 }

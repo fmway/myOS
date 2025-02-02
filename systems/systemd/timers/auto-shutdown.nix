@@ -1,4 +1,5 @@
 {
+  enable = false;
   wantedBy = [ "timers.target" ];
   timerConfig = {
     OnBootSec = "1m";

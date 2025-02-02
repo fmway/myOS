@@ -14,6 +14,29 @@ in {
   };
   plugins.lazy.plugins = with pkgs.vimPlugins; [
     {
+      pkg = smear-cursor-nvim;
+      event = "BufEnter";
+      config.__raw = mkLuaFn /* lua */ ''
+        require("smear_cursor").setup {}
+      '';
+      cmd = ["SmearCursorToggle"];
+      keys.__raw = toLuaObject [
+        (toKeymaps "<leader>tsc" "<cmd>SmearCursorToggle<cr>" { desc = "Toggle Animation Cursor"; })
+      ];
+    }
+    {
+      pkg = neoscroll-nvim;
+      event = "BufRead";
+      config.__raw = mkLuaFn /* lua */ ''
+        require("neoscroll").setup {}
+      '';
+    }
+    {
+      pkg = nvzone-typr;
+      opts = {};
+      cmd = [ "Typr" "TyprStats" ];
+    }
+    {
       pkg = telescope-nvim;
       dependencies = [ telescope-undo-nvim plenary-nvim ];
       config.__raw = mkLuaFn /* lua */ ''
@@ -106,6 +129,11 @@ in {
   globals.mapleader = " ";
   # vim.o.cursorlineopt = "both";
   keymaps = [
+    {
+      key = "<C-k>";
+      action = "<CMD>ShowkeysToggle<CR>";
+      mode = [ "n" ];
+    }
     # right click
     {
       key = "<C-t>";
