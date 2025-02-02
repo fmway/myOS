@@ -21,7 +21,7 @@ in treeImport {
     "extra"
     # "boot/loader/grub"
     # "services/nginx"
-    "services/phpfpm"
+    # "services/phpfpm"
     "networking/wg-quick"
     "networking/wireguard"
     "systemd/services"
