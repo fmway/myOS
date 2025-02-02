@@ -1,5 +1,6 @@
 { pkgs, lib, config, ... }:
 {
+  enable = false;
   script  = ''
     #!${lib.getExe pkgs.bash}
 
