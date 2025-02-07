@@ -57,11 +57,14 @@ in {
         src = pkgs.fetchFromGitHub {
           owner = "nvzone";
           repo = "showkeys";
-          rev = "38a5d15ef687da37ef0de3d6944b9eb6830982f3";
-          hash = "sha256-OeQoRb5nRT5piUzakq8uQdQFWvqockffTAM9plv06BI=";
+          rev = "8daf5abb5fece0c9e1fa2c5679aaf226a80f5c38";
+          hash = "sha256-0ZONzsCWJzzCYnZpr/O8t9Rmkc4A5+i7X7bkjEk5xmc=";
         };
       };
       cmd = [ "ShowkeysToggle" ];
+      keys.__raw = toLuaObject [
+        (toKeymaps "<leader>st" "<CMD>ShowkeysToggle<CR>" {})
+      ];
       opts = {
         timeout = 2;
         maxkeys = 4;
