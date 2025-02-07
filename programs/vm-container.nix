@@ -9,7 +9,8 @@
     #     "$@"
     # '')
     # quickemu
-    docker-compose
+    podman-compose
+    # docker-compose
     distrobox
   ];
   
@@ -24,26 +25,26 @@
       enable = true;
 
       # Create a `docker` alias for podman, to use it as a drop-in replacement
-      # dockerCompat = true;
+      dockerCompat = true;
 
       # Required for containers under podman-compose to be able to talk to each other.
       defaultNetwork.settings.dns_enabled = true;
     };
 
-    docker.enable = true;
-    docker.rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
+    # docker.enable = true;
+    # docker.rootless = {
+    #   enable = true;
+    #   setSocketVariable = true;
+    # };
 
-    virtualbox = {
-      host = {
-        enable = true;
-        package = pkgs.virtualbox;
-      };
-      guest.enable = true;
-    };
-
-    waydroid.enable = true;
+    # virtualbox = {
+    #   host = {
+    #     enable = true;
+    #     package = pkgs.virtualbox;
+    #   };
+    #   guest.enable = true;
+    # };
+    #
+    # waydroid.enable = true;
   };
 }; }
