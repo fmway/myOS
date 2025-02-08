@@ -27,6 +27,7 @@
     }) |> builtins.listToAttrs;
 
     lsp = {
+      deno.settings.deno.enable = true;
       rust-analyzer.initialization_options = {
         snippets = {
           "Arc::new" = {
