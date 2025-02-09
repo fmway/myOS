@@ -4,6 +4,8 @@
     listToUnkeyedAttrs [ key action ] // options
     |> toLuaObject
     |> (lua: { __raw = lua; });
+  toKeymaps' = key: action: { mode ? "n", ... } @ options:
+    { inherit key action mode; options = removeAttrs options [ "mode" ]; };
   inherit (helpers) toLuaObject mkLuaFn listToUnkeyedAttrs;
 in {
   enable = ! config.data.isMinimal or false;
@@ -132,32 +134,22 @@ in {
   globals.mapleader = " ";
   # vim.o.cursorlineopt = "both";
   keymaps = [
-    {
-      key = "<C-k>";
-      action = "<CMD>ShowkeysToggle<CR>";
-      mode = [ "n" ];
-    }
-    # right click
-    {
-      key = "<C-t>";
-      action.__raw = mkLuaFn /* lua */ ''require("menu").open("default")'';
-      mode = [ "n" ];
-    }
-    {
-      key = "<RightMouse>";
-      mode = ["n"];
-      action.__raw = mkLuaFn /* lua */ ''
+    (toKeymaps' "<C-k>" "<CMD>ShowkeysToggle<CR>" {})
+    (toKeymaps' "C-t" { __raw = mkLuaFn /* lua */ ''require("menu").open("default")''; } {})
+    (toKeymaps' "<RightMouse>" {
+      __raw = mkLuaFn /* lua */ ''
+        --
         vim.cmd.exec '"normal! \\<RightMouse>"'
 
         local options = vim.bo.ft == "NvimTree" and "nvimtree" or "default"
         require("menu").open(options, { mouse = true })
       '';
-    }
-    { mode = "n"; key = ";"; action = ":"; options.desc = "CMD enter command mode"; }
-    { mode = "i"; key = "<C-n>"; action = "<cmd>NvimTreeToggle <CR><ESC>"; options.desc = "Toggle NvimTree"; }
-    { mode = "n"; key = "<A-t>"; action.__raw = mkLuaFn /* lua */ ''require("nvchad.themes").open { style = "compat", border = true, }'';
-      options.desc = "Show themes menu";
-    }
+    } {})
+    (toKeymaps' ";" ":" { desc = "CMD enter command mode"; })
+    (toKeymaps' "<C-n>" "<cmd>NvimTreeToggle <CR><ESC>" { mode = "i"; desc = "Toggle NvimTree"; })
+    (toKeymaps' "<A-t>" {
+      __raw = mkLuaFn /* lua */ ''require("nvchad.themes").open { style = "compat", border = true, }'';
+    } { desc = "Show themes menu"; })
   ];
   # add filetype
   filetype.filename = {
@@ -167,6 +159,7 @@ in {
     ".*%.blade%.php" = "blade";
     ".*/ghostty/config" = "toml";
     ".*/ghostty/themes/.*%.conf" = "dosini";
+    ".*/zed/.*%.json" = "jsonc";
   };
   plugins.treesitter.nixvimInjections = true;
   plugins.treesitter.settings.auto_install = false;
