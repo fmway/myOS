@@ -27,6 +27,7 @@
     }) |> builtins.listToAttrs;
 
     lsp = {
+      deno.settings.deno.enable = true;
       rust-analyzer.initialization_options = {
         snippets = {
           "Arc::new" = {
@@ -51,6 +52,27 @@
       };
     };
   };
+
+  userKeymaps = [
+    # insert mode
+    {
+      context = "Editor && vim_mode = insert && !menu";
+      bindings = {
+      };
+    }
+    # visual / normal mode
+    {
+      context = "Editor && (vim_mode == insert || vim_mode == normal) && vim_mode != waiting && !menu";
+      bindings = {
+        ";" = "command_pallete::Toggle"; # same as :
+        "ctrl-n" = "project_panel::ToggleFocus";
+      };
+    }
+    {
+      context = "not_editing && ProjectPanel";
+      bindings."ctrl-n" = "workspace::ToggleLeftDock";
+    }
+  ];
 
   extensions = [ "nix" "deno" ];
 }
