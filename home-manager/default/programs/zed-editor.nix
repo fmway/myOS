@@ -56,7 +56,7 @@
   userKeymaps = [
     # insert mode
     {
-      context = "Editor && vim_mode = insert && !menu";
+      context = "Editor && vim_mode == insert && !menu";
       bindings = {
       };
     }
@@ -64,7 +64,7 @@
     {
       context = "Editor && (vim_mode == insert || vim_mode == normal) && vim_mode != waiting && !menu";
       bindings = {
-        ";" = "command_pallete::Toggle"; # same as :
+        ";" = "command_palette::Toggle"; # same as :
         "ctrl-n" = "project_panel::ToggleFocus";
       };
     }
