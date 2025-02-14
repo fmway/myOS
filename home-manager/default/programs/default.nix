@@ -22,8 +22,6 @@
 
   zoxide.enable = true; # cd alternative
 
-  direnv.nix-direnv.enable = true; # add nix feature in direnv
-
   translate-shell.enable = true; # google or bing translate in terminal
 
   yt-dlp.enable = true; # all in one video downloader
