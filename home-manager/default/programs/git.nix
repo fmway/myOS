@@ -5,6 +5,7 @@
   # delta.enable = true; # enable git diff with delta
   # difftastic.enable = true; # git diff with difftastic
   # diff-so-fancy.enable = true; # git diff with diff-so-fancy
+  signing.format = "ssh";
   aliases = {
     a = "add";
     cm = "commit";
