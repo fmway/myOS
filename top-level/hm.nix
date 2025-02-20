@@ -7,7 +7,7 @@
       only = [ (hmDir + "/default") ];
       another = with inputs; [
         catppuccin.homeManagerModules.catppuccin
-        fmway-nix.homeManagerModules.default
+        fmway-nix.homeManagerModules.fmway
       ];
     };
     selfNames = builtins.attrNames self;
