@@ -173,20 +173,6 @@ in {
     yamlls.enable = true;
     # mint.enable = true;
     # csharp_ls.enable = true;
-    nixd.autostart = true;
-    nixd.settings = {
-      nixpkgs.expr = /* nix */ "import <nixpkgs> {}";
-      diagnostic.suppress = [ "sema-escaping-with" ];
-      options = let
-        getFlake = flake: /* nix */ ''(builtins.getFlake "${flake}")'';
-        f = getFlake "github:fmway/NixOS/nixos-unstable";
-        n = getFlake "github:fmway/NvChad.nix";
-      in {
-        home-manager.expr = /* nix */ "${f}.homeConfigurations.default.options";
-        nixos.expr = /* nix */ "${f}.nixosConfigurations.minimal.options";
-        nixvim.expr = /* nix */ ''${n}.packages.${pkgs.system}.nixvim.options'';
-      };
-    };
     ts_ls.enable = true;
     ts_ls.rootDir = /* lua */ ''require("lspconfig").util.root_pattern("package.json", "tsconfig.json")'';
     ts_ls.extraOptions.single_file_support = false;
