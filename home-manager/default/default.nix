@@ -1,7 +1,7 @@
 { pkgs
 , lib
+, root-path
 , config
-, nixosConfig
 , ...
 } @ variables
 : let
@@ -32,7 +32,12 @@ in
 
   home = {
     # Home Manager version
-    stateVersion = lib.mkDefault (nixosConfig.system.stateVersion);
+    stateVersion = lib.mkDefault (
+      if variables ? osConfig then
+        variables.osConfig.system.stateVersion
+      else
+        lib.fileContents "${root-path}/.version"
+    );
 
     sessionPath = genPaths homeDirectory [
       ".local" # must be ${home}/.local/bin
