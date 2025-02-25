@@ -6,6 +6,7 @@ in {
     ./hm.nix
     ./nixos.nix
     ./nixosConfigurations.nix
+    ./homeConfigurations.nix
   ];
   perSystem = { pkgs, lib, ... }:
   {
