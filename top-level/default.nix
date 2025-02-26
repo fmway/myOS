@@ -144,6 +144,9 @@ in {
       inherit (generatedSpecialArgs) specialArgs;
       modules = modules
         ++ [ { data = { inherit disableModules defaultUser; }; } ]
+        ++ [  { nixpkgs.overlays = [ (_: _: {
+          inherit lib;
+        }) ]; }]
         ++ [
           ({ pkgs, lib, config, ... } @ vars: { users.users = generatedUsers vars; })
         ]

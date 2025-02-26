@@ -43,7 +43,12 @@
   outputs = { flake-parts, fmway-nix, ... } @ inputs:
     flake-parts.lib.mkFlake {
       inherit inputs;
-      specialArgs = { inherit (fmway-nix) lib; };
+      specialArgs = {
+        lib = fmway-nix.lib.extend (_: _: {
+          inherit (inputs.home-manager.lib) hm;
+          flake-parts = flake-parts.lib;
+        });
+      };
     } {
       systems = [ "x86_64-linux" "aarch64-linux" ];
       imports = [
