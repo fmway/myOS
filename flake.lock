@@ -125,6 +125,22 @@
       }
     },
     "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1733328505,
+        "narHash": "sha256-NeCCThCEP3eCl2l/+27kNNK7QrwZB1IJCrXfrbv5oqU=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "ff81ac966bb2cae68946d5ed5fc4994f96d0ffec",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-compat_2": {
       "locked": {
         "lastModified": 1733328505,
         "narHash": "sha256-NeCCThCEP3eCl2l/+27kNNK7QrwZB1IJCrXfrbv5oqU=",
@@ -321,17 +337,18 @@
     },
     "fmway-nix": {
       "inputs": {
+        "flake-compat": "flake-compat",
         "flake-parts": "flake-parts_2",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1740526140,
-        "narHash": "sha256-rKu9wzsapwtDhuuBWymEeAAGwPxT1iV5N7JcPslpKsU=",
+        "lastModified": 1740789092,
+        "narHash": "sha256-LoLVo8/zLKMWxJecHcUnQ6wybGR7kubtl861WKLeIUc=",
         "owner": "fmway",
         "repo": "fmway.nix",
-        "rev": "91c3cce2e558bc8785a6b23d1c7d6e307b5ad00c",
+        "rev": "e11cb25fff59d91545602b8a67298f5ff1ef0fa8",
         "type": "github"
       },
       "original": {
@@ -800,7 +817,7 @@
     },
     "nvchad": {
       "inputs": {
-        "flake-compat": "flake-compat",
+        "flake-compat": "flake-compat_2",
         "flake-parts": "flake-parts_5",
         "nixpkgs": [
           "nixpkgs"
