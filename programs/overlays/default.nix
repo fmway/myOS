@@ -38,7 +38,7 @@
     folder = ./.;
     variables = variables // { inherit self super; };
     excludes = [
-      "qutebrowser"
+      # "qutebrowser"
     ];
   };
 in {
