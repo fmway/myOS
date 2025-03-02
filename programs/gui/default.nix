@@ -45,10 +45,10 @@ in { config = lib.mkIf (! config.data.isMinimal or false) {
     weather-oclock
   ]);
 
-  programs.winbox = {
-    enable = true;
-    openFirewall = true;
-  };
+  # programs.winbox = {
+  #   enable = true;
+  #   openFirewall = true;
+  # };
 
   programs.noisetorch.enable = true;
 }; }

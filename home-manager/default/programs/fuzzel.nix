@@ -1,4 +1,4 @@
-# dmenu alternative for wayland
+# dmenu alternative for wlroots
 {
   settings = {
     main = {

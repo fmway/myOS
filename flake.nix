@@ -40,10 +40,17 @@
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
   };
 
-  outputs = { flake-parts, fmway-nix, ... } @ inputs:
-    flake-parts.lib.mkFlake {
+  outputs = { flake-parts, home-manager, nixpkgs, fmway-nix, ... } @ inputs: let
+    inherit (inputs) self;
+  in flake-parts.lib.mkFlake {
       inherit inputs;
-      specialArgs = { inherit (fmway-nix) lib; };
+      specialArgs = {
+        lib = nixpkgs.lib.extend (_: _: {
+          inherit (home-manager.lib) hm;
+          flake-parts = flake-parts.lib;
+          fmway = fmway-nix.fmway // self.lib;
+        });
+      };
     } {
       systems = [ "x86_64-linux" "aarch64-linux" ];
       imports = [

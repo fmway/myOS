@@ -10,14 +10,14 @@ in {
     setl = "setlocal";
   };
   plugins = [
-  rec {
-    name = "ranger-archives";
-    src = fetchFromGitHub {
-      owner = "maximtrp";
-      repo = name;
-      rev = "master";
-      hash = "sha256-QJu5G2AYtwcaE355yhiG4wxGFMQvmBWvaPQGLsi5x9Q=";
-    };
-  }
+    rec {
+      name = "ranger-archives";
+      src = fetchFromGitHub {
+        owner = "maximtrp";
+        repo = name;
+        rev = "master";
+        hash = "sha256-QJu5G2AYtwcaE355yhiG4wxGFMQvmBWvaPQGLsi5x9Q=";
+      };
+    }
   ];
 }

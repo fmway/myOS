@@ -53,6 +53,7 @@ in {
       persist = true;
       setEnv = [
         "PATH"
+        "NIX_PATH"
       ];
     }
     ];

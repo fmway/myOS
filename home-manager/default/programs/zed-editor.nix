@@ -60,12 +60,25 @@
       bindings = {
       };
     }
+    {
+      context = "vim_mode != insert";
+      bindings = {
+        "tab" = "tab_switcher::Toggle";
+        "shift-tab" = ["tab_switcher::Toggle" { select_last = true; }];
+      };
+    }
     # visual / normal mode
     {
-      context = "Editor && (vim_mode == insert || vim_mode == normal) && vim_mode != waiting && !menu";
       bindings = {
-        ";" = "command_palette::Toggle"; # same as :
+        ";" = "command_palette::Toggle";
         "ctrl-n" = "project_panel::ToggleFocus";
+      };
+      context = "(vim_mode != insert || vim_mode == normal) && vim_mode != waiting && !menu";
+    }
+    {
+      context = "Editor && vim_mode != insert && vim_mode != waiting && !menu";
+      bindings = {
+        "space /" = ["editor::ToggleComments"  { advance_downwards = false; }];
       };
     }
     {

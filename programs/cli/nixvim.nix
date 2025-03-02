@@ -8,6 +8,9 @@
     { inherit key action mode; options = removeAttrs options [ "mode" ]; };
   inherit (helpers) toLuaObject mkLuaFn listToUnkeyedAttrs;
 in {
+  imports = [
+    { _module.args = { inherit toKeymaps toKeymaps'; }; }
+  ];
   enable = ! config.data.isMinimal or false;
   defaultEditor = true;
   nvchad.config = rec {
@@ -15,8 +18,7 @@ in {
     base46.theme_toggle = [ base46.theme "nightfox" ];
   };
   plugins.lazy.plugins = with pkgs.vimPlugins; [
-    {
-      pkg = smear-cursor-nvim;
+    { pkg = smear-cursor-nvim;
       event = "BufEnter";
       config.__raw = mkLuaFn /* lua */ ''
         require("smear_cursor").setup {}
@@ -26,20 +28,17 @@ in {
         (toKeymaps "<leader>tsc" "<cmd>SmearCursorToggle<cr>" { desc = "Toggle Animation Cursor"; })
       ];
     }
-    {
-      pkg = neoscroll-nvim;
+    { pkg = neoscroll-nvim;
       event = "BufRead";
       config.__raw = mkLuaFn /* lua */ ''
         require("neoscroll").setup {}
       '';
     }
-    {
-      pkg = nvzone-typr;
+    { pkg = nvzone-typr;
       opts = {};
       cmd = [ "Typr" "TyprStats" ];
     }
-    {
-      pkg = telescope-nvim;
+    { pkg = telescope-nvim;
       dependencies = [ telescope-undo-nvim plenary-nvim ];
       config.__raw = mkLuaFn /* lua */ ''
         require("telescope").setup {
@@ -52,8 +51,7 @@ in {
         (toKeymaps "<leader>u" "<CMD>Telescope undo<CR>" {})
       ];
     }
-    {
-      pkg = pkgs.vimUtils.buildVimPlugin {
+    { pkg = pkgs.vimUtils.buildVimPlugin {
         pname = "showkeys";
         version = "1.0.0";
         src = pkgs.fetchFromGitHub {
@@ -74,8 +72,7 @@ in {
         position = "top-right"; # bottom-left, bottom-right, bottom-center, top-left, top-right, top-center
       };
     }
-    {
-      pkg = nvim-notify;
+    { pkg = nvim-notify;
       config.__raw = mkLuaFn /* lua */ ''
         local notify = require("notify")
         -- this for transparency
@@ -84,8 +81,7 @@ in {
         vim.notify = notify.notify
       '';
     }
-    {
-      pkg = toggleterm-nvim;
+    { pkg = toggleterm-nvim;
       config.__raw = mkLuaFn /* lua */ ''
         require("toggleterm").setup {}
         local Terminal = require("toggleterm.terminal").Terminal
@@ -115,8 +111,7 @@ in {
         (toKeymaps "<leader>lg" "<cmd>lua _lazygit_toggle()<CR>" { desc = "Toggle Lazygit"; })
       ];
     }
-    {
-      pkg = bufferline-nvim;
+    { pkg = bufferline-nvim;
       keys.__raw = toLuaObject [
         (toKeymaps "g1" ''<CMD>lua require("bufferline").go_to_buffer(1, true)<CR>'' { desc = "Go to tab 1"; })
         (toKeymaps "g2" ''<CMD>lua require("bufferline").go_to_buffer(2, true)<CR>'' { desc = "Go to tab 2"; })
