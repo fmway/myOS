@@ -1,7 +1,9 @@
-{ uncommon, config, super, lib, self, ... }: let
+{ config, super, lib, self, ... }: let
   # config.set(xxx, yyy)
-  config = {
-    # fileselect.handler = "external";
+  uncommon = {
+    config = {
+      # fileselect.handler = "external";
+    };
   };
   searchEngines = {
     w = "https://en.wikipedia.org/wiki/Special:Search?search={}&go=Go&ns0=1";
