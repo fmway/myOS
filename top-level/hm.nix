@@ -14,6 +14,11 @@
   in builtins.foldl' (acc: name: acc // {
     "${name}".imports = lib.flatten [ self.${name} ];
   }) { 
-    default.imports = lib.flatten (map (x: self.${x}) selfNames);
+    default.imports = lib.flatten (map (x: self.${x}) selfNames) ++ [
+      (lib.mkAliasOptionModule [ "nix" "gc" "dates" ] [ "nix" "gc" "frequency" ])
+      (lib.mkAliasOptionModule [ "programs" "qutebrowser" "c" ] [ "programs" "qutebrowser" "settings" ])
+    ] ++ map (x:
+      lib.mkAliasOptionModule [ "home" x ] [ x ]
+    ) [ "catppuccin" "dconf" ];
   } selfNames;
 }
