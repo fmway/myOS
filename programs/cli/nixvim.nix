@@ -8,6 +8,9 @@
     { inherit key action mode; options = removeAttrs options [ "mode" ]; };
   inherit (helpers) toLuaObject mkLuaFn listToUnkeyedAttrs;
 in {
+  imports = [
+    { _module.args = { inherit toKeymaps toKeymaps'; }; }
+  ];
   enable = ! config.data.isMinimal or false;
   defaultEditor = true;
   nvchad.config = rec {

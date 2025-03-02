@@ -10,22 +10,19 @@
     genPaths
   ;
   inherit (config.home) homeDirectory username;
-
-  homeImports = let
-    exclusive = [ "catppuccin" "dconf" ];
-    result = lib.fmway.getNixs ./. |> map (file: let
-      name = lib.removeSuffix ".nix" file;   
-      path = lib.optionals (lib.all (x: x != name) exclusive) [ "home" ] ++ [ name ];
-      res  = let
-        imported = import (./. + "/${file}");
-      in if builtins.isFunction imported then imported variables else imported;
-    in (lib.setAttrByPath path res));
-  in { config = lib.mkMerge result; };
 in
 {
-  imports = [
+  imports = map (x:
+    lib.mkAliasOptionModule [ "home" x ] [ x ]
+  ) [ "catppuccin" "dconf" ] ++ [
     ./desktop
-    homeImports
+    {
+      home = lib.fmway.treeImport {
+        inherit variables;
+        folder = ./.;
+        max = 1;
+      };
+    }
   ];
 
   programs.home-manager.enable = true;
