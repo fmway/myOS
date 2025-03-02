@@ -1,6 +1,9 @@
 name: "CI"
 on:
   pull_request:
+  push:
+    branches:
+      - master
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -203,7 +206,7 @@ jobs:
   auto-merge:
     needs: [ nixos ]
     runs-on: ubuntu-latest
-    if: ${{ !cancelled() && success() && !contains(needs.*.result, 'skipped') }}
+    if: ${{ github.event_name == 'pull_request' && !cancelled() && success() && !contains(needs.*.result, 'skipped') }}
     steps:
     - name: Enable auto-merge
       env:
