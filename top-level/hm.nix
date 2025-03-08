@@ -7,6 +7,10 @@
         lib.optionals (builtins.pathExists (hmDir + "/modules")) (lib.fmway.genImportsWithDefault (hmDir + "/modules")) ++ [
           (lib.mkAliasOptionModule [ "nix" "gc" "dates" ] [ "nix" "gc" "frequency" ])
           (lib.mkAliasOptionModule [ "programs" "qutebrowser" "c" ] [ "programs" "qutebrowser" "settings" ])
+          ({ options, ... }: {
+            _file = ./hm.nix;
+            config.data = { inherit options; };
+          })
         ] ++ map (x:
           lib.mkAliasOptionModule [ "home" x ] [ x ]
         ) [ "catppuccin" "dconf" ];
