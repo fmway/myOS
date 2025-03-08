@@ -22,7 +22,6 @@
   # Add list DE/WM
   services.windowManager = {
     sway.enable = true;
-    sway.package = pkgs.custom.swayfx;
     niri.enable = true;
   };
   
