@@ -6,10 +6,33 @@
     |> (lua: { __raw = lua; });
   toKeymaps' = key: action: { mode ? "n", ... } @ options:
     { inherit key action mode; options = removeAttrs options [ "mode" ]; };
-  inherit (helpers) toLuaObject mkLuaFn listToUnkeyedAttrs;
+  inherit (helpers) toLuaObject mkLuaFn mkLuaFnWithName listToUnkeyedAttrs;
 in {
   imports = [
     { _module.args = { inherit toKeymaps toKeymaps'; }; }
+    ({ config, ...}: {
+      plugins.lsp.luaConfig.pre = mkLuaFnWithName "myNixd" /* lua */ ''
+        local NIXD_PATH, result = vim.env.NIXD_PATH, vim.tbl_deep_extend("force", { nixpkgs = { expr = "import <nixpkgs> {}", }, options = {}, }, ${toLuaObject (removeAttrs config.plugins.lsp.servers.nixd.settings [ "__raw" ])})
+
+        if NIXD_PATH == nil or NIXD_PATH == "" then return result end
+        -- format <name>=<flake>#<outputs>....
+        NIXD_PATH:gsub("[^:]+", function (e)
+          local tmp, name, source, path, res = {}, nil, nil , nil, nil
+          for i in string.gmatch(e, "[^=]+") do table.insert(tmp, i) end
+          name = tmp[1]
+          for i in string.gmatch(tmp[2], "[^#]+") do table.insert(tmp, i) end
+          source, path = tmp[3], tmp[4]
+          local flake = (string.match(source, "^/nix/store/") == nil) and '"'..source..'"' or "builtins.toPath "..source
+          res = { expr = "(builtins.getFlake ("..flake.."))."..path }
+          if name == "pkgs" then
+            result["nixpkgs"] = res
+          else
+            result["options"][name] = res
+          end
+        end)
+        return result
+      '';
+    })
   ];
   enable = ! config.data.isMinimal or false;
   defaultEditor = true;
@@ -162,6 +185,11 @@ in {
     # rust_analyzer.enable = true;
     # rust_analyzer.installCargo = true;
     # rust_analyzer.installRustc = true;
+    nixd.enable = true;
+    nixd.settings = {
+      __raw = "myNixd()";
+      diagnostic.surpress = [ "sema-escaping-with" ];
+    };
     zls.enable = true;
     volar.enable = true;
     clangd.enable = true;
