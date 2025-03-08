@@ -26,15 +26,16 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1739934729,
-        "narHash": "sha256-PcrLk10meIJICzUJqtCMOJxoITzbH52fZg2XAB7SSsM=",
-        "owner": "catppuccin",
+        "lastModified": 1740962198,
+        "narHash": "sha256-Rfpo9lQx6tvmy2ohYvT3ypLphqBEYIn/nlSslitJ/y4=",
+        "owner": "fmway",
         "repo": "nix",
-        "rev": "b1ff2a638afa827f1473498190a2c1cae1cf41cf",
+        "rev": "63a7aba57c3cf0dbad7ac7e137c706afc55915b6",
         "type": "github"
       },
       "original": {
-        "owner": "catppuccin",
+        "owner": "fmway",
+        "ref": "qutebrowser",
         "repo": "nix",
         "type": "github"
       }

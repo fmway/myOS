@@ -35,5 +35,6 @@ in toCatppuccinFriendly [
   "btop"
   { bat.mocha = ""; }
   { swaylock.mocha = ""; }
+  "qutebrowser"
   "zed"
 ]
