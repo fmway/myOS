@@ -1,4 +1,4 @@
-{ pkgs, uncommon, lib, config, ... }: let
+{ pkgs, osConfig, uncommon, lib, config, ... }: let
   parseBind = prefix: obj:
     lib.attrNames obj |> map (x: let
       key = lib.splitString "+" x |> map (x: if x == "" then "+" else x)
@@ -64,7 +64,7 @@
     ]
   ;
 in {
-  enable = lib.mkDefault false;
+  enable = lib.mkDefault osConfig.services.windowManager.hyprland.enable;
 
   systemd.enableXdgAutostart = true;
   xwayland.enable = true;

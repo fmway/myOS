@@ -19,11 +19,12 @@
     adw-gtk3
   ];
 
-  # Add list DE
-  services.displayManager.sessionPackages = with pkgs; [
-    sway
-    niri
-  ];
+  # Add list DE/WM
+  services.windowManager = {
+    sway.enable = true;
+    sway.package = pkgs.custom.swayfx;
+    niri.enable = true;
+  };
   
   # Enable ls colors in Bash
   programs.bash.enableLsColors = true;
