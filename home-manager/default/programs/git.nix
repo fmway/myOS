@@ -18,8 +18,8 @@
     url."https://gitlab.com/".insteadOf = "gl:";
     url."https://codeberg.org/".insteadOf = "cb:";
     url."https://github.com/fmway/".insteadOf = "fm:";
-    credential.helper = "${
-      pkgs.custom.git
-    }/bin/git-credential-libsecret";
+    # credential.helper = "${
+    #   pkgs.custom.git
+    # }/bin/git-credential-libsecret";
     };
 }
