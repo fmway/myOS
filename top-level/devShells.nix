@@ -13,6 +13,7 @@
             "pkgs=${self.outPath}#nixosConfigurations.minimal.pkgs"
             "nixos=${self.outPath}#nixosConfigurations.minimal.options"
             "home-manager=${self.outPath}#nixosConfigurations.minimal.config.home-manager.users.fmway.data.options"
+            "nixvim=${self.outPath}#nixosConfigurations.minimal.options.programs.nixvim"
           ];
         buildInputs = with pkgs; [
         ];
