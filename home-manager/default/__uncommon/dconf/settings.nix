@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, extensions, lib, ... }:
 {
   org.gnome.shell = {
     disable-user-extensions = false;
@@ -27,23 +27,8 @@
       lilypad
     ]);
 
-    # extensions settings
-    extensions = {
-      # paperwm
-      paperwm = {
-        default-focus-mode = 0;
-        open-window-position = 0; # right
-        keybindings.toggle-scratch = [ "<Shift><Super>space" ];
-      };
-
-      system-monitor = {
-        show-cpu = true;
-        show-download = true;
-        show-memory = true;
-        show-upload = true;
-        show-swap = false;
-      };
-    };
+    # extensions settings in ./__extensions
+    inherit extensions;
   };
 
   org.gnome.desktop = {
