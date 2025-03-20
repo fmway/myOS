@@ -1,17 +1,17 @@
 { pkgs, ... }:
 {
-  rightbox-order =
-    builtins.map (x: x.extensionPortalSlug) (with pkgs.gnomeExtensions; [
-      system-monitor
-      day-progress
-      lilypad
-    ]);
-  lilypad-order =
-    builtins.map (x: x.extensionPortalSlug) (with pkgs.gnomeExtensions; [
-      emoji-copy
-      totp
-      clipboard-indicator
-    ]);
+  rightbox-order = [
+    "Day_Progress"
+    "system_monitor"
+    "lilypad"
+  ];
+  lilypad-order = [
+    "StatusNotifierItem"
+    "BingWallpaperIndicator"
+    "emoji_copy"
+    "totp"
+    "clipboardIndicator"
+  ];
 
   ignore-order = [];
 }
