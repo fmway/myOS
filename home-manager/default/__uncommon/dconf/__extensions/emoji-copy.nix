@@ -1,6 +1,6 @@
 {
   active-keybind = true;
-  always-show = true;
+  always-show = false;
   paste-on-select = true;
-  emoji-keybind = ["<Super>period"];
+  emoji-keybind = ["<Super>colon"];
 }
