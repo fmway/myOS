@@ -87,6 +87,33 @@ in {
         }) ]; }]
         ++ [
           ({ pkgs, lib, config, ... } @ vars: { users.users = generatedUsers vars; })
+          ({ lib, config, ... }: {
+            options.users.users = lib.mkOption {
+              type = lib.types.attrsOf (lib.types.submodule {
+                options.hideUser = lib.mkEnableOption "hide user from login page";
+              });
+            };
+
+            config.system.activationScripts.disableUser = let
+              cfg = config.users.users;
+              users =
+                lib.filter (x: cfg.${x}.hideUser) (builtins.attrNames cfg);
+            in lib.mkIf (users != []) {
+              # Run after /dev has been mounted
+              deps = [ "specialfs" ];
+              text = lib.pipe users [
+                (map (user: ''
+                  cat <<EOF > /var/lib/AccountsService/users/${user}
+                  [User]
+                  Language=   
+                  XSession=gnome  
+                  SystemAccount=true 
+                  EOF
+                ''))
+                (lib.concatStringsSep "")
+              ];
+            };
+          })
         ]
         ++ lib.optionals ((builtins.isBool withHM && withHM) || builtins.isList withHM)
         (let
