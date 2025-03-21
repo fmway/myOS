@@ -50,7 +50,12 @@ in {
     lib.optionalString (uncommon.config or {} != {}) (toPyConfig uncommon.config);
   searchEngines = let
     firefox = lib.getAttrFromPath [ "firefox" "profiles" (config.data.firefoxProfileName or "namaku") ] super;
-    search = lib.fmway.excludeItems [ "Google" "Wikipedia" "Bing" "DuckDuckGo" ] firefox.search.engines;
+    search = lib.pipe firefox.search.engines [
+      (builtins.attrNames)
+      (lib.filter (x: firefox.search.engines.${x} ? definedAliases))
+      (map (name: { inherit name; value = firefox.search.engines.${name}; }))
+      (lib.listToAttrs)
+    ];
     keys = lib.attrNames search;
     prevSearch = map (x: let
       name = builtins.elemAt search.${x}.definedAliases 0
