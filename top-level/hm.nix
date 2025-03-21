@@ -24,6 +24,8 @@
   in builtins.foldl' (acc: name: acc // {
     "${name}".imports = lib.flatten [ self.${name} ];
   }) { 
-    default.imports = lib.flatten (map (x: self.${x}) selfNames);
+    default.imports = lib.flatten (map (x: self.${x}) selfNames ++ [
+      ({ lib, ... }: { programs.fish.generateCompletions = lib.mkDefault false; })
+    ]);
   } selfNames;
 }
