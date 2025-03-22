@@ -8,7 +8,7 @@
     nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixos-24.05";
     nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixos-24.11";
     master.url = "github:NixOS/nixpkgs";
-    catppuccin.url = "github:fmway/nix/qutebrowser";
+    catppuccin.url = "github:catppuccin/nix";
     # TODO implement impermanence
     # impermanence.url = "github:nix-community/impermanence";
     disko.url = "github:nix-community/disko";
