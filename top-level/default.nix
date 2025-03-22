@@ -90,14 +90,22 @@ in {
           ({ lib, config, ... }: {
             options.users.users = lib.mkOption {
               type = lib.types.attrsOf (lib.types.submodule {
-                options.hideUser = lib.mkEnableOption "hide user from login page";
+                options.hideUser = lib.mkOption {
+                  type = with lib.types; nullOr bool;
+                  default = null;
+                  description = "hide user from login page";
+                };
+                options.avatar = lib.mkOption {
+                  type = with lib.types; nullOr (either str path);
+                  default = null;
+                };
               });
             };
 
             config.system.activationScripts.disableUser = let
               cfg = config.users.users;
               users =
-                lib.filter (x: cfg.${x}.hideUser) (builtins.attrNames cfg);
+                lib.filter (x: lib.isBool cfg.${x}.hideUser) (builtins.attrNames cfg);
             in lib.mkIf (users != []) {
               # Run after /dev has been mounted
               deps = [ "specialfs" ];
@@ -105,9 +113,11 @@ in {
                 (map (user: ''
                   cat <<EOF > /var/lib/AccountsService/users/${user}
                   [User]
-                  Language=   
-                  XSession=gnome  
-                  SystemAccount=true 
+                  ${lib.concatStringsSep "\n" [
+                    "Language="
+                    "SystemAccount=${builtins.toJSON cfg.${user}.hideUser}"
+                    "Icon=${lib.optionalString (!isNull cfg.${user}.avatar) (toString cfg.${user}.avatar)}"
+                  ]}
                   EOF
                 ''))
                 (lib.concatStringsSep "")
