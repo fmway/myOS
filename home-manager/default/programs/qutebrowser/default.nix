@@ -57,19 +57,29 @@ in {
       (lib.listToAttrs)
     ];
     keys = lib.attrNames search;
-    prevSearch = map (x: let
-      name = builtins.elemAt search.${x}.definedAliases 0
-        |> lib.match "^@?(.+)$"
-        |> lib.flip lib.elemAt 0;
-    in {
-      inherit name;
-      value = lib.elemAt search.${x}.urls 0
-        |> (x: let
-          base = x.template;
-          params = x.params or [];
-          parsedParams = map ({ name, value }: "${name}=${value}") params |> lib.concatStringsSep "&";
-        in lib.replaceStrings [ "{searchTerms}" ] [ "{}" ] "${base}${lib.optionalString (params != []) "?${parsedParams}"}");
-      }) keys |> lib.listToAttrs;
+    prevSearch = lib.pipe keys [
+      (map (x: let
+        name = lib.pipe search.${x}.definedAliases [
+          (lib.flip lib.elemAt 0)
+          (lib.match "^@?(.+)$")
+          (lib.flip lib.elemAt 0)
+        ];
+      in {
+        inherit name;
+        value = lib.pipe search.${x}.urls [
+          (lib.flip lib.elemAt 0)
+          (x: let
+            base = x.template;
+            params = x.params or [];
+            parsedParams = lib.pipe params [
+              (map ({ name, value }: "${name}=${value}"))
+              (lib.concatStringsSep "&")
+            ];
+          in lib.replaceStrings [ "{searchTerms}" ] [ "{}" ] "${base}${lib.optionalString (params != []) "?${parsedParams}"}")
+        ];
+      }))
+      lib.listToAttrs
+    ];
   in prevSearch // searchEngines;
 
 }

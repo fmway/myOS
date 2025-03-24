@@ -5,7 +5,12 @@ in {
   imports = inputs.fmway-nix.fmway.genImports ./.; # don't use lib.fmway because that would be infinite recursion
   flake.lib = {
     mkFishPath = pkgs:
-      lib.makeBinPath pkgs |> lib.splitString ":" |> map (x: /* sh */ "fish_add_path ${x}") |> lib.concatStringsSep "\n";
+      lib.pipe pkgs [
+        (lib.makeBinPath)
+        (lib.splitString ":")
+        (map (x: /* sh */ "fish_add_path ${x}"))
+        (lib.concatStringsSep "\n")
+      ];
     # Will be imported to configuration and home-manager
     genSpecialArgs = { ... } @ var: let
       specialArgs = {

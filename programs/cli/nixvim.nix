@@ -1,9 +1,12 @@
 { pkgs, inputs, lib, config, ... }: let
   inherit (inputs.nvchad.lib) helpers;
   toKeymaps = key: action: { ... } @ options:
-    listToUnkeyedAttrs [ key action ] // options
-    |> toLuaObject
-    |> (lua: { __raw = lua; });
+    lib.pipe [ key action ] [
+      listToUnkeyedAttrs
+      (x: x // options)
+      toLuaObject
+      (__raw: { inherit __raw; })
+    ];
   toKeymaps' = key: action: { mode ? "n", ... } @ options:
     { inherit key action mode; options = removeAttrs options [ "mode" ]; };
   inherit (helpers) toLuaObject mkLuaFn mkLuaFnWithName listToUnkeyedAttrs;

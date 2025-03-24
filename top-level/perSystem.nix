@@ -48,9 +48,13 @@
         in pkgs.writeScriptBin "gen-nix-conf.sh" /* sh */ ''
           #!${lib.getExe pkgs.bash}
 
-          ${lib.attrNames settings |> map (x: /* sh */ ''
-            echo ${x} = ${lib.concatStringsSep " " settings.${x}};
-          '') |> lib.concatStringsSep ""}
+          ${lib.pipe settings [
+            (lib.attrNames)
+            (map (x: /* sh */ ''
+              echo ${x} = ${lib.concatStringsSep " " settings.${x}};
+            ''))
+            (lib.concatStringsSep "")
+          ]}
         '';
       };
     };
