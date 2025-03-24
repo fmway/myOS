@@ -16,7 +16,7 @@
     hub.protocol = "ssh";
     url = let
       init = {
-        "git@github.com:fmway".insteadOf = "fmway:";
+        "git@github.com:fmway/".insteadOf = "fmway:";
       };
       sites = {
         "github.com" = "gh" ;
