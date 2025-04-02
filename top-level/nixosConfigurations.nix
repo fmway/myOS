@@ -3,7 +3,6 @@
 in {
   flake.nixosConfigurations = let
     defaultModules = with inputs; [
-      ../configuration.nix
       ../hardware-configuration.nix
       ../disk.nix
       ../secrets
