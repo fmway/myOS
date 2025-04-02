@@ -6,6 +6,7 @@
     "lilypad"
   ];
   lilypad-order = [
+    "steam"
     "StatusNotifierItem"
     "BingWallpaperIndicator"
     "emoji_copy"
