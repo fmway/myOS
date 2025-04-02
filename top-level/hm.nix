@@ -16,7 +16,7 @@
         ) [ "catppuccin" "dconf" ];
       only = [ (hmDir + "/default") ];
       another = with inputs; [
-        catppuccin.homeManagerModules.catppuccin
+        catppuccin.homeModules.catppuccin
         fmway-nix.homeManagerModules.fmway
       ];
     };
