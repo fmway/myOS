@@ -1,6 +1,4 @@
-{ self, lib, inputs, inputs', ... }: let
-  # inherit (self) outputs;
-in {
+{ self, lib, inputs, inputs', ... }: {
   debug = true;
   imports = inputs.fmway-nix.fmway.genImports ./.; # don't use lib.fmway because that would be infinite recursion
   flake.lib = {
@@ -85,13 +83,14 @@ in {
     in lib.nixosSystem {
       inherit system;
       inherit (generatedSpecialArgs) specialArgs;
-      modules = modules
-        ++ [ { data = { inherit disableModules defaultUser; }; } ]
-        ++ [  { nixpkgs.overlays = [ (_: _: {
-          inherit lib;
-        }) ]; }]
-        ++ [
-          ({ pkgs, lib, config, ... } @ vars: { users.users = generatedUsers vars; })
+      modules = modules ++ [
+          ({ pkgs, lib, ... } @ vars: {
+            data = { inherit disableModules defaultUser; };
+            nixpkgs.overlays = [ (_: _: {
+              inherit lib;
+            }) ];
+            users.users = generatedUsers vars;
+          })
           ({ lib, config, ... }: {
             options.users.users = lib.mkOption {
               type = lib.types.attrsOf (lib.types.submodule {

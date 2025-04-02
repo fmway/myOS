@@ -55,6 +55,7 @@
       systems = [ "x86_64-linux" "aarch64-linux" ];
       imports = [
         ./top-level
+        ({ lib, ... }: { _module.args.version = lib.fileContents ./.version; })
       ];
     };
 }

@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, lib, version, ... }:
 {
   flake.homeManagerModules = let
     hmDir = ../home-manager;
@@ -25,7 +25,10 @@
     "${name}".imports = lib.flatten [ self.${name} ];
   }) { 
     default.imports = lib.flatten (map (x: self.${x}) selfNames ++ [
-      ({ lib, ... }: { programs.fish.generateCompletions = lib.mkDefault false; })
+      ({ lib, ... }: {
+        programs.fish.generateCompletions = lib.mkDefault false;
+        home.stateVersion = lib.mkDefault version;
+      })
     ]);
   } selfNames;
 }
