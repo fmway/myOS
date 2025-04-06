@@ -14,7 +14,9 @@ let
 in treeImport {
   imports = genTreeImports ./extra;
 
-  zramSwap.enable = true;
+  zramSwap.enable = lib.mkDefault true;
+  zramSwap.swapDevices = lib.mkDefault 8;
+  zramSwap.memoryMax = lib.mkDefault 1073741824; # 1GB per devices
 }
 {
   excludes = [
