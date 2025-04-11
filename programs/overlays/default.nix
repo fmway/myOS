@@ -47,7 +47,7 @@ in {
     nixpkgs-overlay
     package-overlay
     nur.overlays.default
-    nixgl.overlay
+    # nixgl.overlay
     flox.overlays.default
   ];
 }

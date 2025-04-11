@@ -4,15 +4,8 @@
 , ...
 }
 @ variables
-:
-let
-  inherit (lib.fmway)
-    treeImport
-    matchers
-    genTreeImports
-  ;
-in treeImport {
-  imports = genTreeImports ./extra;
+: lib.fmway.treeImport {
+  imports = lib.fmway.genTreeImports ./extra;
 
   zramSwap.enable = lib.mkDefault true;
   zramSwap.swapDevices = lib.mkDefault 8;
@@ -30,7 +23,7 @@ in treeImport {
     # "services/stubby"
   ];
 
-  includes = with matchers; [
+  includes = with lib.fmway.matchers; [
     (extension "conf")
     (extension "txt")
     json

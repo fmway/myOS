@@ -1,4 +1,4 @@
-{ config, inputs, ... }:
+{ config, inputs, lib, ... }:
 {
   sessionVariables = {
     # LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
@@ -10,15 +10,14 @@
     "/share/fish"
   ];
 
-  etc = let
-    inherit (builtins) listToAttrs attrNames map;
-    nix-inputs = listToAttrs (
-      map (x: {
-        name = "nix/inputs/${x}";
-        value.source = inputs.${x}.outPath;
-      }) (attrNames inputs)
-    );
-  in nix-inputs // {
+  etc = lib.pipe inputs [
+    (lib.attrNames)
+    (map (x: {
+      name = "nix/inputs/${x}";
+      value.source = inputs.${x}.outPath;
+    }))
+    (lib.listToAttrs)
+  ] // {
     "current-background".source = ./background.jpg;
   };
 }

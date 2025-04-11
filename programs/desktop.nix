@@ -15,7 +15,6 @@
 
   # packages
   environment.systemPackages = with pkgs; [
-    nixgl.nixGLIntel
     adw-gtk3
   ];
 
