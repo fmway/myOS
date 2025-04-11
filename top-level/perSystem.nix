@@ -57,6 +57,45 @@
           ]}
         '';
       };
+      # generate nixConf on flake.nix
+      generateNixConf = {
+        type = "app";
+        program = let
+          option = lib.mkOption { type = with lib.types; listOf str; default = []; };
+          inherit ((lib.evalModules {
+            modules = [
+              { options.nix.settings = lib.listToAttrs (
+                  map (name: { inherit name; value = option; }) [
+                    "trusted-public-keys" "substituters"
+              ]); }
+              # (lib.mkAliasOptionModule [ "extra-trusted-public-keys" ] [ "nix" "settings" "trusted-public-keys" ])
+              # (lib.mkAliasOptionModule [ "extra-trusted-substituters" ] [ "nix" "settings" "substituters" ])
+              ../cachix.nix
+              { nix.settings.trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ]; }
+            ];
+            specialArgs = { inherit pkgs lib; };
+          }).config.nix.settings) substituters trusted-public-keys;
+        in pkgs.writeScriptBin "nixConf.sh" /* sh */ ''
+          #!${lib.getExe pkgs.bash}
+          FLAKE=''${1:-$PWD/flake.nix}
+          if cat $FLAKE | grep "nixConfig = " &>/dev/null; then
+            cat $FLAKE | sed '/nixConfig = /,$d'
+          else
+            cat $FLAKE | head -n -1
+          fi
+          cat <<EOF
+            nixConfig = {
+              extra-trusted-substituters = [
+                ${lib.concatStringsSep "\n      " (map builtins.toJSON substituters)}
+              ];
+              extra-trusted-public-keys = [
+                ${lib.concatStringsSep "\n      " (map builtins.toJSON trusted-public-keys)}
+              ];
+            };
+          }
+          EOF
+        '';
+      };
     };
   };
 }

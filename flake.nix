@@ -1,6 +1,5 @@
 {
   description = "My NixOS configuration";
-
   # Inputs
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -58,4 +57,20 @@
         ({ lib, ... }: { _module.args.version = lib.fileContents ./.version; })
       ];
     };
+  nixConfig = {
+    extra-trusted-substituters = [
+      "https://nix-community.cachix.org"
+      "https://fmcachix.cachix.org"
+      "https://devenv.cachix.org"
+      "https://chaotic-nyx.cachix.org"
+      "https://cache.nixos.org/"
+    ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "fmcachix.cachix.org-1:Z5j9jk83ctoCK22EWrbQL6AAP3CTYnZ/PHljlYSakrw="
+      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+      "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    ];
+  };
 }
