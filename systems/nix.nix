@@ -11,7 +11,7 @@
       "root"
       "fmway"
     ];
-    trusted-substituters = [
+    substituters = [
       "https://cache.flox.dev"
     ];
     trusted-public-keys = [

@@ -61,6 +61,7 @@
   nixConfig = {
     extra-trusted-substituters = [
       "https://cache.nixos.org/"
+      "https://cache.flox.dev"
       "https://chaotic-nyx.cachix.org"
       "https://devenv.cachix.org"
       "https://fmcachix.cachix.org"
