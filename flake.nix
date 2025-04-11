@@ -58,6 +58,11 @@
       ];
     };
   nixConfig = {
+    extra-experimental-features = [
+      "flakes"
+      "nix-command"
+      "pipe-operators"
+    ];
     extra-trusted-substituters = [
       "https://nix-community.cachix.org"
       "https://fmcachix.cachix.org"
