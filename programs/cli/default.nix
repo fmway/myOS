@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    flox
+    # flox
     nixd # nix lsp
     waydroid-script
     # rnix-lsp # this too 
