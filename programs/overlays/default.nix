@@ -48,6 +48,6 @@ in {
     package-overlay
     nur.overlays.default
     # nixgl.overlay
-    flox.overlays.default
+    # flox.overlays.default
   ];
 }
