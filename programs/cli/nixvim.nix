@@ -171,6 +171,8 @@ in {
     (toKeymaps' "<A-t>" {
       __raw = mkLuaFn /* lua */ ''require("nvchad.themes").open { style = "compat", border = true, }'';
     } { desc = "Show themes menu"; })
+    (toKeymaps' "<" "<gv" { noremap = true; mode = "v"; })
+    (toKeymaps' ">" ">gv" { noremap = true; mode = "v"; })
   ];
   # add filetype
   filetype.filename = {
