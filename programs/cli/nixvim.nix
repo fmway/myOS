@@ -138,18 +138,14 @@ in {
       ];
     }
     { pkg = bufferline-nvim;
-      keys.__raw = toLuaObject [
-        (toKeymaps "g1" ''<CMD>lua require("bufferline").go_to_buffer(1, true)<CR>'' { desc = "Go to tab 1"; })
-        (toKeymaps "g2" ''<CMD>lua require("bufferline").go_to_buffer(2, true)<CR>'' { desc = "Go to tab 2"; })
-        (toKeymaps "g3" ''<CMD>lua require("bufferline").go_to_buffer(3, true)<CR>'' { desc = "Go to tab 3"; })
-        (toKeymaps "g4" ''<CMD>lua require("bufferline").go_to_buffer(4, true)<CR>'' { desc = "Go to tab 4"; })
-        (toKeymaps "g5" ''<CMD>lua require("bufferline").go_to_buffer(5, true)<CR>'' { desc = "Go to tab 5"; })
-        (toKeymaps "g6" ''<CMD>lua require("bufferline").go_to_buffer(6, true)<CR>'' { desc = "Go to tab 6"; })
-        (toKeymaps "g7" ''<CMD>lua require("bufferline").go_to_buffer(7, true)<CR>'' { desc = "Go to tab 7"; })
-        (toKeymaps "g8" ''<CMD>lua require("bufferline").go_to_buffer(8, true)<CR>'' { desc = "Go to tab 8"; })
-        (toKeymaps "g9" ''<CMD>lua require("bufferline").go_to_buffer(9, true)<CR>'' { desc = "Go to tab 9"; })
-        (toKeymaps "g0" ''<CMD>lua require("bufferline").go_to_buffer(10, true)<CR>'' { desc = "Go to tab 10"; })
-      ];
+      keys.__raw = toLuaObject (map (x: let
+        i = toString x;
+        to = if x == 0 then "10" else i;
+      in toKeymaps
+        "g${i}"
+        ''<CMD>lua require("bufferline").go_to_buffer(${to}, true)<CR>''
+        { desc = "Go to tab ${to}"; }
+      ) (lib.range 0 9));
     }
   ];
   globals.mapleader = " ";
@@ -173,6 +169,8 @@ in {
     } { desc = "Show themes menu"; })
     (toKeymaps' "<" "<gv" { noremap = true; mode = "v"; })
     (toKeymaps' ">" ">gv" { noremap = true; mode = "v"; })
+    (toKeymaps' "p" "p`[v`]" { noremap = true; mode = "n"; })
+    (toKeymaps' "P" "P`[v`]" { noremap = true; mode = "n"; })
   ];
   # add filetype
   filetype.filename = {
