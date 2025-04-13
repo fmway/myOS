@@ -169,8 +169,8 @@ in {
     } { desc = "Show themes menu"; })
     (toKeymaps' "<" "<gv" { noremap = true; mode = "v"; })
     (toKeymaps' ">" ">gv" { noremap = true; mode = "v"; })
-    (toKeymaps' "p" "p`[v`]" { noremap = true; mode = "n"; })
-    (toKeymaps' "P" "P`[v`]" { noremap = true; mode = "n"; })
+    (toKeymaps' "p" "p`[v`]" { noremap = true; mode = ["n" "v"]; })
+    (toKeymaps' "P" "P`[v`]" { noremap = true; mode = ["n" "v"]; })
   ];
   # add filetype
   filetype.filename = {
