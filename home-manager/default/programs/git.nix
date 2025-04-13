@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   userName = "fmway";
   userEmail = "fm18lv@gmail.com";
@@ -14,12 +14,24 @@
   };
   extraConfig = {
     hub.protocol = "ssh";
-    url."https://github.com/".insteadOf = "gh:";
-    url."https://gitlab.com/".insteadOf = "gl:";
-    url."https://codeberg.org/".insteadOf = "cb:";
-    url."https://github.com/fmway/".insteadOf = "fm:";
-    credential.helper = "${
-      pkgs.custom.git
-    }/bin/git-credential-libsecret";
-    };
+    url = let
+      init = {
+        "git@github.com:fmway/".insteadOf = "fmway:";
+      };
+      sites = {
+        "github.com" = "gh" ;
+        "gitlab.com" = "gl";
+        "codeberg.org" = "cb";
+      };
+    in lib.pipe sites [
+      (lib.attrNames)
+      (lib.foldl' (acc: x: acc // {
+        "https://${x}/".insteadOf = "${sites.${x}}:";
+        "git@${x}:".insteadOf = "${sites.${x}}s:";
+      }) init)
+    ];
+    # credential.helper = "${
+    #   pkgs.custom.git
+    # }/bin/git-credential-libsecret";
+  };
 }

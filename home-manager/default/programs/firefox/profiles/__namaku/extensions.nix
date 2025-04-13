@@ -7,7 +7,7 @@
     gesturefy
     tree-style-tab
     react-devtools
-    search-by-image
+    # search-by-image
     firefox-color
     vue-js-devtools
   ]) ++ (with pkgs.fmpkgs.firefox-addons; [

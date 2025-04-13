@@ -1,4 +1,4 @@
-{ pkgs, inputs, config, ... }:
+{ pkgs, lib, inputs, config, ... }:
 {
   settings = {
     # Enable the Flakes feature and the accompanying new nix command-line tool
@@ -11,7 +11,7 @@
       "root"
       "fmway"
     ];
-    trusted-substituters = [
+    substituters = [
       # "https://cache.flox.dev"
     ];
     trusted-public-keys = [
@@ -21,19 +21,23 @@
     auto-optimise-store = true;
   };
 
-  registry = builtins.attrNames inputs
-    |> map (x: {
+  registry = lib.pipe inputs [
+    (lib.attrNames)
+    (map (x: {
       name =
         if x == "self" then
           "nixos"
         else
           x;
       value.flake = inputs.${x};
-    })
-    |> builtins.listToAttrs;
+    }))
+    (lib.listToAttrs)
+  ];
 
-  nixPath = builtins.attrNames inputs
-    |> map (name: "${name}=${inputs.${name}.outPath}");
+  nixPath = lib.pipe inputs [
+    (lib.attrNames)
+    (map (name: "${name}=${inputs.${name}.outPath}"))
+  ];
 
   gc = {
     automatic = true;

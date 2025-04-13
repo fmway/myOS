@@ -42,11 +42,13 @@
     ];
   };
 in {
-  nixpkgs.overlays = [
-    inputs.agenix.overlays.default
+  nixpkgs.overlays = with inputs; [
+    agenix.overlays.default
     nixpkgs-overlay
     package-overlay
-    inputs.nur.overlays.default
-    inputs.nixgl.overlay
+    nur.overlays.default
+    h-m-m.overlays.default
+    # nixgl.overlay
+    # flox.overlays.default
   ];
 }

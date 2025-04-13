@@ -6,13 +6,13 @@ let
       builtins.foldl' (res: x: let
         value = obj.${x};
       in lib.recursiveUpdate res (if builtins.isAttrs value then let
-        key = if prefix == "" then x else builtins.concatStringsSep "/" [ prefix x ];
+        key = prefix ++ [ x ];
       in 
         func key value
       else {
-        "${prefix}"."${x}" = value;
+        "${lib.concatStringsSep "/" prefix}"."${x}" = value;
       })) {} (builtins.attrNames obj);
-  in func "" obj;
+  in func [] obj;
 in {
   enable = true;
   settings = dconfFamiliar uncommon.dconf.settings // 

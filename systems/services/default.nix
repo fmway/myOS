@@ -6,6 +6,8 @@
 }
 :
 {
+  tailscale.enable = true;
+  tailscale.authKeyFile = config.age.secrets.tailscale.path;
   cloudflare-warp.enable = true;
   # Enable GNOME keyring.
   gnome.gnome-keyring.enable = true;

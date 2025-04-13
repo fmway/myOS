@@ -1,24 +1,14 @@
 { config, domains, lib, ... }: let
   inherit (builtins) attrNames map;
   inherit (lib) listToAttrs;
-  inherit (lib.fmway)
-    excludeItems
-  ;
 in {
   enable = ! config.data.isMinimal or false;
   virtualHosts = listToAttrs (map (x: let
     v = domains.${x};
-    enable =
-      if v ? enable && ! v.enable then
-        false
-      else true;
+    enable = v.enable or false;
+    matchType = lib.match "^(https?)$" (v.type or "");
   in {
-    name =
-      if v ? type && v.type == "https" then
-        "https://${x}"
-      else if v ? type && v.type == "http" then
-        "http://${x}"
-      else x;
-    value = lib.mkIf enable (excludeItems [ "type" "enable" ] v);
+    name = if isNull matchType then x else "${lib.elemAt matchType 0}://${x}";
+    value = lib.mkIf enable (removeAttrs v [ "type" "enable" ]);
   }) (attrNames domains));
 }

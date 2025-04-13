@@ -1,15 +1,41 @@
 { pkgs, inputs, lib, config, ... }: let
   inherit (inputs.nvchad.lib) helpers;
   toKeymaps = key: action: { ... } @ options:
-    listToUnkeyedAttrs [ key action ] // options
-    |> toLuaObject
-    |> (lua: { __raw = lua; });
+    lib.pipe [ key action ] [
+      listToUnkeyedAttrs
+      (x: x // options)
+      toLuaObject
+      (__raw: { inherit __raw; })
+    ];
   toKeymaps' = key: action: { mode ? "n", ... } @ options:
     { inherit key action mode; options = removeAttrs options [ "mode" ]; };
-  inherit (helpers) toLuaObject mkLuaFn listToUnkeyedAttrs;
+  inherit (helpers) toLuaObject mkLuaFn mkLuaFnWithName listToUnkeyedAttrs;
 in {
   imports = [
     { _module.args = { inherit toKeymaps toKeymaps'; }; }
+    ({ config, ...}: {
+      plugins.lsp.luaConfig.pre = mkLuaFnWithName "myNixd" /* lua */ ''
+        local NIXD_PATH, result = vim.env.NIXD_PATH, vim.tbl_deep_extend("force", { nixpkgs = { expr = "import <nixpkgs> {}", }, options = {}, }, ${toLuaObject (removeAttrs config.plugins.lsp.servers.nixd.settings [ "__raw" ])})
+
+        if NIXD_PATH == nil or NIXD_PATH == "" then return result end
+        -- format <name>=<flake>#<outputs>....
+        NIXD_PATH:gsub("[^:]+", function (e)
+          local tmp, name, source, path, res = {}, nil, nil , nil, nil
+          for i in string.gmatch(e, "[^=]+") do table.insert(tmp, i) end
+          name = tmp[1]
+          for i in string.gmatch(tmp[2], "[^#]+") do table.insert(tmp, i) end
+          source, path = tmp[3], tmp[4]
+          local flake = (string.match(source, "^/nix/store/") == nil) and '"'..source..'"' or "builtins.toPath "..source
+          res = { expr = "(builtins.getFlake ("..flake.."))."..path }
+          if name == "pkgs" then
+            result["nixpkgs"] = res
+          else
+            result["options"][name] = res
+          end
+        end)
+        return result
+      '';
+    })
   ];
   enable = ! config.data.isMinimal or false;
   defaultEditor = true;
@@ -112,18 +138,14 @@ in {
       ];
     }
     { pkg = bufferline-nvim;
-      keys.__raw = toLuaObject [
-        (toKeymaps "g1" ''<CMD>lua require("bufferline").go_to_buffer(1, true)<CR>'' { desc = "Go to tab 1"; })
-        (toKeymaps "g2" ''<CMD>lua require("bufferline").go_to_buffer(2, true)<CR>'' { desc = "Go to tab 2"; })
-        (toKeymaps "g3" ''<CMD>lua require("bufferline").go_to_buffer(3, true)<CR>'' { desc = "Go to tab 3"; })
-        (toKeymaps "g4" ''<CMD>lua require("bufferline").go_to_buffer(4, true)<CR>'' { desc = "Go to tab 4"; })
-        (toKeymaps "g5" ''<CMD>lua require("bufferline").go_to_buffer(5, true)<CR>'' { desc = "Go to tab 5"; })
-        (toKeymaps "g6" ''<CMD>lua require("bufferline").go_to_buffer(6, true)<CR>'' { desc = "Go to tab 6"; })
-        (toKeymaps "g7" ''<CMD>lua require("bufferline").go_to_buffer(7, true)<CR>'' { desc = "Go to tab 7"; })
-        (toKeymaps "g8" ''<CMD>lua require("bufferline").go_to_buffer(8, true)<CR>'' { desc = "Go to tab 8"; })
-        (toKeymaps "g9" ''<CMD>lua require("bufferline").go_to_buffer(9, true)<CR>'' { desc = "Go to tab 9"; })
-        (toKeymaps "g0" ''<CMD>lua require("bufferline").go_to_buffer(10, true)<CR>'' { desc = "Go to tab 10"; })
-      ];
+      keys.__raw = toLuaObject (map (x: let
+        i = toString x;
+        to = if x == 0 then "10" else i;
+      in toKeymaps
+        "g${i}"
+        ''<CMD>lua require("bufferline").go_to_buffer(${to}, true)<CR>''
+        { desc = "Go to tab ${to}"; }
+      ) (lib.range 0 9));
     }
   ];
   globals.mapleader = " ";
@@ -145,6 +167,10 @@ in {
     (toKeymaps' "<A-t>" {
       __raw = mkLuaFn /* lua */ ''require("nvchad.themes").open { style = "compat", border = true, }'';
     } { desc = "Show themes menu"; })
+    (toKeymaps' "<" "<gv" { noremap = true; mode = "v"; })
+    (toKeymaps' ">" ">gv" { noremap = true; mode = "v"; })
+    (toKeymaps' "p" "p`[v`]" { noremap = true; mode = "n"; })
+    (toKeymaps' "P" "P`[v`]" { noremap = true; mode = "n"; })
   ];
   # add filetype
   filetype.filename = {
@@ -162,6 +188,11 @@ in {
     # rust_analyzer.enable = true;
     # rust_analyzer.installCargo = true;
     # rust_analyzer.installRustc = true;
+    nixd.enable = true;
+    nixd.settings = {
+      __raw = "myNixd()";
+      diagnostic.surpress = [ "sema-escaping-with" ];
+    };
     zls.enable = true;
     volar.enable = true;
     clangd.enable = true;

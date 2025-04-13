@@ -1,4 +1,4 @@
-{ lib, inputs, ... }: let
+{ lib, inputs, version, ... }: let
   
 in {
   flake.nixosModules = let
@@ -18,7 +18,11 @@ in {
       nvchad.nixosModules.default
       chaotic.nixosModules.default
       catppuccin.nixosModules.catppuccin
-    ]);
+    ]) ++ [
+      ({ lib, ... }: {
+        system.stateVersion = lib.mkDefault version;
+      })
+    ];
   } selfNames;
 }
 # TODO

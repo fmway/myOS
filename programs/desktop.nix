@@ -15,15 +15,14 @@
 
   # packages
   environment.systemPackages = with pkgs; [
-    nixgl.nixGLIntel
     adw-gtk3
   ];
 
-  # Add list DE
-  services.displayManager.sessionPackages = with pkgs; [
-    sway
-    niri
-  ];
+  # Add list DE/WM
+  services.windowManager = {
+    sway.enable = true;
+    niri.enable = true;
+  };
   
   # Enable ls colors in Bash
   programs.bash.enableLsColors = true;

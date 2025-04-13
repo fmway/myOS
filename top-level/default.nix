@@ -1,11 +1,14 @@
-{ self, lib, inputs, inputs', ... }: let
-  # inherit (self) outputs;
-in {
+{ self, lib, inputs, inputs', ... }: {
   debug = true;
   imports = inputs.fmway-nix.fmway.genImports ./.; # don't use lib.fmway because that would be infinite recursion
   flake.lib = {
     mkFishPath = pkgs:
-      lib.makeBinPath pkgs |> lib.splitString ":" |> map (x: /* sh */ "fish_add_path ${x}") |> lib.concatStringsSep "\n";
+      lib.pipe pkgs [
+        (lib.makeBinPath)
+        (lib.splitString ":")
+        (map (x: /* sh */ "fish_add_path ${x}"))
+        (lib.concatStringsSep "\n")
+      ];
     # Will be imported to configuration and home-manager
     genSpecialArgs = { ... } @ var: let
       specialArgs = {
@@ -80,13 +83,51 @@ in {
     in lib.nixosSystem {
       inherit system;
       inherit (generatedSpecialArgs) specialArgs;
-      modules = modules
-        ++ [ { data = { inherit disableModules defaultUser; }; } ]
-        ++ [  { nixpkgs.overlays = [ (_: _: {
-          inherit lib;
-        }) ]; }]
-        ++ [
-          ({ pkgs, lib, config, ... } @ vars: { users.users = generatedUsers vars; })
+      modules = modules ++ [
+          ({ pkgs, lib, ... } @ vars: {
+            data = { inherit disableModules defaultUser; };
+            nixpkgs.overlays = [ (_: _: {
+              inherit lib;
+            }) ];
+            users.users = generatedUsers vars;
+          })
+          ({ lib, config, ... }: {
+            options.users.users = lib.mkOption {
+              type = lib.types.attrsOf (lib.types.submodule {
+                options.hideUser = lib.mkOption {
+                  type = with lib.types; nullOr bool;
+                  default = null;
+                  description = "hide user from login page";
+                };
+                options.avatar = lib.mkOption {
+                  type = with lib.types; nullOr (either str path);
+                  default = null;
+                };
+              });
+            };
+
+            config.system.activationScripts.disableUser = let
+              cfg = config.users.users;
+              users =
+                lib.filter (x: lib.isBool cfg.${x}.hideUser) (builtins.attrNames cfg);
+            in lib.mkIf (users != []) {
+              # Run after /dev has been mounted
+              deps = [ "specialfs" ];
+              text = lib.pipe users [
+                (map (user: ''
+                  cat <<EOF > /var/lib/AccountsService/users/${user}
+                  [User]
+                  ${lib.concatStringsSep "\n" [
+                    "Language="
+                    "SystemAccount=${builtins.toJSON cfg.${user}.hideUser}"
+                    "Icon=${lib.optionalString (!isNull cfg.${user}.avatar) (toString cfg.${user}.avatar)}"
+                  ]}
+                  EOF
+                ''))
+                (lib.concatStringsSep "")
+              ];
+            };
+          })
         ]
         ++ lib.optionals ((builtins.isBool withHM && withHM) || builtins.isList withHM)
         (let
