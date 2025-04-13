@@ -284,7 +284,7 @@
     },
     "flake-utils_2": {
       "inputs": {
-        "systems": "systems_3"
+        "systems": "systems_4"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -339,6 +339,27 @@
       "original": {
         "owner": "fmway",
         "repo": "fmway.nix",
+        "type": "github"
+      }
+    },
+    "h-m-m": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": "systems_3"
+      },
+      "locked": {
+        "lastModified": 1744519017,
+        "narHash": "sha256-BxVbsAf+RPY7qwhYclW7L4WEvDcum93LLcpQZAlGoks=",
+        "owner": "fmway",
+        "repo": "h-m-m",
+        "rev": "e650c463fceefc0ebd94dadecba44fb1d374aa05",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fmway",
+        "repo": "h-m-m",
         "type": "github"
       }
     },
@@ -804,6 +825,7 @@
         "flake-parts": "flake-parts",
         "fmpkgs": "fmpkgs",
         "fmway-nix": "fmway-nix",
+        "h-m-m": "h-m-m",
         "home-manager": "home-manager_3",
         "master": "master",
         "nixos-hardware": "nixos-hardware",
@@ -863,6 +885,21 @@
       }
     },
     "systems_3": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_4": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
