@@ -73,7 +73,6 @@
     # visual / normal mode
     {
       bindings = {
-        ";" = "command_palette::Toggle";
         "ctrl-n" = "project_panel::ToggleFocus";
       };
       context = "(vim_mode != insert || vim_mode == normal) && vim_mode != waiting && !menu";
