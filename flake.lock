@@ -324,16 +324,17 @@
       "inputs": {
         "flake-compat": "flake-compat",
         "flake-parts": "flake-parts_2",
+        "infuse-nix": "infuse-nix",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1744959419,
-        "narHash": "sha256-PURwEiW37eaiQx6WyOIA1hvfCPTezCoNl1kUNM/Q9i0=",
+        "lastModified": 1745047083,
+        "narHash": "sha256-5TKgjPVjoVGvBqQARms7rKBrhdTzhrhT5BYQ875Pz04=",
         "owner": "fmway",
         "repo": "fmway.nix",
-        "rev": "361bdbb41b62041a819b7ebef9946a5c45346b0b",
+        "rev": "fe2857cc1a6fc28fe5b2effc2c0a0a07689f5f60",
         "type": "github"
       },
       "original": {
@@ -422,6 +423,22 @@
         "ref": "master",
         "repo": "home-manager",
         "type": "github"
+      }
+    },
+    "infuse-nix": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1738726976,
+        "narHash": "sha256-N+u3vnK3zyXLUuDj/vr62r9tM7uarhKVCaLHWxjo/YY=",
+        "ref": "refs/heads/trunk",
+        "rev": "c8fb7397039215e1444c835e36a0da7dc3c743f8",
+        "revCount": 48,
+        "type": "git",
+        "url": "https://codeberg.org/amjoseph/infuse.nix"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://codeberg.org/amjoseph/infuse.nix"
       }
     },
     "ixx": {
