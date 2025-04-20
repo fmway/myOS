@@ -1,5 +1,5 @@
 { self, super, ... }:
-self.stdenv.mkDerivation {
+_: self.stdenv.mkDerivation {
   name = "waydroid-script";
 
   buildInputs = [

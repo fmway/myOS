@@ -5,7 +5,7 @@
   inherit (lib.fmway)
     readEnv
   ;
-in {
+in _: {
   printPathv1 = x: let
     user = config.users.users.${x};
     home-manager = config.home-manager.users.${x};
