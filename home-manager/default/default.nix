@@ -1,12 +1,11 @@
 { pkgs
 , lib
-, root-path
+, inputs
 , config
 , ...
 } @ variables
 : let
   inherit (pkgs.functions)
-    getEnv
     genPaths
   ;
   inherit (config.home) homeDirectory username;
@@ -27,14 +26,9 @@ in
 
   home = {
     # Home Manager version
-    stateVersion = lib.mkDefault (
-      if variables ? osConfig then
-        variables.osConfig.system.stateVersion
-      else
-        lib.fileContents "${root-path}/.version"
-    );
+    stateVersion = lib.mkIf (variables ? osConfig) (lib.mkDefault (variables.osConfig.system.stateVersion));
 
-    sessionPath = genPaths homeDirectory [
+    sessionPath = map (x: "${homeDirectory}/${x}/bin") [
       ".local" # must be ${home}/.local/bin
       ".cargo" # etc
       ".deno"
@@ -47,7 +41,8 @@ in
       ASET = "${homeDirectory}/aset";
       GITHUB = "${ASET}/Github";
       DOWNLOADS = "${homeDirectory}/Downloads";
-    } // (getEnv username);
+    } // lib.optionalAttrs (lib.pathExists "${inputs.self.outPath}/secrets/${username}.env")
+      (lib.fmway.readEnv "${inputs.self.outPath}/secrets/${username}.env");
 
     # xkb options
     keyboard.options = [
