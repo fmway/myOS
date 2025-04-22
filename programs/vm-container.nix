@@ -19,10 +19,10 @@
 
   # Podman configurations
   # Enable common container config files in /etc/containers
-  virtualisation.containers.enable = true;
+  virtualisation.containers.enable = lib.mkDefault true;
   virtualisation = {
     podman = {
-      enable = true;
+      enable = lib.mkDefault true;
 
       # Create a `docker` alias for podman, to use it as a drop-in replacement
       dockerCompat = true;

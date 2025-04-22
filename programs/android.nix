@@ -1,4 +1,4 @@
-# { pkgs, ... }:
+{ lib, ... }:
 {
   # environment.systemPackages = with pkgs; [
     # android-sdk
@@ -11,5 +11,5 @@
     # flutter
   # ];
 
-  programs.adb.enable = true; 
+  programs.adb.enable = lib.mkDefault true; 
 }

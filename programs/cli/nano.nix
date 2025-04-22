@@ -1,5 +1,5 @@
-{
-  enable = true;
+{ lib, ... }: {
+  enable = lib.mkDefault true;
   nanorc = ''
     set nowrap
     set tabstospaces
