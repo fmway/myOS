@@ -6,12 +6,15 @@
     };
   };
   searchEngines = {
-    w = "https://en.wikipedia.org/wiki/Special:Search?search={}&go=Go&ns0=1";
+    w  = "https://en.wikipedia.org/wiki/Special:Search?search={}&go=Go&ns0=1";
     aw = "https://wiki.archlinux.org/?search={}";
     nw = "https://wiki.nixos.org/index.php?search={}";
-    g = "https://www.google.com/search?q={}";
-    b = "https://www.bing.com/search?q={}";
-    d = "https://duckduckgo.com/?q={}";
+    g  = "https://www.google.com/search?q={}";
+    b  = "https://www.bing.com/search?q={}";
+    d  = "https://duckduckgo.com/?q={}";
+    cb = "https://codeberg.org/{}";
+    gl = "https://gitlab.org/{}";
+    gls= "https://git.lix.systems/{}";
     DEFAULT = self.searchEngines.g;
   };
 in {
@@ -20,6 +23,7 @@ in {
 
   c.auto_save.session = true;
   c.url.start_pages = "https://fmway.id";
+  c.url.default_page= self.c.url.start_pages;
   
   extraConfig = let
     toPyValue = value:
