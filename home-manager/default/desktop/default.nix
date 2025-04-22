@@ -9,21 +9,19 @@ let
     matchers
     treeImport
   ;
-in {
-  config = lib.mkIf (! config.data.isMinimal or false) {
-  # import all in folder ./wayland to wayland.windowManager
-  wayland.windowManager = treeImport {
-    folder = ./wayland;
+  x = lib.fmway.treeImport {
+    folder = ./.;
     includes = with matchers; [
       (extension "conf")
       (filename "config")
     ];
     inherit variables;
   };
+in {
+  config = lib.mkIf (! config.data.isMinimal or false) {
+  # import all in folder ./wayland to wayland.windowManager
+  wayland.windowManager = x.wayland;
 
   # import all in folder ./x to xsession.windowManager
-  xsession.windowManager = treeImport {
-    folder = ./x;
-    inherit variables;
-  };
+  xsession.windowManager = x.x;
 }; }
