@@ -2,7 +2,7 @@
   description = "My NixOS configuration";
   # Inputs
   inputs = {
-    h-m-m.url = "github:fmway/h-m-m";
+    h-m-m.url = "github:nadrad/h-m-m";
     h-m-m.inputs.nixpkgs.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
