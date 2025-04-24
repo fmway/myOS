@@ -1,6 +1,9 @@
 { pkgs, lib, config, ... }:
 {
-  enable = false;
+  unitConfig = {
+    Description = "Simple automatic shutdown";
+  };
+  # enable = false;
   script  = ''
     #!${lib.getExe pkgs.bash}
 

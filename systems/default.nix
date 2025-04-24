@@ -19,7 +19,7 @@
     # "services/phpfpm"
     "networking/wg-quick"
     "networking/wireguard"
-    "systemd/services"
+    # "systemd/services"
     # "services/stubby"
   ];
 
