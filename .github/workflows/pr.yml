@@ -65,9 +65,6 @@ jobs:
       with:
         github-token: ${{ secrets.GH_TOKEN }}
         extra-conf: experimental-features = nix-command flakes auto-allocate-uids configurable-impure-env pipe-operators
-    - uses: DeterminateSystems/magic-nix-cache-action@main
-      with:
-        use-flakehub: false
     - run: nix run .#updateStubbyCert
     - name: Check Updates
       id: check
