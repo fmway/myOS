@@ -8,7 +8,7 @@
   lilypad-order = [
     "steam"
     "StatusNotifierItem"
-    "BingWallpaperIndicator"
+    # "BingWallpaperIndicator"
     "emoji_copy"
     "totp"
     "clipboardIndicator"

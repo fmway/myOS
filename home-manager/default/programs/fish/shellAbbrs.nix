@@ -19,9 +19,9 @@ in {
   "ytplaylist" = "yt-dlp --output '%(playlist_title)s/%(playlist_index)s. %(title)s.%(ext)s'";
   "m3v"  = "mpv --no-video";
 
-  "nob"   = "nh os build /etc/nixos --verbose";
-  "nobo"  = "nh os boot /etc/nixos --verbose";
-  "nos"   = "nh os switch /etc/nixos --verbose";
+  "nob"   = "nixos-rebuild build --show-trace --verbose";
+  "nobo"  = "doas nixos-rebuild boot --show-trace --verbose";
+  "nos"   = "doas nixos-rebuild switch --show-trace --verbose";
   "nofu"  = "doas nix flake update --flake /etc/nixos";
   "nfu"   = "nix flake update";
   "nofl"  = "doas nix flake lock /etc/nixos";

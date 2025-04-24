@@ -68,7 +68,7 @@ in {
 
     # nh is nixos-rebuild / nix build with beautiful output
     nh = {
-      enable = true;
+      enable = lib.mkDefault true;
       flake = "/etc/nixos";
     };
 
@@ -77,7 +77,7 @@ in {
 
     # enable cloudflared
     cloudflared = {
-      enable = true;
+      enable = lib.mkDefault true;
       secretFile = config.age.secrets.cloudflared.path;
     };
 

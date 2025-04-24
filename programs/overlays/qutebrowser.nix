@@ -1,8 +1,8 @@
 { super, self, ... }:
-let
+x: let
   pkgs = self;
   inherit (pkgs) lib;
-  pkg = super.qutebrowser.override {
+  pkg = x.override {
     enableWideVine = true;
   };
 in pkgs.symlinkJoin {

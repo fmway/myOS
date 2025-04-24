@@ -32,17 +32,18 @@
     };
   };
 
-  package-overlay = self: super: treeImport {
-    encore = inputs.encore.packages.${self.system}.encore;
-  } {
+  package-overlay = self: super: lib.infuse super (treeImport {
     folder = ./.;
     variables = variables // { inherit self super; };
     excludes = [
       # "qutebrowser"
     ];
-  };
+  });
 in {
   nixpkgs.overlays = with inputs; [
+    (self: super: {
+      encore = encore.packages.${self.system}.encore;
+    })
     agenix.overlays.default
     nixpkgs-overlay
     package-overlay

@@ -37,7 +37,7 @@ in {
       '';
     })
   ];
-  enable = ! config.data.isMinimal or false;
+  enable = lib.mkDefault (! config.data.isMinimal or false);
   defaultEditor = true;
   nvchad.config = rec {
     base46.theme = "onedark";

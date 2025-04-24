@@ -3,15 +3,13 @@ let
   # parse normal attrs to dconf familiar
   dconfFamiliar = obj: let
     func = prefix: obj:
-      builtins.foldl' (res: x: let
+      lib.foldl' (res: x: let
         value = obj.${x};
-      in lib.recursiveUpdate res (if builtins.isAttrs value then let
-        key = prefix ++ [ x ];
-      in 
-        func key value
+      in res // (if lib.isAttrs value then
+        func (prefix ++ [ x ]) value
       else {
         "${lib.concatStringsSep "/" prefix}"."${x}" = value;
-      })) {} (builtins.attrNames obj);
+      })) {} (lib.attrNames obj);
   in func [] obj;
 in {
   enable = true;
@@ -19,7 +17,7 @@ in {
   # custom shortuct
   (let
     keybindings = l: # list of { name ::: string, binding ::: string, command ::: string }
-      builtins.listToAttrs (lib.lists.imap0 (i: v: let
+      lib.listToAttrs (lib.lists.imap0 (i: v: let
         key = "custom${toString i}";
       in {
         name = "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${key}";

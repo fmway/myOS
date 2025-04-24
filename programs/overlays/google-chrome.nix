@@ -1,5 +1,5 @@
-{ super, self }:
-super.google-chrome.override {
+_:
+x: x.override {
   commandLineArgs = [
     "--enable-features=VaapiVideoDecodeLinuxGL,TouchpadOverscrollHistoryNavigation"
     "--use-gl=angle"

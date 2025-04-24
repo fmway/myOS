@@ -1,9 +1,9 @@
-{
+{ config, lib, ... }: {
   services.xserver.enable = true;
 
   # GDM
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.displayManager.gdm.enable = lib.mkDefault (config.services.xserver.desktopManager.gnome.enable);
+  services.xserver.desktopManager.gnome.enable = lib.mkDefault true;
 
   # Ly Display Manager
   # services.xserver.displayManager.ly.enable = true;
@@ -11,7 +11,7 @@
   # Keymap
   console.keyMap = "us";
   services.xserver.xkb = {
-    layout = "us";
+    layout = lib.mkDefault "us";
   };
 
   # Enable CUPS to print documents.

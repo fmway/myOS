@@ -1,6 +1,7 @@
 { config, ... }: let
   inherit (config.services) certs gitea;
 in {
+  enable = gitea.enable;
   type = "https";
   extraConfig = ''
     tls ${certs.gitea.cert} ${certs.gitea.key}

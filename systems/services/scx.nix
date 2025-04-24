@@ -6,5 +6,5 @@
     config.boot.kernelPackages == pkgs.linuxPackages_cachyos
   ) (pkgs.scx_git or pkgs.scx).full;
   # scheduler = "scx_lavd";
-  scheduler = "scx_rusty";
+  scheduler = lib.mkDefault "scx_rusty";
 }

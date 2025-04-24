@@ -39,8 +39,8 @@ in { config = lib.mkIf (! config.data.isMinimal or false) {
     emoji-copy
     day-progress
     totp
-    bing-wallpaper-changer
-    cloudflare-warp-toggle
+    # bing-wallpaper-changer
+    # cloudflare-warp-toggle
     system-monitor
     weather-oclock
   ]);

@@ -1,6 +1,7 @@
 { self, lib, super, ... }:
-super.swayfx-unwrapped.overrideAttrs (old: {
-  mesonFlags = (old.mesonFlags or []) ++ [
+{
+  __output.mesonFlags.__append = [
     (lib.strings.mesonBool "werror" false)
   ];
-})
+  __input.trayEnabled.__assign = false;
+}

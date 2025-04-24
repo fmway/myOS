@@ -1,10 +1,7 @@
-{ self, super, ... }:
-let
-  src = super.cloudflare-warp;
-in self.stdenv.mkDerivation {
-  inherit (src) name pname version meta;
-  inherit src;
-  installPhase = ''
+{ pkgs, ... }: pkg: pkgs.symlinkJoin {
+  inherit (pkg) pname name version meta;
+  paths = [pkg];
+  postBuild = /* sh */ ''
     mkdir $out
     cp -rf * $out/
     rm -rf $out/etc $out/lib

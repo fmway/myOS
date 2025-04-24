@@ -13,7 +13,7 @@
     genSpecialArgs = { ... } @ var: let
       specialArgs = {
         inherit specialArgs lib;
-        inputs = lib.recursiveUpdate inputs (lib.optionalAttrs (var ? inputs && builtins.isAttrs var.inputs) var.inputs);
+        inputs = inputs // (var.inputs or {});
         # outputs = outputs // lib.optionalAttrs (var ? outputs && builtins.isAttrs var.outputs) var.outputs;
         system =
           if var ? system && builtins.isString var.system then

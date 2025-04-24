@@ -16,10 +16,10 @@
       blur-my-shell
       # net-speed
       totp
-      cloudflare-warp-toggle
+      # cloudflare-warp-toggle
       system-monitor
       weather-oclock
-      bing-wallpaper-changer
+      # bing-wallpaper-changer
       places-status-indicator
       applications-menu
       emoji-copy
