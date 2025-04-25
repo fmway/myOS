@@ -208,10 +208,16 @@ in {
     # mint.enable = true;
     # csharp_ls.enable = true;
     ts_ls.enable = true;
-    ts_ls.rootDir = /* lua */ ''require("lspconfig").util.root_pattern("package.json", "tsconfig.json")'';
+    ts_ls.rootMarkers = [
+      "package.json"
+      "tsconfig.json"
+    ];
     ts_ls.extraOptions.single_file_support = false;
     denols.enable = true;
-    denols.rootDir = /* lua */ ''require("lspconfig").util.root_pattern("deno.json", "deno.jsonc")'';
+    denols.rootMarkers = [
+      "deno.json"
+      "deno.jsonc"
+    ];
   };
   # plugins.treesitter.folding = true;
   plugins.treesitter.settings.indent.enable = false;
