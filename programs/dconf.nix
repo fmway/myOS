@@ -24,7 +24,7 @@
     ["[${x}]"] ++ map (y:
       "${y}=${res.${x}.${y}}"
     ) (lib.attrNames res.${x})
-  ) (lib.attrNames res)));
+  ) (lib.attrNames res))) + "\n";
 
   keybindings = l: # list of { name ::: string, binding ::: string, command ::: string }
     lib.listToAttrs (lib.lists.imap0 (i: v: let
@@ -38,9 +38,16 @@
       };
     }) l);
   parse = x: {
-    services.xserver.desktopManager.gnome.extraGSettingsOverrides = dconfFamiliar (lib.recursiveUpdate (x.config or {}) {
-      org.gnome.settings-daemon.plugins.media-keys.custom-keybindings =
-        keybindings (x.keybindings or []);
+    services.xserver.desktopManager.gnome.extraGSettingsOverrides = let
+      kb = keybindings (x.keybindings or []);
+    in dconfFamiliar (x.config or {}) + lib.optionalString (x.keybindings or [] != []) (''
+    [org.gnome.settings-daemon.plugins.media-keys]
+    custom-keybindings=[${lib.concatStringsSep "," (map (x:
+        "'/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/${x}/'"
+      ) (lib.attrNames kb)
+    )}]
+    '' + dconfFamiliar {
+      org.gnome.settings-daemon.plugins.media-keys.custom-keybindings = kb;
     });
   };
 in parse {
@@ -140,7 +147,7 @@ in parse {
         default-focus-mode = 0;
         open-window-position = 0; # right
         keybindings.toggle-scratch = [ "<Shift><Super>space" ];
-        show-workspace-indikator = false; # if false = indicator pills
+        show-workspace-indicator = false; # if false = indicator pills
       };
 
       extensions.system-monitor = {
