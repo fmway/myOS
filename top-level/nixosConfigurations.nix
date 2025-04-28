@@ -36,6 +36,9 @@ in {
       modules = defaultModules ++ [
         { data.isMinimal = true; }
       ];
+      disableModules = [
+        ../programs/cli/nixvim.nix
+      ];
       users.fmway = { pkgs, ... }: { shell = pkgs.fish; };
       withHM = [ "fmway" ];
       sharedHM = true;

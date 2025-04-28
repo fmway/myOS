@@ -18,6 +18,7 @@ in
         inherit variables;
         folder = ./.;
         max = 1;
+        excludes = config.data.disableModules or [];
       };
     }
   ];

@@ -16,6 +16,7 @@ let
       (filename "config")
     ];
     inherit variables;
+    excludes = config.data.disableModules or [];
   };
 in {
   config = lib.mkIf (! config.data.isMinimal or false) {
