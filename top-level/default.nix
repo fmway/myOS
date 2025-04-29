@@ -83,9 +83,7 @@
     in lib.nixosSystem {
       inherit system;
       inherit (generatedSpecialArgs) specialArgs;
-      modules = modules ++ lib.optionals (lib.all (x: isNull (lib.match "^${toString ../.}/programs(/cli(/nixvim)?)?.*" (toString x))) disableModules) [
-        inputs.nvchad.nixosModules.default
-      ] ++ [
+      modules = modules ++ [
           ({ pkgs, lib, ... } @ vars: {
             data = { inherit disableModules defaultUser; };
             nixpkgs.overlays = [ (_: _: {
