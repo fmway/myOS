@@ -6,6 +6,13 @@ let
 in {
   "lg" = "lazygit";
 
+  "rkol" = "set_color -o (tr -dc 'A-Fa-f0-9' </dev/urandom | head -c 6 ; echo)";
+  ":q" = "exit";
+  "q" = "exit";
+  ":q!" = "exit";
+  "..." = "cd ../..";
+  "urldecode" = "sed \"s@+@ @g;s@%@\\\\x@g\" | xargs -0 printf \"%b\"";
+
   ":id"   = with-cursor "trans :id '!'";
   "id:en" = with-cursor "trans id:en '!'";
   ":en"   = with-cursor "trans :en '!'";
