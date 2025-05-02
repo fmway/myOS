@@ -55,6 +55,10 @@ in
   services = {
     clipman.enable = true; # clipboard manager
     clipman.systemdTarget = "sway-session.target";
+    lorri = {
+      enable = true;
+      enableNotifications = true;
+    };
   };
 
   features = {
