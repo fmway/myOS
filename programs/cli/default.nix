@@ -78,9 +78,5 @@
   programs.fish.useBabelfish = true;
   programs.git.enable = true;
 
-  programs.fish.shellAbbrs."non" = ''
-    cd /etc/nixos
-    doas /run/current-system/sw/bin/nvim
-    cd -
-  '';
+  programs.fish.shellAbbrs."non" = /* fish */ ''doas nvim +"tcd /etc/nixos"'';
 }

@@ -35,7 +35,7 @@
   package-overlay = self: super: lib.infuse super (treeImport {
     folder = ./.;
     variables = variables // { inherit self super; };
-    excludes = [
+    excludes = (config.data.disableModules or []) ++ [
       # "qutebrowser"
     ];
   });

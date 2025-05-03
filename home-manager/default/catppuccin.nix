@@ -28,4 +28,5 @@ in toCatppuccinFriendly [
   { swaylock.mocha = ""; }
   "qutebrowser"
   "zed"
+  "ghostty"
 ]

@@ -18,6 +18,7 @@ in
         inherit variables;
         folder = ./.;
         max = 1;
+        excludes = config.data.disableModules or [];
       };
     }
   ];
@@ -54,6 +55,10 @@ in
   services = {
     clipman.enable = true; # clipboard manager
     clipman.systemdTarget = "sway-session.target";
+    lorri = {
+      enable = true;
+      enableNotifications = true;
+    };
   };
 
   features = {

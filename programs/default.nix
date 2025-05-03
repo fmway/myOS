@@ -89,5 +89,7 @@ in {
   {
     folder = [ ./cli ./gui ./games ];
     inherit variables;
+    excludes = (config.data.disableModules or []) ++ [
+    ];
   };
 }

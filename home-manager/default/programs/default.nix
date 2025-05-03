@@ -32,4 +32,11 @@
     enable = true;
     package = pkgs.swaylock-effects;
   };
+
+  direnv.enable = true;
+  direnv.stdlib = /* sh */ ''
+    use_lorri() {
+      eval "$(lorri direnv $@)"
+    }
+  '';
 }

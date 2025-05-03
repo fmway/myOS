@@ -3,10 +3,6 @@
 
   # Override default Dconf settings.
   services.xserver.desktopManager.gnome = {
-    extraGSettingsOverrides = "
-      [org.gnome.desktop.peripherals.touchpad]
-      tap-to-click=true
-    ";
     extraGSettingsOverridePackages = with pkgs;[
       gsettings-desktop-schemas # for org.gnome.desktop
       gnome-shell # for org.gnome.shell
