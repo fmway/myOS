@@ -30,6 +30,7 @@
     # TODO
     # nix-colors.url = "github:misterio77/nix-colors";
     home-manager.url = "github:nix-community/home-manager/master";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
     # nixgl.url = "github:nix-community/NixGL";
     nur.url = "github:nix-community/nur";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
@@ -47,9 +48,9 @@
       specialArgs = {
         lib = [
           home-manager.lib
-          nxchad.lib
           {
             inherit (fmway-nix) infuse;
+            inherit (nxchad.lib) nixvim;
           }
           (self: super: import ./lib { lib = self; })
         ];
