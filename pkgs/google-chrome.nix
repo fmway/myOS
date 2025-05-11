@@ -1,5 +1,5 @@
-x: x.override {
-  commandLineArgs = [
+{
+  __input.commandLineArgs.__append = [
     "--enable-features=VaapiVideoDecodeLinuxGL,TouchpadOverscrollHistoryNavigation"
     "--use-gl=angle"
     "--use-angle=gl"

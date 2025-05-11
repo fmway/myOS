@@ -15,6 +15,9 @@
       } // acc) obj arr;
     in overlayNixpkgs [ "master" "24_05" "24_11" ] {};
   in {
+    nixpkgs.config = {
+      allowUnfree = true;
+    };
     nixpkgs.overlays = with inputs; [
       self.overlays.default
       nixpkgs-overlay
