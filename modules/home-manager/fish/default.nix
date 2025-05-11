@@ -1,0 +1,23 @@
+{ internal, lib, fmway ? lib.fmway, ... }:
+{ lib, ... }:
+{
+  programs.fish.enable = lib.mkDefault true;
+  programs.fish.interactiveShellInit = /* fish */ ''
+    set fish_greeting # Disable greeting
+    printf '\e[5 q'
+  '';
+
+  programs.fish.functions = let
+    dir = ./functions;
+    scanned = builtins.readDir dir;
+    filtered = lib.filterAttrs (p: t:
+      t == "regular" && lib.hasSuffix ".fish" p
+    ) scanned;
+  in lib.mapAttrs' (x: _: let
+    name = lib.removeSuffix ".fish" x;
+    content = lib.fileContents "${dir}/${x}";
+    value = fmway.parseFish content;
+  in 
+    lib.nameValuePair name value
+  ) filtered;
+}
