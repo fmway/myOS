@@ -47,7 +47,7 @@
             # (lib.flip removeAttrs [ "system-features" ])
             # (lib.attrNames)
             (map (x: /* sh */ ''
-              echo ${x} = ${lib.concatStringsSep " " settings.${x}};
+              echo ${x} = ${lib.concatStringsSep " " settings.${x} or []};
             ''))
             (lib.concatStringsSep "")
           ]}
@@ -57,7 +57,10 @@
       generateNixConf = {
         type = "app";
         program = let
-          inherit (config.flake.nixConfig) substituters trusted-public-keys experimental-features;
+          inherit (config.flake) nixConfig;
+          substituters = nixConfig.substituters or [];
+          trusted-public-keys = nixConfig.trusted-public-keys or [];
+          experimental-features = nixConfig.experimental-features or [];
         in pkgs.writeScriptBin "nixConf.sh" /* sh */ ''
           #!${lib.getExe pkgs.bash}
           FLAKE=''${1:-$PWD/flake.nix}
