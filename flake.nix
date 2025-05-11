@@ -33,25 +33,29 @@
     # nixgl.url = "github:nix-community/NixGL";
     nur.url = "github:nix-community/nur";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    systems.url = "github:nix-systems/default";
   };
 
-  outputs = { flake-parts, home-manager, nixpkgs, fmway-nix, ... } @ inputs: let
-    inherit (inputs) self;
-  in flake-parts.lib.mkFlake {
+  outputs = { home-manager, fmway-nix, ... } @ inputs: let
+    inherit (fmway-nix) lib;
+  in lib.mkFlake {
       inherit inputs;
       specialArgs = {
-        lib = nixpkgs.lib.extend (_: _: {
-          inherit (home-manager.lib) hm;
-          flake-parts = flake-parts.lib;
-          fmway = fmway-nix.fmway // self.lib;
-          inherit (fmway-nix) infuse;
-        });
+        lib = [
+          home-manager.lib
+          {
+            inherit (fmway-nix) infuse;
+          }
+          (self: super: import ./lib { lib = self; })
+        ];
       };
     } {
-      systems = [ "x86_64-linux" "aarch64-linux" ];
-      imports = [
-        ./top-level
-        ({ lib, ... }: { _module.args.version = lib.fileContents ./.version; })
+      imports = lib.fmway.genImports ./top-level ++ [
+        ({ self, config, modulesPath, lib, ... } @ v: {
+          flake = lib.fmway.genModules ./modules v;
+          _module.args.modulesPath = "${self.outPath}/modules";
+        })
+        ({ lib, ... }: { flake = { inherit lib; }; })
       ];
     };
   nixConfig = {

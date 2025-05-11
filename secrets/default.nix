@@ -1,22 +1,20 @@
 # Hidden secrets using agenix
 { lib, config, ... }:
 let
-  inherit (builtins) isList elemAt attrNames match toString listToAttrs length;
-
   getNameAge = value: let
-    matched = match "^(.*)\\.age$" (toString value);
-  in if isList matched then baseNameOf (elemAt matched 0) else matched;
+    matched = lib.match "^(.*)\\.age$" (toString value);
+  in if lib.isList matched then baseNameOf (lib.elemAt matched 0) else matched;
 
   folder = ./.;
 
   resultAges = import ./secrets.nix;
-  files = attrNames resultAges;
+  files = lib.attrNames resultAges;
 
   # all /etc/nixos/secrets/<file>.age will be imported to age.secrets.<file>
-  age.secrets = listToAttrs (map (file: rec {
+  age.secrets = lib.listToAttrs (map (file: rec {
     name = getNameAge file;
     value = let
-      isOwnedUser = name == config.data.defaultUser;
+      isOwnedUser = name == "fmway";
     in {
       file = folder + ("/" + file);
       path = "/etc/secrets/${name}";

@@ -1,7 +1,8 @@
-{ inputs, lib, ... }:
+{ inputs, config, lib, ... }:
 {
   flake.nixConfig = let
     pkgs = {};
+    excludes = [ "allowed-users" "system-features" "trusted-users" "cores" "auto-optimise-store" "max-jobs" "require-sigs" "sandbox" "extra-sandbox-paths" "gc" ];
     module = lib.evalModules {
       modules = [
         ({ config, ... }: {
@@ -9,13 +10,8 @@
             (import "${inputs.nixpkgs}/nixos/modules/config/nix.nix"
               { inherit lib config pkgs; }).options.nix.settings;
         })
-        ../cachix.nix
-        ({ config, ... }: {
-          nix = {
-            inherit (import ../systems/nix.nix { inherit lib config pkgs inputs; })
-            settings;
-          };
-        })
+        config.flake.nixosModules.cachix
+        # config.flake.nixosModules.nix
         {
           nix.settings.trusted-public-keys = [
             "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -24,5 +20,5 @@
       ];
       specialArgs = { inherit pkgs lib; };
     };
-  in module.config.nix.settings;
+  in removeAttrs module.config.nix.settings excludes;
 }
