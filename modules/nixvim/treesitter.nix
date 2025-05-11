@@ -1,0 +1,88 @@
+{ pkgs, ... }:
+{
+  plugins.treesitter.nixvimInjections = true;
+  plugins.treesitter.settings.auto_install = false;
+
+  # plugins.treesitter.folding = true;
+  plugins.treesitter.settings.indent.enable = false;
+  plugins.treesitter.settings.highlight.enable = true;
+  # plugins.treesitter.nixvimInjections = true;
+  # plugins.treesitter.nixGrammars = true;
+  plugins.treesitter.grammarPackages =
+    (builtins.map (x: pkgs.vimPlugins.nvim-treesitter.builtGrammars.${x})
+      [
+        "asm"
+        "bash"
+        "c"
+        "cmake"
+        "comment"
+        "css"
+        "dhall"
+        "diff"
+        "dockerfile"
+        "dot"
+        "fish"
+        "git_config"
+        "git_rebase"
+        "gitattributes"
+        "gitcommit"
+        "gitignore"
+        "go"
+        "gomod"
+        "gosum"
+        "gotmpl"
+        "gpg"
+        "graphql"
+        "haskell"
+        "haskell_persistent"
+        "hcl"
+        "helm"
+        "html"
+        "http"
+        "javascript"
+        "jq"
+        "jsdoc"
+        "json"
+        "latex"
+        "lua"
+        "luadoc"
+        "luap"
+        "luau"
+        "make"
+        "markdown"
+        "markdown_inline"
+        "mermaid"
+        "nix"
+        "norg"
+        "ocaml"
+        "ocaml_interface"
+        "ocamllex"
+        "passwd"
+        "po"
+        "proto"
+        "pymanifest"
+        "python"
+        "query"
+        "regex"
+        "rust"
+        "rescript"
+        "scheme"
+        "sql"
+        "ssh_config"
+        "templ"
+        "terraform"
+        "textproto"
+        "tmux"
+        "todotxt"
+        "toml"
+        "tsx"
+        "typescript"
+        "udev"
+        "vhs"
+        "vim"
+        "vimdoc"
+        "xml"
+        "yaml"
+      ]) ++ [
+  ];
+}

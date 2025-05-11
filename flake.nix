@@ -34,15 +34,20 @@
     nur.url = "github:nix-community/nur";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     systems.url = "github:nix-systems/default";
+    nxchad.url = "github:fmway/nxchad";
+    nxchad.inputs.nixpkgs.follows = "nixpkgs";
+    nixvim.url = "github:nix-community/nixvim";
+    nixvim.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { home-manager, fmway-nix, ... } @ inputs: let
+  outputs = { home-manager, nxchad, fmway-nix, ... } @ inputs: let
     inherit (fmway-nix) lib;
   in lib.mkFlake {
       inherit inputs;
       specialArgs = {
         lib = [
           home-manager.lib
+          nxchad.lib
           {
             inherit (fmway-nix) infuse;
           }
