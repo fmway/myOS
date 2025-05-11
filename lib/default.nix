@@ -1,5 +1,17 @@
-{ lib, ... }:
-{
+{ lib, ... }: let
+  pars = min: val:
+    if val > min then
+      "[${toString min}-${toString val}]"
+    else "${toString min}";
+in {
+  genRegex = x: assert lib.isInt x && x <= 100; let
+    dig  = builtins.floor (x / 10);
+    rest = lib.mod x 10;
+  in lib.optionalString (dig >= 1) "[0-9]|"
+   + lib.optionalString (dig > 1) "${pars 1 (dig - 1)}[0-9]|"
+   + lib.optionalString (rest == 0) "${toString x}"
+   + lib.optionalString (rest != 0 && dig != 0) (toString dig)
+   + lib.optionalString (rest != 0) "[0-${toString rest}]";
   mkFishPath = pkgs:
     lib.pipe pkgs [
       (lib.makeBinPath)

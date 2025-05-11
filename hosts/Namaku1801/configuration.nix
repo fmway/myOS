@@ -14,6 +14,13 @@
     agenix.nixosModules.default
     selfConfig.flake.nixosModules.default
     fmpkgs.nixosModules.default
+    inputs.nixvim.nixosModules.nixvim
+    inputs.nxchad.nixosModules.nixvim
+  ];
+
+  programs.nixvim.enable = true;
+  programs.nixvim.imports = [
+    selfConfig.flake.nixvimModules.default
   ];
 
   environment.systemPackages = with pkgs; [

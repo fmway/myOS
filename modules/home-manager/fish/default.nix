@@ -1,6 +1,7 @@
 { internal, lib, fmway ? lib.fmway, ... }:
 { lib, ... }:
 {
+  programs.fish.generateCompletions = lib.mkDefault false; # dont create fish completions by manpage, very very useless
   programs.fish.enable = lib.mkDefault true;
   programs.fish.interactiveShellInit = /* fish */ ''
     set fish_greeting # Disable greeting
