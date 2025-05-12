@@ -19,6 +19,10 @@
     lix-module.nixosModules.default
   ];
 
+  nix.settings.experimental-features = [
+    ("pipe-operator" + lib.optionalString (!config.lix.enable) "s")
+  ];
+
   programs.nixvim.enable = true;
   programs.nixvim.imports = [
     selfConfig.flake.nixvimModules.default
