@@ -1,3 +1,4 @@
+
 {
   description = "My NixOS configuration";
   # Inputs
@@ -30,6 +31,7 @@
     # TODO
     # nix-colors.url = "github:misterio77/nix-colors";
     home-manager.url = "github:nix-community/home-manager/master";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
     # nixgl.url = "github:nix-community/NixGL";
     nur.url = "github:nix-community/nur";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
@@ -38,6 +40,10 @@
     nxchad.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { home-manager, nxchad, fmway-nix, ... } @ inputs: let
@@ -47,9 +53,9 @@
       specialArgs = {
         lib = [
           home-manager.lib
-          nxchad.lib
           {
             inherit (fmway-nix) infuse;
+            inherit (nxchad.lib) nixvim;
           }
           (self: super: import ./lib { lib = self; })
         ];
@@ -66,22 +72,27 @@
   nixConfig = {
     extra-trusted-substituters = [
       "https://cache.nixos.org/"
-      "https://chaotic-nyx.cachix.org"
-      "https://devenv.cachix.org"
-      "https://fmcachix.cachix.org"
       "https://nix-community.cachix.org"
+      "https://cache.lix.systems"
+      "https://fmcachix.cachix.org"
+      "https://devenv.cachix.org"
+      "https://chaotic-nyx.cachix.org"
+      "https://catppuccin.cachix.org"
     ];
     extra-trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
-      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-      "fmcachix.cachix.org-1:Z5j9jk83ctoCK22EWrbQL6AAP3CTYnZ/PHljlYSakrw="
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
+      "fmcachix.cachix.org-1:Z5j9jk83ctoCK22EWrbQL6AAP3CTYnZ/PHljlYSakrw="
+      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+      "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+      "catppuccin.cachix.org-1:noG/4HkbhJb+lUAdKrph6LaozJvAeEEZj4N732IysmU="
     ];
     extra-experimental-features = [
       "nix-command"
       "flakes"
-      "pipe-operators"
     ];
   };
 }
+

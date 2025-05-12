@@ -14,8 +14,9 @@
     agenix.nixosModules.default
     selfConfig.flake.nixosModules.default
     fmpkgs.nixosModules.default
-    inputs.nixvim.nixosModules.nixvim
-    inputs.nxchad.nixosModules.nixvim
+    nixvim.nixosModules.nixvim
+    nxchad.nixosModules.nixvim
+    lix-module.nixosModules.default
   ];
 
   programs.nixvim.enable = true;

@@ -69,11 +69,11 @@
 
   services.udev.extraRules = /* udev */ ''
     ACTION=="change", \
-    SUBSYSTEM=="power_supply", \
-    ENV{POWER_SUPPLY_NAME}=="BAT*", \
-    ENV{POWER_SUPPLY_STATUS}=="Discharging", \
-    ATTR{capacity}=="${lib.genRegex (lib.attrByPath [ "data" "battery_limit" ] 10 config)}", \
-    TAG+="systemd", \
-    ENV{SYSTEMD_WANTS}="auto-shutdown.service"
+      SUBSYSTEM=="power_supply", \
+      ENV{POWER_SUPPLY_NAME}=="BAT*", \
+      ENV{POWER_SUPPLY_STATUS}=="Discharging", \
+      ATTR{capacity}=="${lib.genRegex (lib.attrByPath [ "data" "battery_limit" ] 10 config)}", \
+      TAG+="systemd", \
+      ENV{SYSTEMD_WANTS}="auto-shutdown.service"
   '';
 }
