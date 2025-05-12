@@ -10,7 +10,7 @@
             (import "${inputs.nixpkgs}/nixos/modules/config/nix.nix"
               { inherit lib config pkgs; }).options.nix.settings;
         })
-        config.flake.nixosModules.cachix
+        config.flake.nixosModules.cache
         # config.flake.nixosModules.nix
         {
           nix.settings.trusted-public-keys = [
