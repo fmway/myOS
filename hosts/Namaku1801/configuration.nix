@@ -19,6 +19,10 @@
     lix-module.nixosModules.default
   ];
 
+  nix.settings.experimental-features = [
+    ("pipe-operator" + lib.optionalString (!config.lix.enable) "s")
+  ];
+
   programs.nixvim.enable = true;
   programs.nixvim.imports = [
     selfConfig.flake.nixvimModules.default
@@ -31,6 +35,10 @@
 
   home-manager.users.fmway.imports = [
     selfConfig.flake.homeConfs.fmway
+    {
+      # disable ~/.config/nix/nix.conf since that's is already define in /etc/nix/nix.conf
+      xdg.configFile."nix/nix.conf".enable = false;
+    }
   ];
 
   nixpkgs.overlays = [
