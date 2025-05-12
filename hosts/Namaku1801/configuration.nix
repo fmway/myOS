@@ -35,6 +35,10 @@
 
   home-manager.users.fmway.imports = [
     selfConfig.flake.homeConfs.fmway
+    {
+      # disable ~/.config/nix/nix.conf since that's is already define in /etc/nix/nix.conf
+      xdg.configFile."nix/nix.conf".enable = false;
+    }
   ];
 
   nixpkgs.overlays = [
