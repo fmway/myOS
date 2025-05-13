@@ -43,6 +43,12 @@ in {
   options.programs.fish.binds = lib.mkOption {
     type = lib.types.attrsOf bindsModule;
     default = {};
+    example = lib.literalExpression /* nix */ ''
+      {
+        "alt-s".command = "fish_commandline_prepend sudo";
+        "alt-shift-b".command = "fish_commandline_append bat";
+      }
+    '';
   };
   config = lib.mkIf cfg.enable {
     programs.fish.functions.fish_user_key_bindings = lib.mkIf (lib.length filtered > 0) result;

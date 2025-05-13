@@ -1,6 +1,6 @@
 {
   programs.fish.binds = {
-    "\\es".command = /* fish */ "fish_commandline_prepend doas";
+    "alt-s".command = /* fish */ "fish_commandline_prepend doas";
   };
 
   programs.fish.shellAbbrs = let
