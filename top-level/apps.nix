@@ -14,7 +14,7 @@
             gnused
           ])}
 
-          CTX=''${1:-$PWD/modules/nixos/stubby/__dns.json}
+          set -q argv[1] && set CTX $argv[1] || set CTX $PWD/modules/nixos/stuby/__dns.json
 
           set tmp_json "$(cat $CTX)"
           #
