@@ -7,8 +7,8 @@
     h-m-m.inputs.nixpkgs.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixos-24.05";
     nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-25_05.url = "github:NixOS/nixpkgs/nixos-24.05";
     master.url = "github:NixOS/nixpkgs";
     catppuccin.url = "github:catppuccin/nix";
     # TODO implement impermanence

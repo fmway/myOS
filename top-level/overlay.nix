@@ -42,7 +42,7 @@
             inherit (config.nixpkgs) config;
           };
         } // acc) obj arr;
-      in overlayNixpkgs [ "master" "24_05" "24_11" ] {})
+      in overlayNixpkgs [ "master" "24_11" "25_05" ] {})
     ];
 
     legacyPackages = pkgs;
