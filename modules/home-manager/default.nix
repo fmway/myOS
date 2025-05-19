@@ -3,10 +3,6 @@
 {
   _file = ./default.nix;
   imports = allModules;
-  home.stateVersion = (with builtins;
-    fromJSON (
-      readFile "${inputs.home-manager}/release.json"
-    )).release;
 
   nix.package = lib.mkDefault pkgs.nix;
 
