@@ -1,9 +1,7 @@
 { internal, allModules, ... }:
-{ inputs ? {}, lib, ... }: let
-  version = lib.fileContents "${inputs.nixpkgs}/lib/.version";
-in {
+{ inputs ? {}, lib, ... }:
+{
   _file = ./default.nix;
-  system.stateVersion = lib.mkDefault version;
   imports = allModules ++ [
     inputs.fmway-nix.nixosModules.default
   ];
