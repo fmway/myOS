@@ -54,7 +54,7 @@
         lib = [
           home-manager.lib
           {
-            inherit (fmway-nix) infuse;
+            inherit (fmway-nix) infuse readTree;
             inherit (nxchad.lib) nixvim;
           }
           (self: super: import ./lib { lib = self; })
