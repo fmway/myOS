@@ -121,7 +121,7 @@ in { pkgs, ... }:
           '';
         }
         {
-          __unkeyed-1 = "<leader>ts";
+          __unkeyed-1 = "<leader>td";
           __unkeyed-2 = mkRawFn /* lua */ ''
             require("typr.stats").open()
           '';

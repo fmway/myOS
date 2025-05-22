@@ -53,7 +53,7 @@
         "markdown_inline"
         "mermaid"
         "nix"
-        "norg"
+        # "norg"
         "ocaml"
         "ocaml_interface"
         "ocamllex"

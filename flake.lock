@@ -383,14 +383,15 @@
         "infuse-nix": "infuse-nix",
         "nixpkgs": [
           "nixpkgs"
-        ]
+        ],
+        "read-tree": "read-tree"
       },
       "locked": {
-        "lastModified": 1747219589,
-        "narHash": "sha256-PjWUHe1N8Cc7B2KP+cWF4aJcSKUp0sUKXaDH0Zapysc=",
+        "lastModified": 1747786568,
+        "narHash": "sha256-guOhJ0DZK9HO79+ooDyrBDamkwk/5/gytpVV9wTn2aQ=",
         "owner": "fmway",
         "repo": "fmway.nix",
-        "rev": "39c63d2e7c9a8b0b2ba2c340a8bfaf2398b6faa6",
+        "rev": "15420eda75cbc96df5c66da11daf918d457051a9",
         "type": "github"
       },
       "original": {
@@ -1011,6 +1012,18 @@
         "owner": "fmway",
         "repo": "nxchad",
         "type": "github"
+      }
+    },
+    "read-tree": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-ck7TY8bBNft80Qz8oldx+1LSVytTG9y7SLV9vT18eAo=",
+        "type": "file",
+        "url": "https://code.tvl.fyi/plain/nix/readTree/default.nix"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://code.tvl.fyi/plain/nix/readTree/default.nix"
       }
     },
     "root": {
