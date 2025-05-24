@@ -1,8 +1,4 @@
 {
-  programs.fish.binds = {
-    "alt-s".command = /* fish */ "fish_commandline_prepend doas";
-  };
-
   programs.fish.shellAbbrs = let
     with-cursor = str: {
       setCursor = "!";

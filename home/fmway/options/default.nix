@@ -2,7 +2,6 @@
 {
   imports = [
     ./files.nix
-    ./fish.nix
     ./home-environment.nix
   ];
 }
