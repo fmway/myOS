@@ -1,4 +1,4 @@
-{ lib, ... }: let
+{ lib, super, ... }: let
   pars = min: val:
     if val > min then
       "[${toString min}-${toString val}]"
@@ -60,4 +60,8 @@ in {
     lib.foldl' (acc: name: let
       opts = if lib.isAttrs options then options else options name;
     in  acc // lib.genUser name opts) {} users;
+
+  nixvim = super.nixvim.extend (se: su: {
+    toLuaObject' = x: if isNull x then "" else se.toLuaObject x;
+  });
 }
