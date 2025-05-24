@@ -132,8 +132,6 @@ in { pkgs, ... }:
   nvchad.config.base46.theme = "starlight";
   nvchad.config.base46.second_theme = "gruvbox_light";
 
-  plugins.blink-cmp.settings.sources.default = [ "cmdline" "omni" ];
-
   plugins.toggleterm = {
     enable = true;
     lazyLoad.enable = true;
