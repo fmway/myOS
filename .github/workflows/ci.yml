@@ -126,12 +126,12 @@ jobs:
         extra-conf: |
           ${{ steps.nix.outputs.CONF }}
     - name: Build
-      run: nix build .#nixosConfigurations.Namaku1801.config.system.build.toplevel --verbose
+      run: nix run nixpkgs#nixos-rebuild -- build --flake .#Namaku1801 --verbose
     - name: Info
       run: nix path-info -Sh ./result
 
   auto-merge:
-    needs: [ swayfx, gnome-session ]
+    needs: [ nixos ]
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' && !cancelled() && success() && !contains(needs.*.result, 'skipped') }}
     steps:
