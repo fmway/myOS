@@ -1,10 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, ... }:
 {
-  programs.kdeconnect = {
-    enable = lib.mkDefault true;
-
-    # add gsconnect connection configuration
-    package = lib.mkIf config.services.xserver.desktopManager.gnome.enable
-      pkgs.gnomeExtensions.gsconnect;
-  };
+  programs.kdeconnect.enable = lib.mkDefault true;
 }

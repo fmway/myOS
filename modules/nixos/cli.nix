@@ -58,7 +58,7 @@
     nmap # hem...
     # wayvnc # vnc for wayland / especially wlroots
     flyctl # fly.io management in terminal
-    wrangler # cloudflare worker management in terminal
+    # wrangler # cloudflare worker management in terminal
     devbox # alternative docker for development
     devenv # also this
     systemctl-tui # management systemd using tui

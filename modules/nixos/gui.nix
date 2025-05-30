@@ -1,6 +1,5 @@
-{ pkgs, lib, config, ... }: let
-  isGnomeEnabled = config.services.xserver.desktopManager.gnome.enable;
-in {
+{ pkgs, lib, config, ... }:
+{
   environment.systemPackages = with pkgs; [
     # session-desktop
     # protonmail-desktop
@@ -21,28 +20,7 @@ in {
     # terminal
     # contour
     # wezterm
-  ] ++ lib.optionals isGnomeEnabled [
-    dconf-editor
-    gnome-tweaks
-    evolution
-    # gdm-settings
-    gnome-extension-manager
-  ] ++ lib.optionals isGnomeEnabled (with gnomeExtensions; [
-    paperwm
-    appindicator
-    clipboard-indicator
-    thinkpad-battery-threshold
-    blur-my-shell
-    # net-speed
-    lilypad
-    emoji-copy
-    day-progress
-    totp
-    # bing-wallpaper-changer
-    # cloudflare-warp-toggle
-    system-monitor
-    weather-oclock
-  ]);
+  ];
 
   # programs.winbox = {
   #   enable = true;

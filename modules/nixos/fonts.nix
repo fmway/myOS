@@ -100,7 +100,7 @@
     aggregatedIcons = pkgs.buildEnv {
       name = "system-icons";
       paths = with pkgs;
-      lib.optionals (config.services.xserver.desktopManager.gnome.enable) [
+      lib.optionals (config.services.desktopManager.gnome.enable) [
         gnome-themes-extra
       ]
       ++ lib.optionals (config.services.desktopManager.plasma6.enable) [
