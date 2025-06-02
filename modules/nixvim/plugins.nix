@@ -132,6 +132,12 @@ in { pkgs, ... }:
   nvchad.config.base46.theme = "starlight";
   nvchad.config.base46.second_theme = "gruvbox_light";
 
+  plugins.typst-preview = {
+    enable = true;
+    lazyLoad.enable = true;
+    lazyLoad.settings.ft = "typst";
+  };
+
   plugins.toggleterm = {
     enable = true;
     lazyLoad.enable = true;
