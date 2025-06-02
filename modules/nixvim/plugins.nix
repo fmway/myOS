@@ -228,6 +228,10 @@ in { pkgs, ... }:
 
   plugins.smear-cursor = {
     enable = true;
+    settings = {
+      stiffness = 0.5;
+      trailing_stiffness = 0.49;
+    };
     lazyLoad.enable = true;
     lazyLoad.settings = {
       event = "BufEnter";
