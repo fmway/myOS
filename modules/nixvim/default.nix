@@ -3,6 +3,7 @@
 {
   imports = allModules;
   luaLoader.enable = true;
+  dependencies.gcc.enable = true;
 
   # add some filetype alias
   filetype.filename = {
