@@ -90,5 +90,13 @@
         }, { bufnr = bufnr })
       end, { desc = "[T]inymist [U]npin", noremap = true })
     '';
+    prismals = {
+      enable = true;
+      # TODO
+      package = null;
+      cmd = [ "prisma-language-server" "--stdio" ];
+      filetypes = [ "prisma" ];
+      rootMarkers = [ ".git" "package.json" "deno.json" "tsconfig.json" "deno.jsonc" ];
+    };
   };
 }
