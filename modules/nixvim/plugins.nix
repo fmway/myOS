@@ -182,6 +182,7 @@ in { pkgs, ... }:
     # lazyLoad.settings.event = "BufEnter";
     modules = {
       surround = {};
+      align = {};
     };
   };
 
