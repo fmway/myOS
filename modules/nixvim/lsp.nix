@@ -2,12 +2,21 @@
 { config, ... }:
 {
   plugins.lsp.luaConfig.pre = lib.mkMerge [
-    (lib.nixvim.mkLuaFn' "myNixd" /* lua */ ''
-      local NIXD_PATH, result = vim.env.NIXD_PATH, vim.tbl_deep_extend("force", { nixpkgs = { expr = "import <nixpkgs> {}", }, options = {}, }, ${lib.nixvim.toLuaObject (removeAttrs config.plugins.lsp.servers.nixd.settings [ "__raw" ])})
+    (let
+      final = lib.nixvim.toLuaObject (removeAttrs config.plugins.lsp.servers.nixd.settings [ "__raw" ]);
+    in lib.nixvim.mkLuaFn' "myNixd" /* lua */ ''
+      local NIXD_PATH, result = vim.env.NIXD_PATH, vim.tbl_deep_extend("force", { nixpkgs = { expr = "import <nixpkgs> {}", }, options = {}, }, ${final})
+      local NIXD_PATH, result = vim.env.NIXD_PATH, { nixpkgs = { expr = "import <nixpkgs> {}", }, options = {}, }
 
       if NIXD_PATH == nil or NIXD_PATH == "" then return result end
+      NIXD_PATH = NIXD_PATH .. ":" -- fix for single path
+
       -- format <name>=<flake>#<outputs>....
+      -- FIXME handle extract for flake:<xxx> github:<xxx>, ...
       NIXD_PATH:gsub("[^:]+", function (e)
+        if e == "" then
+          return
+        end
         local tmp, name, source, path, res = {}, nil, nil , nil, nil
         for i in string.gmatch(e, "[^=]+") do table.insert(tmp, i) end
         name = tmp[1]
