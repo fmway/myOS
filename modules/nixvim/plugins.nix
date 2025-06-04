@@ -12,7 +12,7 @@ in { pkgs, ... }:
     nvzone-typr
     vim-startuptime
     # vim-markdown-composer
-    kitty-scrollback-nvim
+    # kitty-scrollback-nvim
     (pkgs.vimUtils.buildVimPlugin {
       pname = "showkeys";
       version = "1.0.0";
@@ -53,18 +53,18 @@ in { pkgs, ... }:
   '';
 
   plugins.lz-n.plugins = [
-    (let
-      opts = {};
-    in {
-      __unkeyed-1 = "kitty-scrollback-nvim";
-      cmd = [ "KittyScrollbackGenerateKittens" "KittyScrollbackCheckHealth" "KittyScrollbackGenerateCommandLineEditing" ];
-      event = [ "User KittyScrollbackLaunch" ];
-      after.__raw = ''
-        function()
-          require("kitty-scrollback").setup(${lib.optionalString (opts != {}) (toLuaObject opts)})
-        end
-      '';
-    })
+    # (let
+    #   opts = {};
+    # in {
+    #   __unkeyed-1 = "kitty-scrollback-nvim";
+    #   cmd = [ "KittyScrollbackGenerateKittens" "KittyScrollbackCheckHealth" "KittyScrollbackGenerateCommandLineEditing" ];
+    #   event = [ "User KittyScrollbackLaunch" ];
+    #   after.__raw = ''
+    #     function()
+    #       require("kitty-scrollback").setup(${lib.optionalString (opts != {}) (toLuaObject opts)})
+    #     end
+    #   '';
+    # })
     (let
       opts = {
         timeout = 2;
@@ -76,13 +76,13 @@ in { pkgs, ... }:
       __unkeyed-1 = "showkeys";
       # event = [ "BufEnter" ];
       cmd = [ "ShowkeysToggle" ];
-      after = mkRawFn /* lua */ ''
+      after = mkRawFn ''
         require("showkeys").setup(${toLuaObject opts})
       '';
       keys = [
         {
           __unkeyed-1 = "<leader>st";
-          __unkeyed-2 = mkRawFn /* lua */ ''
+          __unkeyed-2 = mkRawFn ''
             require("showkeys").toggle()
           '';
         }
@@ -93,13 +93,13 @@ in { pkgs, ... }:
     in {
       __unkeyed-1 = "timerly";
       cmd = [ "TimerlyToggle" ];
-      after = mkRawFn /* lua */ ''
+      after = mkRawFn ''
         require("timerly").setup(${toLuaObject opts})
       '';
       keys = [
         {
           __unkeyed-1 = "<leader>sw";
-          __unkeyed-2 = mkRawFn /* lua */ ''
+          __unkeyed-2 = mkRawFn ''
             require("timerly").toggle()
           '';
         }
@@ -110,19 +110,19 @@ in { pkgs, ... }:
     in {
       __unkeyed-1 = "typr";
       cmd = [ "Typr" "TyprStats" ];
-      after = mkRawFn /* lua */ ''
+      after = mkRawFn ''
         require("typr").setup(${toLuaObject opts})
       '';
       keys = [
         {
           __unkeyed-1 = "<leader>ty";
-          __unkeyed-2 = mkRawFn /* lua */ ''
+          __unkeyed-2 = mkRawFn ''
             require("typr").open()
           '';
         }
         {
           __unkeyed-1 = "<leader>td";
-          __unkeyed-2 = mkRawFn /* lua */ ''
+          __unkeyed-2 = mkRawFn ''
             require("typr.stats").open()
           '';
         }
@@ -156,7 +156,7 @@ in { pkgs, ... }:
     lazyLoad.settings.keys = [
       {
         __unkeyed-1 = "<leader>lg";
-        __unkeyed-2 = mkRawFn /* lua */ ''
+        __unkeyed-2 = mkRawFn ''
           _lazygit_toggle()
         '';
         desc = "Lazygit Toggle";
@@ -165,15 +165,15 @@ in { pkgs, ... }:
     settings = {
       direction = "float";
       float_opts.border = "double";
-      on_open = mkLuaFn [ "term" ] /* lua */ ''
+      on_open = mkLuaFn [ "term" ] ''
         vim.cmd("startinsert!")
         vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
       '';
-      on_close = mkLuaFn [ "term" ] /* lua */ ''
+      on_close = mkLuaFn [ "term" ] ''
         vim.cmd("startinsert!")
       '';
     };
-    luaConfig.post = /* lua */ ''
+    luaConfig.post = ''
       local Terminal  = require('toggleterm.terminal').Terminal
       local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 
