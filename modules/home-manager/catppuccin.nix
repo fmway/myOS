@@ -19,7 +19,6 @@
   ];
 
 in {
-  _file = ./catppuccin.nix;
   imports = [
     inputs.catppuccin.homeModules.catppuccin
   ];

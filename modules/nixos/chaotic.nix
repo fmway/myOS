@@ -1,6 +1,5 @@
 { inputs, lib, config, pkgs, ... }:
 {
-  _file = ./chaotic.nix;
   imports = [
     inputs.chaotic.nixosModules.default
   ];

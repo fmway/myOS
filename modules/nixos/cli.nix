@@ -1,6 +1,7 @@
-{ internal, config, selfConfig ? config, ... }:
+{ internal, config, selfConfig ? config, _file, ... }:
 { pkgs, ... }:
 {
+  inherit _file;
   nixpkgs.overlays = [
     selfConfig.flake.overlays.externalPackages
   ];

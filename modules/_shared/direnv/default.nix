@@ -1,7 +1,8 @@
-{ internal, name, inputs, selfInputs ? inputs, ... }:
+{ internal, _file, name, inputs, selfInputs ? inputs, ... }:
 { inputs, pkgs, config, lib, ... }: let
   direnvrc = builtins.readFile ./direnv.sh;
 in {
+  inherit _file;
   programs.direnv = lib.mkMerge [
     {
       enable = true;

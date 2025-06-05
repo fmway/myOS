@@ -62,9 +62,9 @@
       };
     } {
       imports = lib.fmway.genImports ./top-level ++ [
-        ({ self, config, modulesPath, lib, ... } @ v: {
+        ({ self, config, modulesPath, lib, ... } @ v: let
+        in {
           flake = lib.fmway.genModules ./modules v;
-          _module.args.modulesPath = "${self.outPath}/modules";
         })
         ({ lib, ... }: { flake = { inherit lib; }; })
       ];

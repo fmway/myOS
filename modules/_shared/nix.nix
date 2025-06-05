@@ -1,7 +1,7 @@
-{ internal, name, ... }:
+{ internal, _file, name, ... }:
 { lib, pkgs, ... }:
 {
-  _file = ./nix.nix;
+  inherit _file;
   nix.settings = {
     substituters = [];
     trusted-public-keys = [];

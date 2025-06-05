@@ -1,8 +1,9 @@
 # TODO add options `plugins.xxx`
-{ internal, lib, ... }: let
+{ internal, _file, lib, ... }: let
   inherit (lib.nixvim) toKeymaps toLuaObject mkLuaFn mkRawFn;
 in { pkgs, ... }:
 {
+  inherit _file;
   opts.relativenumber = true;
   nvchad.config.colorify.mode = "bg";
   extraPlugins = with pkgs.vimPlugins; [

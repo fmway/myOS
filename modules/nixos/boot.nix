@@ -3,7 +3,6 @@ let
   # limit boot entry
   configurationLimit = lib.mkDefault 15;
 in {
-  _file = ./boot.nix;
   boot = {
     loader = {
       efi.canTouchEfiVariables = lib.mkDefault config.boot.loader.systemd-boot.enable;

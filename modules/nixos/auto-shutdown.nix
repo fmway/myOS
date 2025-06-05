@@ -1,7 +1,7 @@
-{ internal, lib, ... }:
+{ internal, lib, _file, ... }:
 { pkgs, config, ... }:
 {
-  _file = ./auto-shutdown.nix;
+  inherit _file;
   systemd.services.auto-shutdown.script = lib.mkForce /* bash */ ''
     ctrl_c() {
       rm -rf /tmp/notify-shutdown
