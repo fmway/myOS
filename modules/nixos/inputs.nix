@@ -13,9 +13,9 @@ in {
 
   # register all inputs to nix registry
   nix.registry = lib.mapAttrs' (k: flake:
-    lib.nameValuePair (if k == "self" then "nixos" else k) {
+    lib.nameValuePair (if k == "self" then "nixos" else k) (lib.mkOverride 60 {
       inherit flake;
-    }
+    })
   ) finalInputs;
 
   # register all inputs to nixPath (for legacy nix)
