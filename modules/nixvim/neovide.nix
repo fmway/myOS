@@ -1,13 +1,5 @@
-{ internal, _file, lib, ... }: let
-  genAfter = cfg:
-    lib.concatStringsSep "\n" (
-      map (x: cfg.luaConfig.${x}) (lib.filter (x:
-        !isNull cfg.luaConfig.${x}
-      ) [ "pre" "content" "post" ])
-    );
-in { config, ... }:
+{ config, lib, ... }:
 {
-  inherit _file;
   config = lib.mkMerge [
     {
       opts = {
@@ -25,23 +17,33 @@ in { config, ... }:
     }
     (lib.mkIf config.plugins.neoscroll.enable {
       plugins.neoscroll.settings.performance_mode = true;
-      plugins.neoscroll = {
-        lazyLoad.settings.after = lib.nixvim.mkRawFn ''
-          if not vim.g.neovide then
-            ${lib.fmway.addIndent' "  " (genAfter config.plugins.neoscroll)}
-            --
-          end
-        '';
-      };
+      plugins.neoscroll.luaConfig.content = lib.mkMerge [
+        (lib.mkBefore "if not vim.g.neovide then")
+        (lib.mkAfter  "end")
+      ];
     })
     (lib.mkIf config.plugins.smear-cursor.enable {
-      plugins.smear-cursor.lazyLoad.settings.after = lib.nixvim.mkRawFn ''
-        --
-        if not vim.g.neovide then
-          ${lib.fmway.addIndent' "  " (genAfter config.plugins.smear-cursor)}
-          --
-        end
-      '';
+      plugins.smear-cursor.luaConfig.content = lib.mkMerge [
+        (lib.mkBefore /* lua */ "if not vim.g.neovide then")
+        (lib.mkAfter /* lua */ ''
+          else
+            vim.api.nvim_create_user_command("SmearCursorToggle", function()
+              -- TODO using state
+              if vim.g.neovide_cursor_animation_length == 0 then
+                vim.g.neovide_cursor_animation_length = ${lib.nixvim.toLuaObject config.globals.neovide_cursor_animation_length or 0.15}
+                vim.g.neovide_cursor_short_animation_length = ${lib.nixvim.toLuaObject config.globals.neovide_cursor_short_animation_length or null}
+                vim.g.neovide_cursor_vfx_mode = ${lib.nixvim.toLuaObject config.globals.neovide_cursor_vfx_mode or ""}
+                vim.g.neovide_cursor_trail_size = ${lib.nixvim.toLuaObject config.globals.neovide_cursor_trail_size or 1}
+              else
+                vim.g.neovide_cursor_animation_length = 0
+                vim.g.neovide_cursor_short_animation_length = 0
+                vim.g.neovide_cursor_vfx_mode = ""
+                vim.g.neovide_cursor_trail_size = 0
+              end
+            end, {})
+          end
+        '')
+      ];
     })
   ];
 }
