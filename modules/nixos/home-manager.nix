@@ -1,7 +1,7 @@
-{ internal, inputs, superInputs ? inputs, ... }:
+{ internal, _file, inputs, superInputs ? inputs, ... }:
 { lib, inputs ? {}, ... }:
 {
-  _file = ./home-manager.nix;
+  inherit _file;
   imports = [
     inputs.home-manager.nixosModules.home-manager
   ];

@@ -1,7 +1,7 @@
-{ internal, allModules, ... }:
+{ internal, _file, allModules, ... }:
 { lib, inputs, pkgs, ... }:
 {
-  _file = ./default.nix;
+  inherit _file;
   imports = allModules;
 
   nix.package = lib.mkDefault pkgs.nix;

@@ -1,7 +1,8 @@
-{ internal, lib, ... }: let
+{ internal, _file, lib, ... }: let
   inherit (lib.nixvim) toKeymaps' mkRawFn;
 in { ... }:
 {
+  inherit _file;
   keymaps = [
     (toKeymaps' "<" "<gv" { noremap = true; mode = "v"; })
     (toKeymaps' ">" ">gv" { noremap = true; mode = "v"; })

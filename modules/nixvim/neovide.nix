@@ -1,4 +1,4 @@
-{ internal, lib, ... }: let
+{ internal, _file, lib, ... }: let
   genAfter = cfg:
     lib.concatStringsSep "\n" (
       map (x: cfg.luaConfig.${x}) (lib.filter (x:
@@ -7,6 +7,7 @@
     );
 in { config, ... }:
 {
+  inherit _file;
   config = lib.mkMerge [
     {
       opts = {

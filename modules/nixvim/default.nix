@@ -1,6 +1,7 @@
-{ internal, allModules, inputs, ... }:
+{ internal, _file, allModules, inputs, ... }:
 { ... }:
 {
+  inherit _file;
   imports = allModules;
   luaLoader.enable = true;
   dependencies.gcc.enable = true;

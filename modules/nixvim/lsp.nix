@@ -1,6 +1,7 @@
-{ internal, lib, ... }:
+{ internal, _file, lib, ... }:
 { config, ... }:
 {
+  inherit _file;
   plugins.lsp.luaConfig.pre = lib.mkMerge [
     (let
       final = lib.nixvim.toLuaObject (removeAttrs config.plugins.lsp.servers.nixd.settings [ "__raw" ]);

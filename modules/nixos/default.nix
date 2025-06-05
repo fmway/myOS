@@ -1,7 +1,7 @@
-{ internal, allModules, ... }:
+{ internal, allModules, _file, ... }:
 { inputs ? {}, lib, ... }:
 {
-  _file = ./default.nix;
+  inherit _file;
   imports = allModules ++ [
     inputs.fmway-nix.nixosModules.default
   ];

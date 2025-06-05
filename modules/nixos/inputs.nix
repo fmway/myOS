@@ -1,8 +1,8 @@
-{ internal, inputs, selfInputs ? inputs, ... }:
+{ internal, _file, inputs, selfInputs ? inputs, ... }:
 { inputs ? {}, lib, ... }: let
   finalInputs = selfInputs // inputs;
 in {
-  _file = ./inputs.nix;
+  inherit _file;
 
   # links all inputs to /etc/nix/inputs
   environment.etc = lib.mapAttrs' (k: v:

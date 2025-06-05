@@ -1,7 +1,7 @@
-{ internal, lib, ... }:
+{ internal, _file, lib, ... }:
 { ... }:
 {
-  _file = ./default.nix;
+  inherit _file;
   imports = lib.fmway.genImports ./.;
   nix.settings.substituters = ["https://cache.nixos.org/"];
   nix.settings.trusted-public-keys = [
