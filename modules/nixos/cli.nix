@@ -77,7 +77,6 @@
     waypipe # piping wayland / xhost in wayland / run gui in ssh over wayland
     babelfish # for run bash code in fish
   ] ++ (with fishPlugins; [
-    zoxide-fish # integration zoxide in fish (faster than general)
     fzf-fish # fuzzy finder in fish
     git-abbr # abbreviation / autocomplete git
     pisces # autoclose brackets parenthesis and quote
