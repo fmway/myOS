@@ -130,5 +130,22 @@ jobs:
     - name: Info
       run: nix path-info -Sh ./result
 
+  auto-merge:
+    needs: [ nixos ]
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' && !cancelled() && success() && !contains(needs.*.result, 'skipped') }}
+    steps:
+    - name: Enable auto-merge
+      env:
+        PR_URL: ${{github.event.pull_request.html_url}}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: ${{ github.head_ref }}
+      run: |
+        if [[ "${BRANCH}" != "nixos-unstable" ]]; then
+          gh pr merge --auto --merge "$PR_URL" -d
+        else
+          gh pr merge --auto --merge "$PR_URL"
+        fi
+
 # TODO add readme generator
 # TODO ci for nixvim

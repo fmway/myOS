@@ -1,12 +1,36 @@
 name: Auto Pull Request
 on:
   schedule:
-  - cron: "0 */2 * * *"
+  - cron: "0 0,6,12,18 * * *"
   - cron: "0 */6 * * *"
 
 permissions: write-all
 
 jobs:
+  lockfile:
+    runs-on: [ubuntu-latest]
+    if: ${{ github.event_name != 'pull_request' && github.ref_name != 'nightly-update' && (github.event.head_commit.author.name == 'fmway' || (github.event_name == 'schedule' && github.event.schedule == '0 0,6,12,18 * * *') || github.event_name == 'workflow_dispatch') }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: DeterminateSystems/nix-installer-action@main
+      with:
+        github-token: ${{ secrets.GH_TOKEN }}
+        extra-conf: ${{ env.nix-conf }}
+    - uses: DeterminateSystems/update-flake-lock@v25
+      name: Update flake.lock
+      with:
+        branch: nightly-update
+        token: ${{ secrets.GH_TOKEN }}
+        git-author-name: 'little fmway'
+        git-author-email: 'fm18lv@gmail.com'
+        git-committer-name: 'little fmway'
+        git-committer-email: 'fm18lv@gmail.com'
+        commit-msg: 'chore(lockfile): update flake.lock'
+        pr-title: 'chore(lockfile): update flake.lock'
+        pr-labels: |
+          dependencies
+          automated
+
   update-stubby:
     if: ${{ github.event.schedule == '0 */6 * * *' }}
     runs-on: [ "ubuntu-latest" ]
