@@ -38,7 +38,6 @@
     # speechd
     # neovim-maximal
     wget # who knows?
-    agenix # secret.age
     doas # alternative sudo
     # mint # mint-lang?
     pup # for scraping html
