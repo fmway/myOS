@@ -3,7 +3,7 @@ on:
   pull_request:
   push:
     branches:
-      - master
+      - nixos-unstable
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -126,23 +126,9 @@ jobs:
         extra-conf: |
           ${{ steps.nix.outputs.CONF }}
     - name: Build
-      run: nix run nixpkgs#nixos-rebuild -- build --flake .#Namaku1801 --verbose
+      run: nix run nixpkgs#nixos-rebuild -- build --flake .#default --verbose
     - name: Info
       run: nix path-info -Sh ./result
 
-  auto-merge:
-    needs: [ nixos ]
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' && !cancelled() && success() && !contains(needs.*.result, 'skipped') }}
-    steps:
-    - name: Enable auto-merge
-      env:
-        PR_URL: ${{github.event.pull_request.html_url}}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: ${{ github.head_ref }}
-      run: |
-        if [[ "${BRANCH}" != "nixos-unstable" ]]; then
-          gh pr merge --auto --merge "$PR_URL" -d
-        else
-          gh pr merge --auto --merge "$PR_URL"
-        fi
+# TODO add readme generator
+# TODO ci for nixvim
