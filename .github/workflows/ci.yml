@@ -135,6 +135,11 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' && !cancelled() && success() && !contains(needs.*.result, 'skipped') }}
     steps:
+    - name: Setup git
+      run: |
+        git config --global user.name 'fmway'
+        git config --global user.email 'fm18lv@gmail.com'
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
     - name: Enable auto-merge
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
