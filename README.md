@@ -1,7 +1,7 @@
 # NixOS configuration
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 
-[![CI](https://github.com/fmway/NixOS/actions/workflows/ci.yml/badge.svg?branch=nixos-unstable&event=pull_request)](https://github.com/fmway/NixOS/actions/workflows/ci.yml)
+[![CI](https://github.com/fmway/myOS/actions/workflows/ci.yml/badge.svg)](https://github.com/fmway/myOS/actions/workflows/ci.yml)
 
 This is my NixOS configuration, applied to my current machine. You can apply, edit, and use it as you want.
 > [!IMPORTANT]
