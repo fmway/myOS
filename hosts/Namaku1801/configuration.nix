@@ -1,4 +1,4 @@
-{ internal, inputs, config, selfConfig ? config, selfInputs ? inputs, ... }:
+{ internal, inputs, config, self, selfInputs ? inputs, ... }:
 { inputs, config, lib, pkgs, ... }:
 {
   imports = with inputs; [
@@ -12,7 +12,7 @@
     nixos-hardware.nixosModules.lenovo-thinkpad-t480
     disko.nixosModules.default
     agenix.nixosModules.default
-    selfConfig.flake.nixosModules.default
+    self.nixosModules.default
     fmpkgs.nixosModules.default
     nixvim.nixosModules.nixvim
     nxchad.nixosModules.nixvim
@@ -25,7 +25,7 @@
 
   programs.nixvim.enable = true;
   programs.nixvim.imports = [
-    selfConfig.flake.nixvimModules.default
+    self.nixvimModules.default
   ];
 
   environment.systemPackages = with pkgs; [
@@ -34,7 +34,7 @@
   ];
 
   home-manager.users.fmway.imports = [
-    selfConfig.flake.homeConfs.fmway
+    self.homeConfs.fmway
     {
       # disable ~/.config/nix/nix.conf since that's is already define in /etc/nix/nix.conf
       xdg.configFile."nix/nix.conf".enable = false;

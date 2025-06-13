@@ -1,4 +1,4 @@
-{ internal, config, selfConfig ? config, lib, ... } @ x:
+{ internal, config, self, lib, ... } @ x:
 { config, inputs, osConfig ? {}, ... } @ y: let
   cfg = config.home;
 in {
@@ -7,7 +7,9 @@ in {
     ./packages.nix
     ./configs
     ./fish.nix
-    (inputs.fmway or selfConfig.flake).homeManagerModules.default
+    (self.homeManagerModules.defaultWithout [
+      # "hyprland"
+    ])
   ];
   home = {
     username = "fmway";
