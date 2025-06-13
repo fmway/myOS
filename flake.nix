@@ -62,8 +62,9 @@
       };
     } {
       imports = lib.fmway.genImports ./top-level ++ [
-        ({ self, config, modulesPath, lib, ... } @ v: let
+        ({ self, config, lib, ... } @ v: let
         in {
+          disabledModules = [ "${inputs.flake-parts}/modules/nixosModules.nix" ];
           flake = lib.fmway.genModules ./modules v;
         })
         ({ lib, ... }: { flake = { inherit lib; }; })
