@@ -21,7 +21,7 @@
   in lib.infuse super packages;
 
   flake.overlays.externalPackages = self: super:
-    inputs.h-m-m.overlays.default self super // {
+    inputs.h-m-m.overlays.default self super // inputs.nur.overlay self super // {
       encore = inputs.encore.packages.${self.system}.encore;
     };
 
