@@ -6,6 +6,7 @@ in {
     ./packages.nix
     ./configs
     ./fish.nix
+    ./floorp
     (self.homeManagerModules.defaultWithout [
       "hyprland"
       "firefox"

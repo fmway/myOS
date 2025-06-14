@@ -21,9 +21,13 @@
   in lib.infuse super packages;
 
   flake.overlays.externalPackages = self: super:
-    inputs.h-m-m.overlays.default self super // inputs.nur.overlay self super // {
-      encore = inputs.encore.packages.${self.system}.encore;
-    };
+    lib.foldl' (acc: curr: acc // curr self acc) super [
+      inputs.h-m-m.overlays.default
+      inputs.nur.overlays.default
+      (self: super: {
+        encore = inputs.encore.packages.${self.system}.encore;
+      })
+    ];
 
   perSystem = { pkgs, config, system, ... }: {
     nixpkgs.overlays = with inputs; [
