@@ -51,12 +51,8 @@ in {
     };
   };
 
-  networking.hosts."127.0.0.1" = [
-    "cgi.local.com"
-  ];
-
   services.certs = {
     cgi.cname = "cgi.local.com";
-    cgi.alt = [ "DNS:cgi.local.com" ];
+    cgi.alts = [ "DNS:cgi.local.com" ];
   };
 }

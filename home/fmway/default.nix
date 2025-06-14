@@ -3,7 +3,6 @@
   cfg = config.home;
 in {
   imports = [
-    ./options
     ./packages.nix
     ./configs
     ./fish.nix

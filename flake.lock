@@ -387,11 +387,11 @@
         "read-tree": "read-tree"
       },
       "locked": {
-        "lastModified": 1749889688,
-        "narHash": "sha256-K7WgDxfmyrNMoiTXFyVUQPbAEkRXJ70QNOrnBRhenCQ=",
+        "lastModified": 1749897316,
+        "narHash": "sha256-wvK+kWTdLwuoYfElwLXxZ1s7mzl2dY4ynYfLNvdKzMM=",
         "owner": "fmway",
         "repo": "fmway.nix",
-        "rev": "9270762de7aedde9364d3eb4cba2d5f7ff11a013",
+        "rev": "d0f844319c3f690a3f07be6289b97f43b576d91a",
         "type": "github"
       },
       "original": {

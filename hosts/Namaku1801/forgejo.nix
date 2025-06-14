@@ -12,11 +12,9 @@
     };
   };
 
-  networking.hosts."127.0.0.1" = [ "forgejo.local" "www.forgejo.local" ];
-
   services.certs = {
     forgejo.cname = "forgejo.local";
-    forgejo.alt = [ "DNS:forgejo.local" "DNS:www.forgejo.local" ];
+    forgejo.alts = [ "DNS:forgejo.local" "DNS:www.forgejo.local" ];
   };
 
   services.caddy.virtualHosts = {

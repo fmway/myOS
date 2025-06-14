@@ -7,7 +7,6 @@
     ./forgejo.nix
     ./caddy.nix
     ./users.nix
-    ./options
     ../../secrets
     nixos-hardware.nixosModules.lenovo-thinkpad-t480
     disko.nixosModules.default
@@ -90,10 +89,7 @@
 
   programs.fish.shellAbbrs."non" = /* fish */ ''doas nvim +"tcd /etc/nixos"'';
 
-  programs.cloudflared = {
-    enable = true;
-    secretFile = config.age.secrets.cloudflared.path;
-  };
+  # FIXME cloudflared
 
   # allow fuse in user mode
   programs.fuse.userAllowOther = true;

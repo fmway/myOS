@@ -1,8 +1,10 @@
-{ internal, _file, allModules, ... }:
-{ lib, inputs, pkgs, ... }:
+{ internal, inputs, selfInputs ? inputs, _file, allModules, ... }:
+{ lib, inputs ? {}, pkgs, ... }:
 {
   inherit _file;
-  imports = allModules;
+  imports = allModules ++ [
+    (inputs.fmway-nix or selfInputs.fmway-nix).homeManagerModules.all
+  ];
 
   nix.package = lib.mkDefault pkgs.nix;
 
