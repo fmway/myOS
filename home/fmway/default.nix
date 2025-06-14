@@ -8,7 +8,8 @@ in {
     ./configs
     ./fish.nix
     (self.homeManagerModules.defaultWithout [
-      # "hyprland"
+      "hyprland"
+      "firefox"
     ])
   ];
   home = {

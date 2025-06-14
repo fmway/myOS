@@ -1,6 +1,6 @@
 { pkgs, config, lib, ... }:
 {
-  enable = ! config.data.isMinimal or false;
+  enable = lib.mkDefault true;
   nativeMessagingHosts = with pkgs ;[
     firefoxpwa
     gnome-browser-connector

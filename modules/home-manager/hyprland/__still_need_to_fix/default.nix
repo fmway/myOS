@@ -1,6 +1,4 @@
-# TODO to modules
-
-{ pkgs, osConfig ? {}, uncommon, lib, config, ... }: let
+{ pkgs, uncommon, lib, config, ... }: let
   parseBind = prefix: obj:
     lib.pipe obj [
       (lib.attrNames)
@@ -10,7 +8,7 @@
           (map (x: if x == "" then "+" else x))
           (y: let
             length = lib.length y;
-            h = lib.concatStringsSep " " (if length == 1 then "" else lib.take (length - 1) y);
+            h = lib.concatStringsSep " " (if length == 1 then [""] else lib.take (length - 1) y);
             t = lib.last y;
           in [ h t ])
         ];
@@ -74,7 +72,7 @@
   ];
 
   parseSubMap = name: { cause, reset ? [], ... } @ args:
-    [ "# => ${name}" ] ++ lib.pipe [cause] [
+    [ "# ==> ${name}" ] ++ lib.pipe [cause] [
       (lib.flatten)
       (map (x: { name = x; value = "submap ${name}"; }))
       (lib.listToAttrs)
@@ -85,14 +83,14 @@
       (lib.flatten)
       (map (x: { name = x; value = "submap reset"; }))
       (lib.listToAttrs)
-      parseBind "bind"
+      (parseBind "bind")
     ]++ [
       "submap = reset"
-      "# <= ${name}"
+      "# <== ${name}"
     ]
   ;
 in {
-  enable = lib.mkDefault (osConfig.services.windowManager.hyprland.enable or false);
+  enable = lib.mkDefault true;
 
   systemd.enableXdgAutostart = true;
   xwayland.enable = true;
